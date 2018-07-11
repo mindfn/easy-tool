@@ -84,6 +84,8 @@ var port = process.env.PORT || 3000;
 var config = __webpack_require__(3);
 config.dev = !("production" === 'production');
 var nuxt = new Nuxt(config);
+console.log(nuxt.options.rootDir);
+console.log(nuxt.options.buildDir);
 if (config.dev) {
     var builder = new Builder(nuxt);
     builder.build();
@@ -112,8 +114,8 @@ const argv = parseArgs(process.argv.slice(2), {
   unknown: parameter => false
 });
 
-const port = argv.port || process.env.PORT || process.env.npm_package_config_nuxt_port || "3000";
-const host = argv.hostname || process.env.HOST || process.env.npm_package_config_nuxt_host || "localhost";
+const port = "3000";
+const host = "10.13.64.122";
 module.exports = {
   env: {
     baseUrl: process.env.BASE_URL || `http://${host}:${port}`
