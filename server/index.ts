@@ -21,15 +21,18 @@ console.log(process.env.NODE_ENV)
 const nuxt = new Nuxt(config)
 
 // Start build process in dev mode
-if (config.dev) {
-  const builder = new Builder(nuxt)
-  builder.build()
-}
+// if (config.dev) {
+//   const builder = new Builder(nuxt)
+//   builder.build()
+// }
 
 // Import API Routes
 app.use('/api', users)
+
 // Give nuxt middleware to express
 app.use(nuxt.render)
+
+
 
 console.log('easy-tool listening at http://%s:%s', host, port);
 // Start express server

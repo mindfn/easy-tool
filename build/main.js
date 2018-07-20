@@ -94,11 +94,7 @@ let config = __webpack_require__(4);
 config.dev = !("production" === 'production');
 console.log("production");
 const nuxt = new Nuxt(config);
-if (config.dev) {
-    const builder = new Builder(nuxt);
-    builder.build();
-}
-app.use(users);
+app.use('/api', users);
 app.use(nuxt.render);
 console.log('easy-tool listening at http://%s:%s', host, port);
 app.listen(port, host);
@@ -117,13 +113,11 @@ const users = [{ name: 'Alexandre' }, { name: 'Pooya' }, { name: 'Sébastien' }]
 
 /* GET users listing. */
 router.get('/users', function (req, res, next) {
-  console.log('444');
   res.json(users);
 });
 
 /* GET user by ID. */
 router.get('/users/:id', function (req, res, next) {
-  console.log('33333');
   const id = parseInt(req.params.id);
   if (id >= 0 && id < users.length) {
     res.json(users[id]);
