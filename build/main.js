@@ -62,47 +62,83 @@ module.exports =
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports) {
 
-module.exports = require("nuxt");
+module.exports = require("express");
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-var express = __webpack_require__(2);
-var Builder = __webpack_require__(0).Builder;
-var Nuxt = __webpack_require__(0).Nuxt;
-var app = express();
-var host = process.env.HOST || '127.0.0.1';
-var port = process.env.PORT || 3000;
-var config = __webpack_require__(3);
-config.dev = !("production" === 'production');
-var nuxt = new Nuxt(config);
-if (config.dev) {
-    var builder = new Builder(nuxt);
-    builder.build();
-}
-app.use(nuxt.render);
-app.listen(port, host);
-
+module.exports = require("nuxt");
 
 /***/ }),
 /* 2 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = require("express");
+const express = __webpack_require__(0);
+const Builder = __webpack_require__(1).Builder;
+const Nuxt = __webpack_require__(1).Nuxt;
+const users = __webpack_require__(3);
+const app = express();
+const host = process.env.HOST || '127.0.0.1';
+const port = process.env.PORT || 3000;
+let str = '222';
+console.log(str);
+let config = __webpack_require__(4);
+config.dev = !("production" === 'production');
+console.log("production");
+const nuxt = new Nuxt(config);
+if (config.dev) {
+    const builder = new Builder(nuxt);
+    builder.build();
+}
+app.use(users);
+app.use(nuxt.render);
+console.log('easy-tool listening at http://%s:%s', host, port);
+app.listen(port, host);
+
 
 /***/ }),
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const parseArgs = __webpack_require__(4);
+const { Router } = __webpack_require__(0);
+// import { Router } from 'express'
+const router = Router();
+
+// Mock Users
+const users = [{ name: 'Alexandre' }, { name: 'Pooya' }, { name: 'Sébastien' }];
+
+/* GET users listing. */
+router.get('/users', function (req, res, next) {
+  console.log('444');
+  res.json(users);
+});
+
+/* GET user by ID. */
+router.get('/users/:id', function (req, res, next) {
+  console.log('33333');
+  const id = parseInt(req.params.id);
+  if (id >= 0 && id < users.length) {
+    res.json(users[id]);
+  } else {
+    res.sendStatus(404);
+  }
+});
+
+module.exports = router;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const parseArgs = __webpack_require__(5);
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
     H: "hostname",
@@ -148,15 +184,16 @@ module.exports = {
   },
   modules: ["@nuxtjs/axios", "~/modules/typescript.js"],
   plugins: ['~/plugins/museui'],
-  axios: {},
+  axios: {}
 
-  serverMiddleware: [
-  // API middleware
-  '~/api/index.js']
+  // serverMiddleware: [
+  //   // API middleware
+  //   '~/api/index.js'
+  // ]
 };
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports) {
 
 module.exports = function (args, opts) {

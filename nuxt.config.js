@@ -56,8 +56,8 @@ module.exports = {
   plugins: ['~/plugins/museui'],
   axios: {},
 
-  serverMiddleware: [
-    // API middleware
-    '~/api/index.js'
-  ]
+  // serverMiddleware: [
+  //   // API middleware
+  //   '~/api/index.js'
+  // ]
 }

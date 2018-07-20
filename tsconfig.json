@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "lib": [
       "dom",
       "es2015"
@@ -28,6 +28,7 @@
       "~/store/*": ["./store/*"],
       "~router": ["./.nuxt/router"],
       "~/api/*": ["./api/*"],
+      "~/server/*": ["./server/*"],
     }
   }
 }

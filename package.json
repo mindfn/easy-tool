@@ -17,7 +17,7 @@
     "build": "nuxt build && backpack build",
     "start": "nuxt start",
     "pro": "cross-env NODE_ENV=production HOST=10.13.64.122 PORT=3000 node build/main.js",
-    "dev": "cross-env NODE_ENV=production HOST=10.13.64.122 PORT=3000 node ./server/index.ts",
+    "server": "cross-env NODE_ENV=production HOST=10.13.64.122 PORT=3000 ts-node ./server",
     "generate": "nuxt generate"
   },
   "devDependencies": {
