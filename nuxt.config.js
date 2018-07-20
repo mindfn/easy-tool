@@ -47,13 +47,13 @@ module.exports = {
   */
   css: [],
   build: {
-    vendor: ['axios', 'vue-material']
+    vendor: ['axios']
   },
   modules: [
     "@nuxtjs/axios",
     "~/modules/typescript.js"
   ],
-  plugins: ['~/plugins/vue-material'],
+  plugins: ['~/plugins/museui'],
   axios: {},
 
   serverMiddleware: [

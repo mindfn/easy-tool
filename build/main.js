@@ -84,8 +84,6 @@ var port = process.env.PORT || 3000;
 var config = __webpack_require__(3);
 config.dev = !("production" === 'production');
 var nuxt = new Nuxt(config);
-console.log(nuxt.options.rootDir);
-console.log(nuxt.options.buildDir);
 if (config.dev) {
     var builder = new Builder(nuxt);
     builder.build();
@@ -114,11 +112,12 @@ const argv = parseArgs(process.argv.slice(2), {
   unknown: parameter => false
 });
 
-const port = "3000";
-const host = "10.13.64.122";
+const host = process.env.HOST || '127.0.0.1';
+const port = process.env.PORT || 3000;
+
 module.exports = {
   env: {
-    baseUrl: process.env.BASE_URL || `http://${host}:${port}`
+    baseUrl: `http://${host}:${port}`
   },
   head: {
     title: "nuxt-type-template",
@@ -145,10 +144,10 @@ module.exports = {
   */
   css: [],
   build: {
-    vendor: ['axios', 'vue-material']
+    vendor: ['axios']
   },
   modules: ["@nuxtjs/axios", "~/modules/typescript.js"],
-  plugins: ['~/plugins/vue-material'],
+  plugins: ['~/plugins/museui'],
   axios: {},
 
   serverMiddleware: [
