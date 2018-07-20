@@ -2,7 +2,6 @@ const express = require('express')
 const Builder = require('nuxt').Builder
 const Nuxt = require('nuxt').Nuxt
 const users = require('./routes/users')
-
 const app = express()
 
 const host = process.env.HOST || '127.0.0.1'
@@ -28,8 +27,7 @@ if (config.dev) {
 }
 
 // Import API Routes
-app.use(users)
-
+app.use('/api', users)
 // Give nuxt middleware to express
 app.use(nuxt.render)
 

@@ -11,13 +11,11 @@ const users = [
 
 /* GET users listing. */
 router.get('/users', function (req, res, next) {
-  console.log('444')
   res.json(users)
 })
 
 /* GET user by ID. */
 router.get('/users/:id', function (req, res, next) {
-  console.log('33333')
   const id = parseInt(req.params.id)
   if (id >= 0 && id < users.length) {
     res.json(users[id])
