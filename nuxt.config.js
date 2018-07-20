@@ -8,13 +8,12 @@ const argv = parseArgs(process.argv.slice(2), {
   unknown: parameter => false
 })
 
-const port = "3000"
-const host = "10.13.64.122" 
+const host = process.env.HOST || '127.0.0.1'
+const port = process.env.PORT || 3000
+
 module.exports = {
   env: {
-    baseUrl:
-      process.env.BASE_URL ||
-      `http://${host}:${port}`
+    baseUrl: `http://${host}:${port}`
   },
   head: {
     title: "nuxt-type-template",
