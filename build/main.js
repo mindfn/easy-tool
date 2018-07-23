@@ -90,16 +90,22 @@ const host = process.env.HOST || '127.0.0.1';
 const port = process.env.PORT || 3000;
 let config = __webpack_require__(4);
 config.dev = !("production" === 'production');
-console.log("production");
 const nuxt = new Nuxt(config);
 if (config.dev) {
     const builder = new Builder(nuxt);
     builder.build();
 }
+app.all('*', function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+    res.header("X-Powered-By", ' 3.2.1');
+    next();
+});
 app.use('/api', users);
 app.use(nuxt.render);
-console.log('easy-tool listening at http://%s:%s', host, port);
-app.listen(port, host);
+app.listen(port, host, () => {
+    console.log('easy-tool listening at http://%s:%s', host, port);
+});
 
 
 /***/ }),
@@ -152,7 +158,7 @@ module.exports = {
     baseUrl: `http://${host}:${port}`
   },
 
-  proxy: 'http://10.13.64.123:3000',
+  proxy_http: 'http://10.13.64.122:4000',
 
   head: {
     title: "nuxt-type-template",

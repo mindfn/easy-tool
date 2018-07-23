@@ -1,12 +1,8 @@
 import * as axios from 'axios'
 import config from '../nuxt.config.js'
 
-let options = {}
-// The server-side needs a full url to works
-// if (process.server) {
-//   options.baseURL = config.proxy_http || 'http://localhost:3000'
-// }
-
-options.baseURL = config.proxy_http || 'http://localhost:3000'
+let options = {
+  baseURL:  process.env.NODE_ENV === 'development' ? config.proxy_http : config.env.baseUrl
+}
 
 export default axios.create(options)
