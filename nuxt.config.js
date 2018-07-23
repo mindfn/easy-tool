@@ -15,6 +15,9 @@ module.exports = {
   env: {
     baseUrl: `http://${host}:${port}`
   },
+
+  proxy_http: 'http://10.13.64.122:5000',
+
   head: {
     title: "nuxt-type-template",
     meta: [

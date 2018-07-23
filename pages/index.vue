@@ -2,7 +2,7 @@
   <section class="container">
     <img src="~assets/img/logo.png" alt="Nuxt.js Logo" class="logo" />
     <h1 class="title">
-      USERS2222
+      USERS2444
     </h1>
     <mu-button color="primary">Primary</mu-button>
     <ul class="users">

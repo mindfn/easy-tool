@@ -88,12 +88,14 @@ const users = __webpack_require__(3);
 const app = express();
 const host = process.env.HOST || '127.0.0.1';
 const port = process.env.PORT || 3000;
-let str = '222';
-console.log(str);
 let config = __webpack_require__(4);
 config.dev = !("production" === 'production');
 console.log("production");
 const nuxt = new Nuxt(config);
+if (config.dev) {
+    const builder = new Builder(nuxt);
+    builder.build();
+}
 app.use('/api', users);
 app.use(nuxt.render);
 console.log('easy-tool listening at http://%s:%s', host, port);
@@ -149,6 +151,9 @@ module.exports = {
   env: {
     baseUrl: `http://${host}:${port}`
   },
+
+  proxy: 'http://10.13.64.123:3000',
+
   head: {
     title: "nuxt-type-template",
     meta: [{ charset: "utf-8" }, {
