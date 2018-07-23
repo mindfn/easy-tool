@@ -1,17 +1,16 @@
 <template>
   <div>
-    <page-header></page-header>
     <nuxt/>
   </div>
 </template>
 
 <script lang="ts">
-import pageHeader from '~/components/pageHeader.vue'
+import eHeader from '~/components/eHeader.vue'
 import { Component, Vue } from 'nuxt-property-decorator'
 
 @Component({
   components: {
-    pageHeader
+    eHeader
   }
 })
 export default class extends Vue {
