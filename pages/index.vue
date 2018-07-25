@@ -1,7 +1,17 @@
 <template>
   <section class="page-login">
     <div class="page-login-head">
-     
+      <i class="fa fa-github fa-2x"></i>
+      <i class="fa fa-paperclip fa-2x"></i>
+      <i class="fa fa-question-circle-o fa-2x"></i>
+      <md-button fab color="teal">
+        <i class="fa fa-question-circle-o fa-2x"></i>
+      </md-button>
+    
+      <mu-button fab color="teal">
+        <mu-icon value=" " class="fa fa-question-circle-o fa-2x"></mu-icon>
+      </mu-button>
+
     </div>
     <mu-flex 
       align-items="center"
@@ -45,7 +55,7 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import axios from '~/plugins/axios'
 
-@Component
+@Component({})
 export default class extends Vue {
   head() {
     return {
@@ -72,7 +82,7 @@ export default class extends Vue {
    * @Desc:   表单提交 
    * @Parm:    
    */  
-  submit() {
+  submit(): void {
     this.$refs.form['validate']().then((valid) => {
       if(!valid) return
     })
@@ -92,7 +102,13 @@ export default class extends Vue {
   .page-login-head {
     line-height: 60px;
     text-align: right;
+    vertical-align: middle;
     padding-right: 32px;
+
+    i {
+      display: inline-block;
+      text-align: center;
+    }
   }
   .page-login-body {
     height: 100%;
@@ -100,7 +116,7 @@ export default class extends Vue {
       width: 100%; 
       max-width: 350px;
       margin: 0 auto;
-      margin-top: -200px;
+      margin-top: -100px;
     }
     .page-card-title  {
       text-align: center;

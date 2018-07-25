@@ -48,7 +48,9 @@ module.exports = {
   /*
   ** Build configuration
   */
-  css: [],
+  css: [{
+    src:'~/assets/font-awesome-4.7.0/css/font-awesome.min.css'
+  }],
   build: {
     vendor: ['axios']
   },
