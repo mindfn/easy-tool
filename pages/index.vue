@@ -1,17 +1,21 @@
 <template>
   <section class="page-login">
     <div class="page-login-head">
-      <i class="fa fa-github fa-2x"></i>
-      <i class="fa fa-paperclip fa-2x"></i>
-      <i class="fa fa-question-circle-o fa-2x"></i>
-      <md-button fab color="teal">
-        <i class="fa fa-question-circle-o fa-2x"></i>
-      </md-button>
-    
-      <mu-button fab color="teal">
-        <mu-icon value=" " class="fa fa-question-circle-o fa-2x"></mu-icon>
-      </mu-button>
-
+      <mu-tooltip content="帮助">
+        <mu-button icon color="primary">
+            <i class="fa fa-question-circle-o"></i>
+        </mu-button>
+      </mu-tooltip>
+      <mu-tooltip content="插件">
+        <mu-button icon color="secondary">
+          <i class="fa fa-paperclip"></i>
+        </mu-button>
+      </mu-tooltip>  
+      <mu-tooltip content="github">
+        <mu-button icon>
+          <i class="fa fa-github"></i>
+        </mu-button>
+      </mu-tooltip>  
     </div>
     <mu-flex 
       align-items="center"
@@ -100,14 +104,12 @@ export default class extends Vue {
   width: 100%;
   background: url('/assets/img/login/login-bg.png');
   .page-login-head {
-    line-height: 60px;
+    line-height: 80px;
     text-align: right;
     vertical-align: middle;
     padding-right: 32px;
-
-    i {
-      display: inline-block;
-      text-align: center;
+    .mu-icon-button {
+      vertical-align: middle;
     }
   }
   .page-login-body {
@@ -116,7 +118,7 @@ export default class extends Vue {
       width: 100%; 
       max-width: 350px;
       margin: 0 auto;
-      margin-top: -100px;
+      margin-top: -200px;
     }
     .page-card-title  {
       text-align: center;
