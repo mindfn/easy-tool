@@ -1,6 +1,6 @@
 <template>
   <section class="container">
-    <img src="~assets/img/logo.png" alt="Nuxt.js Logo1" class="logo" />
+    <img src="~assets/img/logo.png" alt="Nuxt.js Logo2" class="logo" />
     <h1 class="title">
       User
     </h1>
