@@ -1,0 +1,40 @@
+# import * from './project.schema.graphql'
+
+
+### Graphql Type ###
+
+# 单个用户
+type UserResponse {
+  # 请求状态码
+  code: Int!
+  # 请求消息
+  msg: String!
+  # 用户信息
+  data: UserInfo
+}
+
+type UserInfo {
+  # 用户id
+  userId: String
+  # 用户名
+  username: String
+  # 项目id集合
+  projectIds: [ProjectId]
+}
+
+### Graphql Schema ###
+
+type Mutation {
+  # 用户登录
+  login(
+    username: String!,
+    password: String!
+  ): UserResponse
+}
+
+
+type Query {
+  userInfo(
+    userId: String!
+  ): UserResponse
+}

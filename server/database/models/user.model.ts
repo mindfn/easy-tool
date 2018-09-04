@@ -2,11 +2,6 @@ import * as mongoose from 'mongoose'
 import * as crypto from 'crypto'
 const moment = require('moment')
 
-export type UserModel = mongoose.Document & {
-  createTime: string,
-  password: string
-}
-
 const UserSchema = new mongoose.Schema({
   createTime: {
     type: String,

@@ -1,0 +1,7 @@
+
+### Graphql Type ###
+
+type ProjectId {
+  # 项目id
+  projectId: String
+}

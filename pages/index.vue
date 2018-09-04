@@ -125,6 +125,8 @@ export default class extends mixins(head) {
 }
 </script>
 
+
+
 <style lang="less" scoped>
 .page-login {
   position: absolute;

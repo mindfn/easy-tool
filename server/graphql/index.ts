@@ -1,11 +1,10 @@
 import * as graphql from "graphql-yoga"
 import { importSchema } from 'graphql-import'
-import { Mongoose } from 'mongoose'
 import { ContextCallback, ContextParameters, Options } from "graphql-yoga/dist/types"
 import { GraphQLServer } from 'graphql-yoga/dist/index'
-import models from '../database/model'
+import models from '../database/models'
 import resolvers from './resolvers'
-
+import { Mongoose } from "mongoose"
 
 /** 
  * @Author: zhuxiankang 
@@ -32,7 +31,7 @@ export const startServer = (db : Promise<Mongoose>) : GraphQLServer => {
   const server: GraphQLServer = new graphql.GraphQLServer({
     context,
     resolvers,
-    typeDefs: importSchema('server/graphql/typedefs/index.graphql')
+    typeDefs: importSchema('server/graphql/schemas/index.graphql')
   })
 
   server.start(options, () => {

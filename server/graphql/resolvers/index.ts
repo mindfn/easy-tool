@@ -1,9 +1,11 @@
 import user from './user.resolvers'
 
-
 const resolvers = {
+  Mutation: {
+    ...user.mutation
+  },
   Query: {
-    ...user.Query
+    ...user.query
   }
 }
 
