@@ -13,7 +13,7 @@
     "lokka-transport-http": "^1.6.1",
     "moment": "^2.22.2",
     "mongoose": "^5.2.12",
-    "muse-ui": "^3.0.0-rc.5",
+    "muse-ui": "^3.0.0",
     "muse-ui-loading": "^0.2.0",
     "muse-ui-toast": "^0.3.0",
     "ntypescript": "1.201706190042.1",
