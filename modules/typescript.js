@@ -32,6 +32,7 @@ module.exports = function() {
       -1
     ) {
       config.resolve.extensions.push(".ts")
+      config.resolve.extensions.push(".tsx")
     }
   })
 }

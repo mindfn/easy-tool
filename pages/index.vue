@@ -2,18 +2,26 @@
   <section class="page-login">
     <div class="page-login-head">
       <mu-tooltip content="帮助">
-        <mu-button icon color="primary">
-            <i class="fa fa-question-circle-o"></i>
+        <mu-button icon color="indigo">
+          <i class="fa fa-question-circle-o"></i>
         </mu-button>
       </mu-tooltip>
       <mu-tooltip content="插件">
-        <mu-button icon color="secondary">
+        <mu-button 
+          icon 
+          color="secondary"
+          target="__blank"
+          href="https://git.hikvision.com.cn/users/zhuxiankang/repos/easy-tool-front/browse">
           <i class="fa fa-paperclip"></i>
         </mu-button>
       </mu-tooltip>  
-      <mu-tooltip content="github">
-        <mu-button icon>
-          <i class="fa fa-github"></i>
+      <mu-tooltip content="bitbucket">
+        <mu-button 
+          icon 
+          color="primary"
+          target="__blank"
+          href="https://git.hikvision.com.cn/users/zhuxiankang/repos/easy-tool/browse?at=refs%2Fheads%2Fdev">
+          <i class="fa fa-bitbucket"></i>
         </mu-button>
       </mu-tooltip>  
     </div>
@@ -24,15 +32,18 @@
       <mu-card class="page-login-card" raised>
         <mu-card-title  
           class="page-card-title"
-          title="Easy Tool" 
-          sub-title="资源管理，我们更高效"></mu-card-title>
+          title="EASY TOOL" 
+          sub-title="静态资源管理，我们更高效"></mu-card-title>
         <mu-card-text>
           <mu-form ref="form" :model="form">
             <mu-form-item 
               label="用户名" 
               prop="username"
               :rules="usernameRules">
-              <mu-text-field prop="username" v-model="form.username"></mu-text-field>
+              <mu-text-field 
+                prop="username" 
+                v-model="form.username"
+                @keyup.native.enter="submit"></mu-text-field>
             </mu-form-item>
             <mu-form-item 
               label="密码" 
@@ -41,12 +52,15 @@
               <mu-text-field 
                 type="password" 
                 prop="password"
-                v-model="form.password">
+                v-model="form.password"
+                @keyup.native.enter="submit">
               </mu-text-field>
             </mu-form-item>
             <mu-form-item class="page-card-footer">
-              <mu-button color="primary" @click="submit">登录</mu-button>
-              <mu-button>重置</mu-button>
+              <mu-button 
+                color="primary" 
+                @click="submit">登录</mu-button>
+              <mu-button @click="reset">重置</mu-button>
             </mu-form-item>
           </mu-form>
         </mu-card-text>
@@ -56,18 +70,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator'
-import axios from '~/plugins/axios'
+import { Component } from 'nuxt-property-decorator'
+import { mixins } from 'vue-class-component'
+import head from '~/mixins/head'
+import graphql from '~/graphql'
+import { Res, Login } from '~/constant/interface'
 
-@Component({})
-export default class extends Vue {
-  head() {
-    return {
-      title: '登录'
-    }
-  }
 
-  form: { username: string, password: string } = {
+@Component
+export default class extends mixins(head) {
+  readonly title:string = "登录"
+
+  form: Login = {
     username: '',
     password: ''
   }
@@ -87,9 +101,26 @@ export default class extends Vue {
    * @Parm:    
    */  
   submit(): void {
-    this.$refs.form['validate']().then((valid) => {
+    this.$refs.form['validate']().then((valid: boolean) => {
       if(!valid) return
+      graphql('user-login', this.form, (res: Res) => {
+        this.$router.push('/home')
+      })
     })
+  }
+
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-08-01 11:02:36  
+   * @Desc:   重置表单 
+   * @Parm:    
+   */  
+  reset(): void {
+    Object.assign(this.form, {
+      password: '',
+      username: ''
+    })
+    this.$refs.form['clear']()
   }
 }
 </script>
@@ -102,7 +133,7 @@ export default class extends Vue {
   top: 0;
   height: 100%;
   width: 100%;
-  background: url('/assets/img/login/login-bg.png');
+  background: url('~assets/img/login/login-bg.png');
   .page-login-head {
     line-height: 80px;
     text-align: right;

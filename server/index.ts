@@ -1,41 +1,27 @@
-const express = require('express')
-const Builder = require('nuxt').Builder
-const Nuxt = require('nuxt').Nuxt
-const users = require('./routes/users')
-const app = express()
 
-const host = process.env.HOST || '127.0.0.1'
-const port = process.env.PORT || 3000
+import * as dotenv from 'dotenv'
+import * as mongoose from './database'
+import * as graphql from './graphql'
+import { GraphQLServer } from 'graphql-yoga/dist/index'
+import { Mongoose } from 'mongoose'
+import { Nuxt, Builder } from 'nuxt'
 
-// Import and set Nuxt.js options
-let config = require('../nuxt.config.js')
+// 设置Node环境变量
+dotenv.config()
 
-config.dev = !(process.env.NODE_ENV === 'production')
+// 启动Mongodb服务
+const db: Promise<Mongoose> = mongoose.startDB()
 
-const nuxt = new Nuxt(config)
+// 启动Graphql服务
+const server: GraphQLServer = graphql.startServer(db)
 
-// Start build process in dev mode
-if (config.dev) {
-  const builder = new Builder(nuxt)
+// 配置中间件Nuxt
+const nuxt: Nuxt = new Nuxt(require('../nuxt.config.js'))
+
+if (process.env.DEV_TYPE && process.env.DEV_TYPE === 'nuxt') {
+  const builder: Builder = new Builder(nuxt)
   builder.build()
 }
 
-// Access control allow origin
-app.all('*', function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
-  res.header("X-Powered-By",' 3.2.1')
-  next()
-})
-
-// Import API Routes
-app.use('/api', users)
-
-// Give nuxt middleware to express
-app.use(nuxt.render)
-
-// Start express server
-app.listen(port, host, () => {
-  console.log('easy-tool listening at http://%s:%s', host, port)
-})
+server.express.use(nuxt.render)
 

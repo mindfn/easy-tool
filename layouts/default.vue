@@ -1,18 +1,10 @@
 <template>
-  <div>
-    <nuxt/>
-  </div>
+  <nuxt/>
 </template>
 
 <script lang="ts">
-import eHeader from '~/components/eHeader.vue'
 import { Component, Vue } from 'nuxt-property-decorator'
-
-@Component({
-  components: {
-    eHeader
-  }
-})
+@Component
 export default class extends Vue {
 }
 </script>

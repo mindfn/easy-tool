@@ -6,9 +6,16 @@ npm-debug.log
 
 # Nuxt build
 .nuxt
+build
 
 # Nuxt generate
 dist
 
 # vscode
 .vscode
+
+# Easy tool
+easy-tool.config.js
+doc
+
+

@@ -62,85 +62,201 @@ module.exports =
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports) {
 
-module.exports = require("express");
+module.exports = require("mongoose");
 
 /***/ }),
 /* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_dotenv__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_dotenv___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_dotenv__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__database__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__graphql__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_nuxt__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_nuxt___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_nuxt__);
+
+
+
+
+__WEBPACK_IMPORTED_MODULE_0_dotenv__["config"]();
+var db = __WEBPACK_IMPORTED_MODULE_1__database__["a" /* startDB */]();
+var server = __WEBPACK_IMPORTED_MODULE_2__graphql__["a" /* startServer */](db);
+var nuxt = new __WEBPACK_IMPORTED_MODULE_3_nuxt__["Nuxt"](__webpack_require__(13));
+if (false) {
+    var builder = new Builder(nuxt);
+    builder.build();
+}
+server.express.use(nuxt.render);
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+module.exports = require("dotenv");
+
+/***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return startDB; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mongoose__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mongoose___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_mongoose__);
+
+var startDB = function () {
+    var url = process.env["MONGODB_URI_" + "production"];
+    return __WEBPACK_IMPORTED_MODULE_0_mongoose__["connect"](url, { useNewUrlParser: true });
+};
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return startServer; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_graphql_yoga__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_graphql_yoga___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_graphql_yoga__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_graphql_import__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_graphql_import___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_graphql_import__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__database_model__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__resolvers__ = __webpack_require__(10);
+
+
+
+
+var startServer = function (db) {
+    var context = function (req) { return ({
+        db: db,
+        models: __WEBPACK_IMPORTED_MODULE_2__database_model__["a" /* default */],
+        req: req.request
+    }); };
+    var options = {
+        port: process.env.CLIENT_PORT || 3000,
+        endpoint: '/graphql',
+        playground: '/playground'
+    };
+    var server = new __WEBPACK_IMPORTED_MODULE_0_graphql_yoga__["GraphQLServer"]({
+        context: context,
+        resolvers: __WEBPACK_IMPORTED_MODULE_3__resolvers__["a" /* default */],
+        typeDefs: Object(__WEBPACK_IMPORTED_MODULE_1_graphql_import__["importSchema"])('server/graphql/typedefs/index.graphql')
+    });
+    server.start(options, function () {
+        console.log("\uD83D\uDE80\uD83D\uDE80\uD83D\uDE80 Server is running on  http://localhost:" + process.env.CLIENT_PORT);
+    });
+    return server;
+};
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+module.exports = require("graphql-yoga");
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports) {
+
+module.exports = require("graphql-import");
+
+/***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__user_model__ = __webpack_require__(8);
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+    User: __WEBPACK_IMPORTED_MODULE_0__user_model__["a" /* default */]
+});
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mongoose__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mongoose___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_mongoose__);
+
+var moment = __webpack_require__(9);
+var UserSchema = new __WEBPACK_IMPORTED_MODULE_0_mongoose__["Schema"]({
+    createTime: {
+        type: String,
+        default: String(moment(Date.now()).format('YYYY-MM-DD HH:mm:ss'))
+    },
+    password: {
+        type: String,
+        required: true,
+        trim: true,
+        set: function (pwd) {
+        }
+    }
+});
+var User = __WEBPACK_IMPORTED_MODULE_0_mongoose__["model"]('User', UserSchema);
+/* harmony default export */ __webpack_exports__["a"] = (User);
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+module.exports = require("moment");
+
+/***/ }),
+/* 10 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__user_resolvers__ = __webpack_require__(11);
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+
+var resolvers = {
+    Query: __assign({}, __WEBPACK_IMPORTED_MODULE_0__user_resolvers__["a" /* default */].Query)
+};
+/* harmony default export */ __webpack_exports__["a"] = (resolvers);
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = ({
+    Query: {},
+    Mutation: {}
+});
+
+
+/***/ }),
+/* 12 */
 /***/ (function(module, exports) {
 
 module.exports = require("nuxt");
 
 /***/ }),
-/* 2 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const express = __webpack_require__(0);
-const Builder = __webpack_require__(1).Builder;
-const Nuxt = __webpack_require__(1).Nuxt;
-const users = __webpack_require__(3);
-const app = express();
-const host = process.env.HOST || '127.0.0.1';
-const port = process.env.PORT || 3000;
-let config = __webpack_require__(4);
-config.dev = !("production" === 'production');
-const nuxt = new Nuxt(config);
-if (config.dev) {
-    const builder = new Builder(nuxt);
-    builder.build();
-}
-app.all('*', function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
-    res.header("X-Powered-By", ' 3.2.1');
-    next();
-});
-app.use('/api', users);
-app.use(nuxt.render);
-app.listen(port, host, () => {
-    console.log('easy-tool listening at http://%s:%s', host, port);
-});
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-const { Router } = __webpack_require__(0);
-// import { Router } from 'express'
-const router = Router();
-
-// Mock Users
-const users = [{ name: 'Alexandre' }, { name: 'Pooya' }, { name: 'Sébastien' }];
-
-/* GET users listing. */
-router.get('/users', function (req, res, next) {
-  res.json(users);
-});
-
-/* GET user by ID. */
-router.get('/users/:id', function (req, res, next) {
-  const id = parseInt(req.params.id);
-  if (id >= 0 && id < users.length) {
-    res.json(users[id]);
-  } else {
-    res.sendStatus(404);
-  }
-});
-
-module.exports = router;
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-const parseArgs = __webpack_require__(5);
+const parseArgs = __webpack_require__(14);
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
     H: "hostname",
@@ -149,16 +265,15 @@ const argv = parseArgs(process.argv.slice(2), {
   string: ["H"],
   unknown: parameter => false
 });
+const config = __webpack_require__(15);
 
-const host = process.env.HOST || '127.0.0.1';
-const port = process.env.PORT || 3000;
+const host = config.clientIP || '127.0.0.1';
+const port = config.clientPort || 3000;
 
 module.exports = {
   env: {
     baseUrl: `http://${host}:${port}`
   },
-
-  proxy_http: 'http://10.13.64.122:3000',
 
   head: {
     title: "nuxt-type-template",
@@ -185,22 +300,20 @@ module.exports = {
   */
   css: [{
     src: '~/assets/font-awesome-4.7.0/css/font-awesome.min.css'
+  }, {
+    src: '~/assets/scrollbar/scrollbar.css'
   }],
   build: {
-    vendor: ['axios']
+    vendor: ['muse-ui', 'lokka', 'lokka-transport-http', 'muse-ui-toast/dist/muse-ui-toast.common', 'vuedraggable']
   },
-  modules: ["@nuxtjs/axios", "~/modules/typescript.js"],
-  plugins: ['~/plugins/museui'],
-  axios: {}
 
-  // serverMiddleware: [
-  //   // API middleware
-  //   '~/api/index.js'
-  // ]
+  plugins: ['~/plugins/museui', '~/plugins/lokka.ts'],
+
+  modules: ["~/modules/typescript.js"]
 };
 
 /***/ }),
-/* 5 */
+/* 14 */
 /***/ (function(module, exports) {
 
 module.exports = function (args, opts) {
@@ -440,6 +553,28 @@ function isNumber (x) {
 }
 
 
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports) {
+
+/** 
+ * @Author: zhuxiankang 
+ * @Date:   2018-08-30 14:38:44  
+ * @Desc:   配置项目地址 
+ * @Parm:    
+ */
+
+module.exports = {
+  // Nuxt启动地址
+  clientIP: '10.13.64.122',
+  clientPort: '3000',
+  // Node启动地址
+  serverIP: '10.13.64.122',
+  serverPort: '3000',
+  // Nuxt请求代理地址
+  proxy: '10.13.64.122:3000'
+};
 
 /***/ })
 /******/ ]);

@@ -8,15 +8,10 @@ const argv = parseArgs(process.argv.slice(2), {
   unknown: parameter => false
 })
 
-const host = process.env.HOST || '127.0.0.1'
-const port = process.env.PORT || 3000
-
 module.exports = {
-  env: {
-    baseUrl: `http://${host}:${port}`
-  },
-
-  proxy_http: 'http://10.13.64.122:3000',
+  
+  // Web前端请求代理地址
+  proxyHttp: '10.13.64.122:3000/graphql',
 
   head: {
     title: "nuxt-type-template",
@@ -50,19 +45,20 @@ module.exports = {
   */
   css: [{
     src:'~/assets/font-awesome-4.7.0/css/font-awesome.min.css'
+  }, {
+    src:'~/assets/scrollbar/scrollbar.css' 
   }],
   build: {
-    vendor: ['axios']
+    vendor: [
+      'muse-ui', 
+      'lokka', 
+      'lokka-transport-http', 
+      'muse-ui-toast/dist/muse-ui-toast.common',
+      'vuedraggable'
+    ]
   },
-  modules: [
-    "@nuxtjs/axios",
-    "~/modules/typescript.js"
-  ],
-  plugins: ['~/plugins/museui'],
-  axios: {},
 
-  // serverMiddleware: [
-  //   // API middleware
-  //   '~/api/index.js'
-  // ]
+  plugins: ['~/plugins/museui', '~/plugins/lokka.ts'],
+
+  modules: ["~/modules/typescript.js"]
 }
