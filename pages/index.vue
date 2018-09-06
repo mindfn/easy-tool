@@ -75,6 +75,8 @@ import { mixins } from 'vue-class-component'
 import head from '~/mixins/head'
 import graphql from '~/graphql'
 import { Res, Login } from '~/constant/interface'
+import Vue from 'vue'
+
 
 
 @Component
@@ -103,9 +105,23 @@ export default class extends mixins(head) {
   submit(): void {
     this.$refs.form['validate']().then((valid: boolean) => {
       if(!valid) return
-      graphql('user-login', this.form, (res: Res) => {
-        this.$router.push('/home')
-      })
+      // 获取公钥
+      graphql('user-getRsaKey', this.login)
+    })
+  }
+
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-09-05 11:40:13  
+   * @Desc:   登陆账号
+   * @Parm:    
+   */  
+  login(data: Res ) : void {
+    const { form } = this
+    graphql('user-login', {
+      ...form,
+      password: Vue.prototype.$encrypt(data.data, form.password)
+    }, (res: Res) => {
     })
   }
 

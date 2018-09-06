@@ -6,7 +6,7 @@
  */
 
 
-import client from '~/plugins/lokka'
+import { client } from '~/graphql/lokka'
 import { Lokka } from 'lokka'
 
 export default {

@@ -3,22 +3,24 @@
 
 ### Graphql Type ###
 
+
+# 公钥
+type PublicKeyResponse {
+  code: Int!
+  msg: String!
+  data: String!
+}
+
 # 单个用户
 type UserResponse {
-  # 请求状态码
   code: Int!
-  # 请求消息
   msg: String!
-  # 用户信息
   data: UserInfo
 }
 
 type UserInfo {
-  # 用户id
   userId: String
-  # 用户名
   username: String
-  # 项目id集合
   projectIds: [ProjectId]
 }
 
@@ -34,6 +36,9 @@ type Mutation {
 
 
 type Query {
+  # 获取公钥
+  getRsaKey: PublicKeyResponse
+
   userInfo(
     userId: String!
   ): UserResponse

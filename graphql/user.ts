@@ -6,11 +6,29 @@
  */
 
 
-import client from '~/plugins/lokka'
+import { client } from '~/graphql/lokka'
 import { Lokka } from 'lokka'
 import { Login } from '~/constant/interface'
 
 export default {
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-09-05 11:35:21  
+   * @Desc:   获取公钥 
+   * @Parm:    
+   */  
+  getRsaKey() : Lokka {
+    return client.query(
+      `{
+        data: getRsaKey {
+          code,
+          msg,
+          data
+        }
+      }`
+    )
+  },
+
   /** 
    * @Author: zhuxiankang 
    * @Date:   2018-08-03 15:16:25  

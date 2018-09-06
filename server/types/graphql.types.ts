@@ -9,3 +9,12 @@ export interface resolveCtx {
   req: Request,
   models: Models
 }
+
+export interface resolveRes {
+  code: number,
+  data?: any,
+  msg: string
+}
+
+
+

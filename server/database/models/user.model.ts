@@ -1,5 +1,4 @@
 import * as mongoose from 'mongoose'
-import * as crypto from 'crypto'
 const moment = require('moment')
 
 const UserSchema = new mongoose.Schema({

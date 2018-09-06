@@ -11,7 +11,7 @@ const argv = parseArgs(process.argv.slice(2), {
 module.exports = {
   
   // Web前端请求代理地址
-  proxyHttp: '10.13.64.122:3000/graphql',
+  proxyHttp: 'http://10.13.64.122:3000/graphql',
 
   head: {
     title: "nuxt-type-template",
@@ -54,11 +54,15 @@ module.exports = {
       'lokka', 
       'lokka-transport-http', 
       'muse-ui-toast/dist/muse-ui-toast.common',
-      'vuedraggable'
+      'vuedraggable',
+      'jsencrypt'
     ]
   },
 
-  plugins: ['~/plugins/museui', '~/plugins/lokka.ts'],
+  plugins: [
+    '~/plugins/museui', 
+    {src: '~/plugins/jsencrypt.ts', ssr: false}
+  ],
 
   modules: ["~/modules/typescript.js"]
 }

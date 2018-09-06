@@ -81,7 +81,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_dotenv___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_dotenv__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__database__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__graphql__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_nuxt__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_nuxt__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_nuxt___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_nuxt__);
 
 
@@ -90,9 +90,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 __WEBPACK_IMPORTED_MODULE_0_dotenv__["config"]();
 var db = __WEBPACK_IMPORTED_MODULE_1__database__["a" /* startDB */]();
 var server = __WEBPACK_IMPORTED_MODULE_2__graphql__["a" /* startServer */](db);
-var nuxt = new __WEBPACK_IMPORTED_MODULE_3_nuxt__["Nuxt"](__webpack_require__(13));
-if (false) {
-    var builder = new Builder(nuxt);
+var nuxt = new __WEBPACK_IMPORTED_MODULE_3_nuxt__["Nuxt"](__webpack_require__(18));
+if (process.env.DEV_TYPE && process.env.DEV_TYPE === 'nuxt') {
+    var builder = new __WEBPACK_IMPORTED_MODULE_3_nuxt__["Builder"](nuxt);
     builder.build();
 }
 server.express.use(nuxt.render);
@@ -129,7 +129,7 @@ var startDB = function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_graphql_yoga___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_graphql_yoga__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_graphql_import__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_graphql_import___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_graphql_import__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__database_model__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__database_models__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__resolvers__ = __webpack_require__(10);
 
 
@@ -138,21 +138,27 @@ var startDB = function () {
 var startServer = function (db) {
     var context = function (req) { return ({
         db: db,
-        models: __WEBPACK_IMPORTED_MODULE_2__database_model__["a" /* default */],
+        models: __WEBPACK_IMPORTED_MODULE_2__database_models__["a" /* default */],
         req: req.request
     }); };
+    var port = process.env["PORT_" + process.env.DEV_TYPE] || '3000';
     var options = {
-        port: process.env.CLIENT_PORT || 3000,
+        cors: {
+            credentials: true,
+            methods: "*",
+            origin: /^http(s?):\/\/10\.\w*/,
+        },
+        port: port,
         endpoint: '/graphql',
         playground: '/playground'
     };
     var server = new __WEBPACK_IMPORTED_MODULE_0_graphql_yoga__["GraphQLServer"]({
         context: context,
         resolvers: __WEBPACK_IMPORTED_MODULE_3__resolvers__["a" /* default */],
-        typeDefs: Object(__WEBPACK_IMPORTED_MODULE_1_graphql_import__["importSchema"])('server/graphql/typedefs/index.graphql')
+        typeDefs: Object(__WEBPACK_IMPORTED_MODULE_1_graphql_import__["importSchema"])('server/graphql/schemas/index.graphql')
     });
     server.start(options, function () {
-        console.log("\uD83D\uDE80\uD83D\uDE80\uD83D\uDE80 Server is running on  http://localhost:" + process.env.CLIENT_PORT);
+        console.log("\uD83D\uDE80\uD83D\uDE80\uD83D\uDE80 Server is running on  http://localhost:" + port);
     });
     return server;
 };
@@ -230,7 +236,8 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 };
 
 var resolvers = {
-    Query: __assign({}, __WEBPACK_IMPORTED_MODULE_0__user_resolvers__["a" /* default */].Query)
+    Mutation: __assign({}, __WEBPACK_IMPORTED_MODULE_0__user_resolvers__["a" /* default */].mutation),
+    Query: __assign({}, __WEBPACK_IMPORTED_MODULE_0__user_resolvers__["a" /* default */].query)
 };
 /* harmony default export */ __webpack_exports__["a"] = (resolvers);
 
@@ -240,23 +247,140 @@ var resolvers = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constant__ = __webpack_require__(14);
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+
+
+var key = new (__webpack_require__(16))({ b: 512 });
+var mutation = {
+    login: function (parent, args, _a) {
+        var models = _a.models, req = _a.req;
+        return __awaiter(this, void 0, void 0, function () {
+            var username, password;
+            return __generator(this, function (_b) {
+                username = args.username, password = args.password;
+                return [2];
+            });
+        });
+    }
+};
+var query = {
+    getRsaKey: function (parent, args, _a) {
+        var req = _a.req;
+        return __awaiter(this, void 0, void 0, function () {
+            var publicKey;
+            return __generator(this, function (_b) {
+                publicKey = key.exportKey('public');
+                return [2, Object(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* resolveResponse */])(publicKey ? __WEBPACK_IMPORTED_MODULE_1__constant__["a" /* GRQPHQL */].RES_SUCCESS_CODE : __WEBPACK_IMPORTED_MODULE_1__constant__["a" /* GRQPHQL */].RES_ERROR_CODE, publicKey ? '' : '获取公钥失败', publicKey)];
+            });
+        });
+    }
+};
 /* harmony default export */ __webpack_exports__["a"] = ({
-    Query: {},
-    Mutation: {}
+    mutation: mutation,
+    query: query
 });
 
 
 /***/ }),
 /* 12 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__grqphql_utils__ = __webpack_require__(13);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__grqphql_utils__["a"]; });
+
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return resolveResponse; });
+var resolveResponse = function (code, msg, data) {
+    return {
+        code: code,
+        msg: msg,
+        data: data
+    };
+};
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__graphql_constant__ = __webpack_require__(15);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__graphql_constant__["a"]; });
+
+
+
+/***/ }),
+/* 15 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GRQPHQL; });
+var GRQPHQL = {
+    RES_SUCCESS_CODE: 0,
+    RES_ERROR_CODE: -1
+};
+
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports) {
+
+module.exports = require("node-rsa");
+
+/***/ }),
+/* 17 */
 /***/ (function(module, exports) {
 
 module.exports = require("nuxt");
 
 /***/ }),
-/* 13 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const parseArgs = __webpack_require__(14);
+const parseArgs = __webpack_require__(19);
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
     H: "hostname",
@@ -265,15 +389,11 @@ const argv = parseArgs(process.argv.slice(2), {
   string: ["H"],
   unknown: parameter => false
 });
-const config = __webpack_require__(15);
-
-const host = config.clientIP || '127.0.0.1';
-const port = config.clientPort || 3000;
 
 module.exports = {
-  env: {
-    baseUrl: `http://${host}:${port}`
-  },
+
+  // Web前端请求代理地址
+  proxyHttp: 'http://10.13.64.122:3000/graphql',
 
   head: {
     title: "nuxt-type-template",
@@ -304,16 +424,16 @@ module.exports = {
     src: '~/assets/scrollbar/scrollbar.css'
   }],
   build: {
-    vendor: ['muse-ui', 'lokka', 'lokka-transport-http', 'muse-ui-toast/dist/muse-ui-toast.common', 'vuedraggable']
+    vendor: ['muse-ui', 'lokka', 'lokka-transport-http', 'muse-ui-toast/dist/muse-ui-toast.common', 'vuedraggable', 'jsencrypt']
   },
 
-  plugins: ['~/plugins/museui', '~/plugins/lokka.ts'],
+  plugins: ['~/plugins/museui', { src: '~/plugins/jsencrypt.ts', ssr: false }],
 
   modules: ["~/modules/typescript.js"]
 };
 
 /***/ }),
-/* 14 */
+/* 19 */
 /***/ (function(module, exports) {
 
 module.exports = function (args, opts) {
@@ -553,28 +673,6 @@ function isNumber (x) {
 }
 
 
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports) {
-
-/** 
- * @Author: zhuxiankang 
- * @Date:   2018-08-30 14:38:44  
- * @Desc:   配置项目地址 
- * @Parm:    
- */
-
-module.exports = {
-  // Nuxt启动地址
-  clientIP: '10.13.64.122',
-  clientPort: '3000',
-  // Node启动地址
-  serverIP: '10.13.64.122',
-  serverPort: '3000',
-  // Nuxt请求代理地址
-  proxy: '10.13.64.122:3000'
-};
 
 /***/ })
 /******/ ]);

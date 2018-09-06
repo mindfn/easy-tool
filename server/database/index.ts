@@ -1,5 +1,4 @@
 import * as mongoose from 'mongoose'
-import { Mongoose } from 'mongoose';
 
 /** 
  * @Author: zhuxiankang 
@@ -7,7 +6,9 @@ import { Mongoose } from 'mongoose';
  * @Desc:   Start mongodb service
  * @Parm:    
  */
-export const startDB = () : Promise<Mongoose> => {
+export const startDB = () => {
   const url:string = <string>process.env[`MONGODB_URI_${process.env.NODE_ENV}`]
-  return mongoose.connect(url, { useNewUrlParser: true })
+  mongoose.connect(url, { useNewUrlParser: true }, () => {
+    console.log(`🚀🚀🚀 Mongoose is running on ${url}`)
+  })
 }
