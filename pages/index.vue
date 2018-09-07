@@ -122,6 +122,7 @@ export default class extends mixins(head) {
       ...form,
       password: Vue.prototype.$encrypt(data.data, form.password)
     }, (res: Res) => {
+      this.$router.push('/home')
     })
   }
 

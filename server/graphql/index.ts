@@ -22,7 +22,7 @@ export const startServer = () : GraphQLServer => {
   })
 
 
-  const port =  <string>process.env[`PORT_${process.env.DEV_TYPE}`] || '3000'
+  const port =  <string>process.env[`PORT_${process.env.DEV_TYPE}`] || '5000'
 
   const options: Options = {
     // 跨域请求设置
@@ -33,7 +33,7 @@ export const startServer = () : GraphQLServer => {
     },
     port,
     endpoint: '/graphql',
-    playground: '/playground'
+    playground: process.env.DEV_TYPE === 'server' ?  '/playground' : false
   }
 
   const server: GraphQLServer = new graphql.GraphQLServer({

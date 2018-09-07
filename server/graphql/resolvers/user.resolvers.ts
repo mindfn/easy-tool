@@ -1,20 +1,13 @@
 
 
-import { resolveResponse } from '../../utils'
+import { resolveResponse, loginOA } from '../../utils'
 import { GRQPHQL } from '../../constant'
-import { resolveArgs, resolveCtx, resolveRes } from '../../types'
-import * as dotenv from 'dotenv'
-dotenv.config()
+import { resolveArgs, resolveCtx, resolveRes, UserModel } from '../../types'
+import { createMd5Password } from '../../utils'
 
-// import * as ldapjs from 'ldapjs'
+// RSA加密处理
 const key = new (require('node-rsa'))({b: 512})
 key.setOptions({ encryptionScheme : 'pkcs1' }) 
-
-
-// const client = ldapjs.createClient({
-//   url : <string>process.env.LOAP_URI
-// })
-
 
 const mutation = {
   /** 
@@ -24,15 +17,63 @@ const mutation = {
    * @Parm:    
    */  
   async login(parent: any, args: resolveArgs, { models, req }: resolveCtx) {
-    let { username, password } = args
-    if(req.session) {
-      password = key.decrypt(password.replace(/\s+/g, '+'), 'utf8')
+    try {
+
+      let { username, password } = args
+      const { User } = models
+
+      // 判断用户是否已经注册
+      let user = await User.findOne({ username })
+      if(user) {
+        if(user.password === createMd5Password(decrypt(password))) {
+          if(req.session) req.session.user = user.toObject()
+          return resolveResponse(
+            GRQPHQL.RES_SUCCESS_CODE, 
+            '登录成功！'
+          )
+        } else {
+          return resolveResponse(
+            GRQPHQL.RES_ERROR_CODE, 
+            '用户名或密码错误！'
+          )
+        }
+      } else {
+        // 数据库不存在用户信息，因此需要向ldap发起请求
+        password = decrypt(password)
+        let loginSuccess: boolean | string = await loginOA(username, password)
+        if(loginSuccess)  {
+          user = await User.create({
+            username,
+            password
+          })
+          if(req.session) req.session.user = user.toObject()
+          return resolveResponse(
+            GRQPHQL.RES_SUCCESS_CODE, 
+            '登录成功！'
+          )
+        } else {
+          return resolveResponse(
+            GRQPHQL.RES_ERROR_CODE, 
+            '用户名或密码错误！'
+          )
+        }
+      }
+    } catch(err) {
+      return resolveResponse(
+        GRQPHQL.RES_ERROR_CODE, 
+        err.message
+      )
     }
 
-    return resolveResponse(
-      GRQPHQL.RES_ERROR_CODE, 
-      '登录失败'
-    )
+    /** 
+     * @Author: zhuxiankang 
+     * @Date:   2018-09-07 19:46:19  
+     * @Desc:   登录密码解密 
+     * @Parm:    
+     */    
+    function decrypt(password: string) : string {
+      return key.decrypt(password.replace(/\s+/g, '+'), 'utf8')
+    }
   }
 }
 
@@ -44,8 +85,17 @@ const query = {
    * @Parm:    
    */  
   async getRsaKey(parent: any, args: resolveArgs, { req }: resolveCtx): Promise<resolveRes>  {
-    const publicKey = key.exportKey('public')
-    if(req.session) req.session.publicKey = publicKey
+     
+    let publicKey 
+    const { session } = req
+
+    if(session && session.publicKey) {
+      publicKey = session.publicKey
+    // session可能未定义，必须加session检测  
+    } else if(session) {
+      publicKey = session.publicKey = key.exportKey('public')
+    }
+
     return resolveResponse(
       publicKey ? GRQPHQL.RES_SUCCESS_CODE : GRQPHQL.RES_ERROR_CODE, 
       publicKey ? '' : '获取公钥失败', 

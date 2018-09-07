@@ -1,10 +1,10 @@
-import { Document } from 'mongoose'
+import { Document, Model } from 'mongoose'
 
 export type UserModel = Document & {
-  createTime: string,
+  username: string,
   password: string
 }
 
 export interface Models {
-  User: UserModel
+  User: Model<UserModel>
 }
