@@ -21,8 +21,7 @@ export const startServer = () : GraphQLServer => {
     req: req.request
   })
 
-
-  const port =  <string>process.env[`PORT_${process.env.DEV_TYPE}`] || '5000'
+  const port =  <string>process.env[`DEV_PORT_${process.env.DEV_TYPE}`] || process.env.PRO_PORT
 
   const options: Options = {
     // 跨域请求设置

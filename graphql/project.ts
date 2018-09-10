@@ -19,7 +19,7 @@ export default {
   getList() : Lokka {
     return client.query(
       `{
-        data: project {
+        data: projects {
           code,
           msg,
           data {
@@ -27,7 +27,6 @@ export default {
             projectName,
             projectDesc,
             createTime,
-            projectUrl,
             projectMember {
               username,
               userId

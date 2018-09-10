@@ -73,7 +73,7 @@ export default {
   query() : Lokka {
     return client.query(
       `{
-        data: allUser {
+        data: users {
           code,
           msg,
           data {

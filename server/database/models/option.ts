@@ -13,6 +13,5 @@ export default  {
     virtuals: true
   },
   id: false,
-  versionKey: false,
   minimize: false // 允许存储空对象
 }

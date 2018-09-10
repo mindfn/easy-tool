@@ -62,35 +62,70 @@ module.exports =
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports) {
 
-module.exports = require("mongoose");
+module.exports = require("dotenv");
 
 /***/ }),
 /* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__grqphql_utils__ = __webpack_require__(12);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_0__grqphql_utils__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ldapjs_utils__ = __webpack_require__(13);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__ldapjs_utils__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__md5_utils__ = __webpack_require__(15);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_2__md5_utils__["a"]; });
+
+
+
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+module.exports = require("mongoose");
+
+/***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__graphql_constant__ = __webpack_require__(17);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__graphql_constant__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__md5_constant__ = __webpack_require__(18);
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__md5_constant__["a"]; });
+
+
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_dotenv__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_dotenv__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_dotenv___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_dotenv__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__database__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__graphql__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_nuxt__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__database__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__graphql__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_nuxt__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_nuxt___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_nuxt__);
 
 
 
 
 __WEBPACK_IMPORTED_MODULE_0_dotenv__["config"]();
-var db = __WEBPACK_IMPORTED_MODULE_1__database__["a" /* startDB */]();
-var server = __WEBPACK_IMPORTED_MODULE_2__graphql__["a" /* startServer */](db);
-var nuxt = new __WEBPACK_IMPORTED_MODULE_3_nuxt__["Nuxt"](__webpack_require__(18));
+__WEBPACK_IMPORTED_MODULE_1__database__["a" /* startDB */]();
+var server = __WEBPACK_IMPORTED_MODULE_2__graphql__["a" /* startServer */]();
+var nuxt = new __WEBPACK_IMPORTED_MODULE_3_nuxt__["Nuxt"](__webpack_require__(24));
 if (process.env.DEV_TYPE && process.env.DEV_TYPE === 'nuxt') {
     var builder = new __WEBPACK_IMPORTED_MODULE_3_nuxt__["Builder"](nuxt);
     builder.build();
@@ -99,49 +134,49 @@ server.express.use(nuxt.render);
 
 
 /***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
-module.exports = require("dotenv");
-
-/***/ }),
-/* 3 */
+/* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return startDB; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mongoose__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mongoose__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mongoose___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_mongoose__);
 
 var startDB = function () {
     var url = process.env["MONGODB_URI_" + "production"];
-    return __WEBPACK_IMPORTED_MODULE_0_mongoose__["connect"](url, { useNewUrlParser: true });
+    __WEBPACK_IMPORTED_MODULE_0_mongoose__["connect"](url, { useNewUrlParser: true }, function () {
+        console.log("\uD83D\uDE80\uD83D\uDE80\uD83D\uDE80 Mongoose is running on " + url);
+    });
 };
 
 
 /***/ }),
-/* 4 */
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return startServer; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_graphql_yoga__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_graphql_yoga__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_graphql_yoga___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_graphql_yoga__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_graphql_import__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_graphql_import__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_graphql_import___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_graphql_import__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__database_models__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__resolvers__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__database_models__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__resolvers__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_dotenv__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_dotenv___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_dotenv__);
 
 
 
 
-var startServer = function (db) {
+var session = __webpack_require__(22);
+
+__WEBPACK_IMPORTED_MODULE_4_dotenv__["config"]();
+var startServer = function () {
     var context = function (req) { return ({
-        db: db,
         models: __WEBPACK_IMPORTED_MODULE_2__database_models__["a" /* default */],
         req: req.request
     }); };
-    var port = process.env["PORT_" + process.env.DEV_TYPE] || '3000';
+    var port = process.env["PORT_" + process.env.DEV_TYPE] || '5000';
     var options = {
         cors: {
             credentials: true,
@@ -150,13 +185,18 @@ var startServer = function (db) {
         },
         port: port,
         endpoint: '/graphql',
-        playground: '/playground'
+        playground: process.env.DEV_TYPE === 'server' ? '/playground' : false
     };
     var server = new __WEBPACK_IMPORTED_MODULE_0_graphql_yoga__["GraphQLServer"]({
         context: context,
         resolvers: __WEBPACK_IMPORTED_MODULE_3__resolvers__["a" /* default */],
         typeDefs: Object(__WEBPACK_IMPORTED_MODULE_1_graphql_import__["importSchema"])('server/graphql/schemas/index.graphql')
     });
+    server.express.use(session({
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: true
+    }));
     server.start(options, function () {
         console.log("\uD83D\uDE80\uD83D\uDE80\uD83D\uDE80 Server is running on  http://localhost:" + port);
     });
@@ -165,23 +205,23 @@ var startServer = function (db) {
 
 
 /***/ }),
-/* 5 */
+/* 7 */
 /***/ (function(module, exports) {
 
 module.exports = require("graphql-yoga");
 
 /***/ }),
-/* 6 */
+/* 8 */
 /***/ (function(module, exports) {
 
 module.exports = require("graphql-import");
 
 /***/ }),
-/* 7 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__user_model__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__user_model__ = __webpack_require__(10);
 
 /* harmony default export */ __webpack_exports__["a"] = ({
     User: __WEBPACK_IMPORTED_MODULE_0__user_model__["a" /* default */]
@@ -189,43 +229,180 @@ module.exports = require("graphql-import");
 
 
 /***/ }),
-/* 8 */
+/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mongoose__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mongoose__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mongoose___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_mongoose__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__option__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils__ = __webpack_require__(1);
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
 
-var moment = __webpack_require__(9);
+
+
 var UserSchema = new __WEBPACK_IMPORTED_MODULE_0_mongoose__["Schema"]({
-    createTime: {
+    username: {
         type: String,
-        default: String(moment(Date.now()).format('YYYY-MM-DD HH:mm:ss'))
+        required: true,
+        trim: true,
+        unique: true,
+        index: true
     },
     password: {
         type: String,
         required: true,
         trim: true,
-        set: function (pwd) {
+        set: function (password) {
+            return Object(__WEBPACK_IMPORTED_MODULE_2__utils__["a" /* createMd5Password */])(password);
         }
     }
+}, __assign({}, __WEBPACK_IMPORTED_MODULE_1__option__["a" /* default */], { timestamps: {
+        updatedAt: false
+    } }));
+UserSchema.virtual('userId').get(function () {
+    return this._id;
 });
 var User = __WEBPACK_IMPORTED_MODULE_0_mongoose__["model"]('User', UserSchema);
 /* harmony default export */ __webpack_exports__["a"] = (User);
 
 
 /***/ }),
-/* 9 */
-/***/ (function(module, exports) {
-
-module.exports = require("moment");
-
-/***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__user_resolvers__ = __webpack_require__(11);
+/* harmony default export */ __webpack_exports__["a"] = ({
+    autoIndex: false,
+    timestamps: {
+        createdAt: 'createTime',
+        updatedAt: 'updateTime'
+    },
+    toJSON: {
+        getters: true,
+        virtuals: true
+    },
+    toObject: {
+        getters: true,
+        virtuals: true
+    },
+    id: false,
+    minimize: false
+});
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return resolveResponse; });
+var resolveResponse = function (code, msg, data) {
+    return {
+        code: code,
+        msg: msg,
+        data: data
+    };
+};
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return loginOA; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_dotenv__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_dotenv___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_dotenv__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ldapjs__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ldapjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_ldapjs__);
+
+
+__WEBPACK_IMPORTED_MODULE_0_dotenv__["config"]();
+var client = __WEBPACK_IMPORTED_MODULE_1_ldapjs__["createClient"]({
+    url: process.env.LOAP_URI
+});
+var loginOA = function (username, password) {
+    return new Promise(function (resolve) {
+        client.bind(username, password, function (err) {
+            client.destroy();
+            resolve(err ? false : true);
+        });
+    });
+};
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports) {
+
+module.exports = require("ldapjs");
+
+/***/ }),
+/* 15 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return createMd5Password; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_crypto__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_crypto___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_crypto__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constant__ = __webpack_require__(3);
+
+
+var createMd5Password = function (password) {
+    return __WEBPACK_IMPORTED_MODULE_0_crypto__["createHash"]('md5').update("" + password + __WEBPACK_IMPORTED_MODULE_1__constant__["b" /* MD5 */].SALT, 'utf8').digest('base64');
+};
+
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports) {
+
+module.exports = require("crypto");
+
+/***/ }),
+/* 17 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GRAPHQL; });
+var GRAPHQL = {
+    RES_SUCCESS_CODE: 0,
+    RES_ERROR_CODE: -1,
+    RES: {
+        KEY_ERR: '获取公钥失败！',
+        LOGIN_SUCCESS: '登录成功！',
+        LOGOUT_SUCCESS: '注销成功！',
+        USER_ERR: '用户名或密码错误！',
+        QUERY_SUCCESS: '查询成功！'
+    }
+};
+
+
+/***/ }),
+/* 18 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MD5; });
+var MD5 = {
+    SALT: '!@#$$%%^%$%^$%#$*^*&@@!@#$@&^&*^'
+};
+
+
+/***/ }),
+/* 19 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__user_resolvers__ = __webpack_require__(20);
 var __assign = (this && this.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
         s = arguments[i];
@@ -243,12 +420,12 @@ var resolvers = {
 
 
 /***/ }),
-/* 11 */
+/* 20 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constant__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constant__ = __webpack_require__(3);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -286,15 +463,71 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 
 
-var key = new (__webpack_require__(16))({ b: 512 });
+
+var RES = __WEBPACK_IMPORTED_MODULE_1__constant__["a" /* GRAPHQL */].RES, RES_SUCCESS_CODE = __WEBPACK_IMPORTED_MODULE_1__constant__["a" /* GRAPHQL */].RES_SUCCESS_CODE, RES_ERROR_CODE = __WEBPACK_IMPORTED_MODULE_1__constant__["a" /* GRAPHQL */].RES_ERROR_CODE;
+var key = new (__webpack_require__(21))({ b: 512 });
+key.setOptions({ encryptionScheme: 'pkcs1' });
 var mutation = {
     login: function (parent, args, _a) {
         var models = _a.models, req = _a.req;
         return __awaiter(this, void 0, void 0, function () {
-            var username, password;
+            function decrypt(password) {
+                return key.decrypt(password.replace(/\s+/g, '+'), 'utf8');
+            }
+            var username, password, User, user, loginSuccess, err_1;
             return __generator(this, function (_b) {
-                username = args.username, password = args.password;
-                return [2];
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, 7, , 8]);
+                        username = args.username, password = args.password;
+                        User = models.User;
+                        return [4, User.findOne({ username: username })];
+                    case 1:
+                        user = _b.sent();
+                        if (!user) return [3, 2];
+                        if (user.password === Object(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* createMd5Password */])(decrypt(password))) {
+                            if (req.session)
+                                req.session.user = user.toObject();
+                            return [2, Object(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* resolveResponse */])(RES_SUCCESS_CODE, RES.LOGIN_SUCCESS)];
+                        }
+                        else {
+                            return [2, Object(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* resolveResponse */])(RES_ERROR_CODE, RES.USER_ERR)];
+                        }
+                        return [3, 6];
+                    case 2:
+                        password = decrypt(password);
+                        return [4, Object(__WEBPACK_IMPORTED_MODULE_0__utils__["b" /* loginOA */])(username, password)];
+                    case 3:
+                        loginSuccess = _b.sent();
+                        if (!loginSuccess) return [3, 5];
+                        return [4, User.create({
+                                username: username,
+                                password: password
+                            })];
+                    case 4:
+                        user = _b.sent();
+                        if (req.session)
+                            req.session.user = user.toObject();
+                        return [2, Object(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* resolveResponse */])(RES_SUCCESS_CODE, RES.LOGIN_SUCCESS)];
+                    case 5: return [2, Object(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* resolveResponse */])(RES_ERROR_CODE, RES.USER_ERR)];
+                    case 6: return [3, 8];
+                    case 7:
+                        err_1 = _b.sent();
+                        console.error(err_1);
+                        return [2, Object(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* resolveResponse */])(RES_ERROR_CODE, err_1.message)];
+                    case 8: return [2];
+                }
+            });
+        });
+    },
+    logout: function (parent, args, _a) {
+        var req = _a.req;
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_b) {
+                if (req.session) {
+                    req.session.user = null;
+                }
+                return [2, Object(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* resolveResponse */])(RES_SUCCESS_CODE, RES.LOGIN_SUCCESS)];
             });
         });
     }
@@ -303,10 +536,16 @@ var query = {
     getRsaKey: function (parent, args, _a) {
         var req = _a.req;
         return __awaiter(this, void 0, void 0, function () {
-            var publicKey;
+            var publicKey, session;
             return __generator(this, function (_b) {
-                publicKey = key.exportKey('public');
-                return [2, Object(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* resolveResponse */])(publicKey ? __WEBPACK_IMPORTED_MODULE_1__constant__["a" /* GRQPHQL */].RES_SUCCESS_CODE : __WEBPACK_IMPORTED_MODULE_1__constant__["a" /* GRQPHQL */].RES_ERROR_CODE, publicKey ? '' : '获取公钥失败', publicKey)];
+                session = req.session;
+                if (session && session.publicKey) {
+                    publicKey = session.publicKey;
+                }
+                else if (session) {
+                    publicKey = session.publicKey = key.exportKey('public');
+                }
+                return [2, Object(__WEBPACK_IMPORTED_MODULE_0__utils__["c" /* resolveResponse */])(publicKey ? RES_SUCCESS_CODE : RES_ERROR_CODE, publicKey ? '' : RES.KEY_ERR, publicKey)];
             });
         });
     }
@@ -318,69 +557,28 @@ var query = {
 
 
 /***/ }),
-/* 12 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__grqphql_utils__ = __webpack_require__(13);
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__grqphql_utils__["a"]; });
-
-
-
-/***/ }),
-/* 13 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return resolveResponse; });
-var resolveResponse = function (code, msg, data) {
-    return {
-        code: code,
-        msg: msg,
-        data: data
-    };
-};
-
-
-/***/ }),
-/* 14 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__graphql_constant__ = __webpack_require__(15);
-/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__graphql_constant__["a"]; });
-
-
-
-/***/ }),
-/* 15 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GRQPHQL; });
-var GRQPHQL = {
-    RES_SUCCESS_CODE: 0,
-    RES_ERROR_CODE: -1
-};
-
-
-/***/ }),
-/* 16 */
+/* 21 */
 /***/ (function(module, exports) {
 
 module.exports = require("node-rsa");
 
 /***/ }),
-/* 17 */
+/* 22 */
+/***/ (function(module, exports) {
+
+module.exports = require("express-session");
+
+/***/ }),
+/* 23 */
 /***/ (function(module, exports) {
 
 module.exports = require("nuxt");
 
 /***/ }),
-/* 18 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const parseArgs = __webpack_require__(19);
+const parseArgs = __webpack_require__(25);
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
     H: "hostname",
@@ -393,7 +591,7 @@ const argv = parseArgs(process.argv.slice(2), {
 module.exports = {
 
   // Web前端请求代理地址
-  proxyHttp: 'http://10.13.64.122:3000/graphql',
+  proxyHttp: 'http://10.13.64.122:5000/graphql',
 
   head: {
     title: "nuxt-type-template",
@@ -433,7 +631,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 19 */
+/* 25 */
 /***/ (function(module, exports) {
 
 module.exports = function (args, opts) {

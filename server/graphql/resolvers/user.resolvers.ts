@@ -1,9 +1,10 @@
 
 
 import { resolveResponse, loginOA } from '../../utils'
-import { GRQPHQL } from '../../constant'
+import { GRAPHQL } from '../../constant'
 import { resolveArgs, resolveCtx, resolveRes, UserModel } from '../../types'
 import { createMd5Password } from '../../utils'
+const { RES, RES_SUCCESS_CODE, RES_ERROR_CODE } = GRAPHQL
 
 // RSA加密处理
 const key = new (require('node-rsa'))({b: 512})
@@ -16,25 +17,23 @@ const mutation = {
    * @Desc:   用户登录 
    * @Parm:    
    */  
-  async login(parent: any, args: resolveArgs, { models, req }: resolveCtx) {
+  async login(parent: any, args: resolveArgs, { models, req }: resolveCtx): Promise<resolveRes>   {
     try {
-
       let { username, password } = args
       const { User } = models
-
       // 判断用户是否已经注册
-      let user = await User.findOne({ username })
+      let user: UserModel | null = await User.findOne({ username })
       if(user) {
         if(user.password === createMd5Password(decrypt(password))) {
           if(req.session) req.session.user = user.toObject()
           return resolveResponse(
-            GRQPHQL.RES_SUCCESS_CODE, 
-            '登录成功！'
+            RES_SUCCESS_CODE, 
+            RES.LOGIN_SUCCESS
           )
         } else {
           return resolveResponse(
-            GRQPHQL.RES_ERROR_CODE, 
-            '用户名或密码错误！'
+            RES_ERROR_CODE, 
+            RES.USER_ERR
           )
         }
       } else {
@@ -48,19 +47,20 @@ const mutation = {
           })
           if(req.session) req.session.user = user.toObject()
           return resolveResponse(
-            GRQPHQL.RES_SUCCESS_CODE, 
-            '登录成功！'
+            RES_SUCCESS_CODE, 
+            RES.LOGIN_SUCCESS
           )
         } else {
           return resolveResponse(
-            GRQPHQL.RES_ERROR_CODE, 
-            '用户名或密码错误！'
+            RES_ERROR_CODE, 
+            RES.USER_ERR
           )
         }
       }
     } catch(err) {
+      console.error(err)
       return resolveResponse(
-        GRQPHQL.RES_ERROR_CODE, 
+        RES_ERROR_CODE, 
         err.message
       )
     }
@@ -74,6 +74,22 @@ const mutation = {
     function decrypt(password: string) : string {
       return key.decrypt(password.replace(/\s+/g, '+'), 'utf8')
     }
+  },
+
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-09-10 10:56:56  
+   * @Desc:   用户注销 
+   * @Parm:    
+   */  
+  async logout(parent: any, args: resolveArgs, { req }: resolveCtx): Promise<resolveRes>   {
+    if(req.session) {
+      req.session.user = null
+    } 
+    return resolveResponse(
+      RES_SUCCESS_CODE, 
+      RES.LOGIN_SUCCESS
+    )
   }
 }
 
@@ -97,9 +113,41 @@ const query = {
     }
 
     return resolveResponse(
-      publicKey ? GRQPHQL.RES_SUCCESS_CODE : GRQPHQL.RES_ERROR_CODE, 
-      publicKey ? '' : '获取公钥失败', 
+      publicKey ? RES_SUCCESS_CODE : RES_ERROR_CODE, 
+      publicKey ? '' : RES.KEY_ERR, 
       publicKey) 
+  },
+
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-09-10 19:42:07  
+   * @Desc:   获取用户列表 
+   * @Parm:    
+   */  
+  async users(parent: any, args: resolveArgs, { models, req }: resolveCtx): Promise<resolveRes> {
+    try {
+      let users: UserModel[] = await models.User.find()
+      const { session } = req
+
+      if(session && session.user) {
+        const _userId = session.user.userId
+
+        return resolveResponse(
+          RES_SUCCESS_CODE,
+          RES.QUERY_SUCCESS,
+          users.filter(user => user.userId !== _userId)
+        )
+      }
+      return resolveResponse(
+        RES_ERROR_CODE,
+        RES.QUERY_FAIL
+      )
+    } catch(err) {
+      console.error(err)
+      return resolveResponse(
+        GRAPHQL.RES_ERROR_CODE, 
+        err.message) 
+    }
   }
 }
 

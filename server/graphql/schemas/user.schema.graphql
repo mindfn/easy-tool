@@ -1,8 +1,6 @@
-# import * from './project.schema.graphql'
-
+# import * from './common.schema.graphql'
 
 ### Graphql Type ###
-
 
 # 公钥
 type PublicKeyResponse {
@@ -11,11 +9,16 @@ type PublicKeyResponse {
   data: String!
 }
 
-# 单个用户
-type UserResponse {
+# 项目id
+type ProjectId {
+  projectId: String
+}
+
+# 用户
+type UsersResponse {
   code: Int!
   msg: String!
-  data: UserInfo
+  data: [UserInfo]
 }
 
 type UserInfo {
@@ -31,15 +34,16 @@ type Mutation {
   login(
     username: String!,
     password: String!
-  ): UserResponse
-}
+  ): CommonResponse
 
+  # 用户注销
+  logout: CommonResponse
+}
 
 type Query {
   # 获取公钥
   getRsaKey: PublicKeyResponse
 
-  userInfo(
-    userId: String!
-  ): UserResponse
+  # 获取用户列表
+  users: UsersResponse
 }

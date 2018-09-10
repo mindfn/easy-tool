@@ -1,7 +1,46 @@
 
 ### Graphql Type ###
 
-type ProjectId {
-  # 项目id
-  projectId: String
+# 项目成员
+type Member {
+  userId: String,
+  username: String
+}
+
+# 项目
+type Project {
+  projectId: String,
+  projectName: String,
+  projectMember: [Member],
+  projectDesc: String,
+  createTime: String,
+  updateTime: String
+}
+
+type ProjectResponse {
+  code: Int!,
+  msg: String!,
+  data: Project
+}
+
+type ProjectsResponse {
+  code: Int!,
+  msg: String!,
+  data: [Project]
+}
+
+### Graphql Schema ###
+
+type Mutation {
+  # 添加项目
+  addProject(
+    projectName: String!,
+    projectMember: [String],
+    projectDesc: String
+  ): ProjectResponse
+}
+
+type Query {
+  # 获取项目列表
+  projects: ProjectsResponse
 }

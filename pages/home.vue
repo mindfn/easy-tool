@@ -38,10 +38,9 @@
         <!-- 暂无数据 -->
         <div 
           class="page-body-default"
-          v-if="isQuery && !project.length"
+          v-show="!project.length"
           align-items="center">
           <img src="~assets/img/default/default.jpg" alt="">
-          <div>啊哈，么有数据！</div>
         </div>
         <!-- 项目列表 -->
         <mu-row gutter>
@@ -112,17 +111,6 @@
           <mu-text-field 
             v-model="selectProject.projectName"
             :max-length="32">
-          </mu-text-field>
-        </mu-form-item>
-        <mu-form-item 
-          label="项目基础URL(必填)" 
-          prop="projectUrl"
-          :rules="requiredRule">
-          <mu-text-field  
-            v-model="selectProject.projectUrl" 
-            :max-length="32"
-            placeholder="用于同步静态资源的URL地址，例如/nba">
-            <div slot="prepend">/&nbsp;</div>
           </mu-text-field>
         </mu-form-item>
         <mu-form-item label="项目成员" prop="desc">
@@ -220,14 +208,12 @@ export default class extends mixins(head, layout) {
   del: boolean = false
   add: boolean = false
   modify: boolean = false
-  isQuery: boolean = false // 页面是否已经请求数据
   searchName: string = '' // 搜索的项目名称
   delName: string = '' // 删除的项目名称
   project: Project[] = [] // 项目列表数据
   selectProject: Project = { // 选中要操作的项目
     projectName : '',
     projectDesc: '',
-    projectUrl: '',
     projectMember: []
   }  
   members: Member[] = [] // 用户列表
@@ -238,6 +224,20 @@ export default class extends mixins(head, layout) {
 
   /** 
    * @Author: zhuxiankang 
+   * @Date:   2018-09-10 18:35:29  
+   * @Desc:   渲染项目列表 
+   * @Parm:    
+   */  
+  asyncData () {
+    graphql('project-getList', (res: Res) => {
+      return {
+        project: <Project[]>res.data
+      }
+    })
+  }
+
+  /** 
+   * @Author: zhuxiankang 
    * @Date:   2018-08-10 11:15:48  
    * @Desc:   查询项目列表 
    * @Parm:    
@@ -245,7 +245,6 @@ export default class extends mixins(head, layout) {
   queryProjects(): void {
     graphql('project-getList', (res: Res) => {
       this.project = <Project[]>res.data
-      this.isQuery = true
     })
   }
 
@@ -284,7 +283,6 @@ export default class extends mixins(head, layout) {
     Object.assign(this.selectProject, {
       projectName : '',
       projectDesc: '',
-      projectUrl: '',
       projectMember: []
     })
   }
@@ -350,16 +348,6 @@ export default class extends mixins(head, layout) {
       this.$toast.success(res.msg)
       this.searchProjects()
     })
-  }
-
-  /** 
-   * @Author: zhuxiankang 
-   * @Date:   2018-08-13 18:33:32  
-   * @Desc:   获取项目列表信息 
-   * @Parm:    
-   */  
-  created(): void {
-    this.queryProjects()
   }
 }
 </script>
