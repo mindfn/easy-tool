@@ -11,7 +11,7 @@ const argv = parseArgs(process.argv.slice(2), {
 module.exports = {
   
   // Web前端请求代理地址
-  proxyHttp: 'http://10.13.64.122:3000/graphql',
+  proxyHttp: 'http://10.13.64.122:5000/graphql',
 
   head: {
     title: "nuxt-type-template",

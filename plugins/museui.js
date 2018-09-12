@@ -11,7 +11,8 @@ const toastConfig = {
   position: 'top',
   time: 2000, // 持续时间定为2s
   close: false,
-  successIcon: '', 
+  color: '#2196f3',
+  successIcon: '',
   infoIcon: '',
   warningIcon: '',
   errorIcon: '' 

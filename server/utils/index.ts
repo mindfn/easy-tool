@@ -1,3 +1,3 @@
-export * from './grqphql.utils'
-export * from './ldapjs.utils'
-export * from './md5.utils'
+export * from './grqphql.util'
+export * from './ldapjs.util'
+export * from './md5.util'

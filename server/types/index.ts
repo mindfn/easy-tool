@@ -1,2 +1,2 @@
-export * from './database.types'
-export * from './graphql.types'
+export * from './database.type'
+export * from './graphql.type'

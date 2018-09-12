@@ -5,11 +5,11 @@ const { Schema } = mongoose
 const MemberSchema = new Schema({
   username: {
     type: String,
-    required: true,
     trim: true,
     index: true,
     unique: true
   },
+
   userId: {
     type: Schema.Types.ObjectId,
     required: true,
@@ -18,22 +18,35 @@ const MemberSchema = new Schema({
   }
 }, {
   ...option,
-  _id: false
+  _id: false,
+  timestamps: {
+    createdAt: false,
+    updatedAt: false
+  },
 })
 
 const ProjectSchema = new Schema({
   projectName: {
-    type: Schema.Types.ObjectId,
-    required: true,
-    trim: true
-  },
-  // 项目创建者ID
-  projectUserId: {
     type: String,
     required: true,
     trim: true
   },
-  projectMember: MemberSchema,
+  // 项目bitbucket地址
+  projectUrl: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    index: true
+  },
+  // 项目创建者ID
+  // projectUserId: {
+  //   type: String,
+  //   required: true,
+  //   trim: true
+  // },
+  // 项目成员
+  projectMember: [MemberSchema],
   projectDesc: String
 }, option)
 

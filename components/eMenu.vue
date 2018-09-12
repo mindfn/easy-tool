@@ -23,7 +23,7 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import { Mutation, State } from 'vuex-class'
 import graphql from '~/graphql'
-import { Res } from '~/constant/interface'
+import { Res } from '~/common/types'
 
 @Component
 export default class EHeader extends Vue {

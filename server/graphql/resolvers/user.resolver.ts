@@ -1,10 +1,10 @@
-
-
 import { resolveResponse, loginOA } from '../../utils'
 import { GRAPHQL } from '../../constant'
+import  { COMMON_CODE }  from '../../../common/constants'
 import { resolveArgs, resolveCtx, resolveRes, UserModel } from '../../types'
 import { createMd5Password } from '../../utils'
-const { RES, RES_SUCCESS_CODE, RES_ERROR_CODE } = GRAPHQL
+const { RES } = GRAPHQL
+const { ERROR, TRUE } = COMMON_CODE
 
 // RSA加密处理
 const key = new (require('node-rsa'))({b: 512})
@@ -25,14 +25,16 @@ const mutation = {
       let user: UserModel | null = await User.findOne({ username })
       if(user) {
         if(user.password === createMd5Password(decrypt(password))) {
-          if(req.session) req.session.user = user.toObject()
+          if(req.session) {
+            req.session.user = user
+          } 
           return resolveResponse(
-            RES_SUCCESS_CODE, 
+            TRUE, 
             RES.LOGIN_SUCCESS
           )
         } else {
           return resolveResponse(
-            RES_ERROR_CODE, 
+            ERROR, 
             RES.USER_ERR
           )
         }
@@ -45,14 +47,14 @@ const mutation = {
             username,
             password
           })
-          if(req.session) req.session.user = user.toObject()
+          if(req.session) req.session.user = user
           return resolveResponse(
-            RES_SUCCESS_CODE, 
+            TRUE,
             RES.LOGIN_SUCCESS
           )
         } else {
           return resolveResponse(
-            RES_ERROR_CODE, 
+            ERROR,
             RES.USER_ERR
           )
         }
@@ -60,7 +62,7 @@ const mutation = {
     } catch(err) {
       console.error(err)
       return resolveResponse(
-        RES_ERROR_CODE, 
+        ERROR,
         err.message
       )
     }
@@ -87,7 +89,7 @@ const mutation = {
       req.session.user = null
     } 
     return resolveResponse(
-      RES_SUCCESS_CODE, 
+      TRUE, 
       RES.LOGIN_SUCCESS
     )
   }
@@ -113,9 +115,10 @@ const query = {
     }
 
     return resolveResponse(
-      publicKey ? RES_SUCCESS_CODE : RES_ERROR_CODE, 
+      publicKey ? TRUE : ERROR, 
       publicKey ? '' : RES.KEY_ERR, 
-      publicKey) 
+      publicKey
+    ) 
   },
 
   /** 
@@ -127,26 +130,35 @@ const query = {
   async users(parent: any, args: resolveArgs, { models, req }: resolveCtx): Promise<resolveRes> {
     try {
       let users: UserModel[] = await models.User.find()
-      const { session } = req
+      // const { session } = req
 
-      if(session && session.user) {
-        const _userId = session.user.userId
-
-        return resolveResponse(
-          RES_SUCCESS_CODE,
-          RES.QUERY_SUCCESS,
-          users.filter(user => user.userId !== _userId)
-        )
-      }
       return resolveResponse(
-        RES_ERROR_CODE,
-        RES.QUERY_FAIL
+        TRUE,
+        RES.QUERY_SUCCESS,
+        // users.filter(user => user.userId !== _userId)
+        users
       )
+
+      // if(session && session.user) {
+      //   // const _userId = session.user.userId
+
+      //   return resolveResponse(
+      //     TRUE,
+      //     RES.QUERY_SUCCESS,
+      //     // users.filter(user => user.userId !== _userId)
+      //     users
+      //   )
+      // }
+      // return resolveResponse(
+      //   ERROR,
+      //   RES.QUERY_FAIL
+      // )
     } catch(err) {
       console.error(err)
       return resolveResponse(
-        GRAPHQL.RES_ERROR_CODE, 
-        err.message) 
+        ERROR, 
+        err.message
+      ) 
     }
   }
 }

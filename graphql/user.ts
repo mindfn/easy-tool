@@ -8,7 +8,7 @@
 
 import { client } from '~/graphql/lokka'
 import { Lokka } from 'lokka'
-import { Login } from '~/constant/interface'
+import { User } from '~/common/types'
 
 export default {
   /** 
@@ -35,7 +35,7 @@ export default {
    * @Desc:   登录请求 
    * @Parm:   params: 用户名和密码
    */  
-  login(params: Login) : Lokka {
+  login(params: User) : Lokka {
     return client.mutate(
       `($password:String!,$username:String!){
         data: login(password:$password,username:$username) {
@@ -79,9 +79,6 @@ export default {
           data {
             userId,
             username
-            projectIds {
-              projectId
-            }
           }
         }
       }`

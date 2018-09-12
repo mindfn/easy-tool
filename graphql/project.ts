@@ -54,7 +54,6 @@ export default {
             projectName,
             projectDesc,
             createTime,
-            projectUrl,
             projectMember {
               username,
               userId
@@ -93,7 +92,7 @@ export default {
   add(params) {
     return client.mutate(
       `($projectName:String!, $projectDesc: String, $projectUrl: String!, $projectMember: [String]!) {
-        data: createProject(projectName: $projectName, projectDesc: $projectDesc, projectUrl: $projectUrl, projectMember: $projectMember) {
+        data: addProject(projectName: $projectName, projectDesc: $projectDesc, projectUrl: $projectUrl, projectMember: $projectMember) {
           code,
           msg
         }

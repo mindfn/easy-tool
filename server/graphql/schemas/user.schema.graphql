@@ -9,11 +9,6 @@ type PublicKeyResponse {
   data: String!
 }
 
-# 项目id
-type ProjectId {
-  projectId: String
-}
-
 # 用户
 type UsersResponse {
   code: Int!
@@ -24,7 +19,6 @@ type UsersResponse {
 type UserInfo {
   userId: String
   username: String
-  projectIds: [ProjectId]
 }
 
 ### Graphql Schema ###

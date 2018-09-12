@@ -1,3 +1,4 @@
+# import * from './common.schema.graphql'
 
 ### Graphql Type ###
 
@@ -11,6 +12,7 @@ type Member {
 type Project {
   projectId: String,
   projectName: String,
+  projectUrl: String,
   projectMember: [Member],
   projectDesc: String,
   createTime: String,
@@ -35,12 +37,23 @@ type Mutation {
   # 添加项目
   addProject(
     projectName: String!,
+    projectUrl: String!,
     projectMember: [String],
     projectDesc: String
-  ): ProjectResponse
+  ): CommonResponse
+
+  # 删除项目
+  deleteProject(
+    projectId: String!
+  ): CommonResponse
 }
 
 type Query {
   # 获取项目列表
   projects: ProjectsResponse
+
+  # 通过项目名称查询项目
+  projectByName(
+    projectName: String!
+  ): ProjectsResponse
 }

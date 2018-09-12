@@ -17,7 +17,7 @@ const server: GraphQLServer = graphql.startServer()
 // 配置中间件Nuxt
 const nuxt: Nuxt = new Nuxt(require('../nuxt.config.js'))
 
-if (process.env.DEV_TYPE && process.env.DEV_TYPE === 'nuxt') {
+if (process.env.DEV_TYPE === 'nuxt') {
   const builder: Builder = new Builder(nuxt)
   builder.build()
 }

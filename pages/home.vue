@@ -38,9 +38,10 @@
         <!-- 暂无数据 -->
         <div 
           class="page-body-default"
-          v-show="!project.length"
+          v-if="!project.length"
           align-items="center">
           <img src="~assets/img/default/default.jpg" alt="">
+          <div>啊哈，么有数据！</div>
         </div>
         <!-- 项目列表 -->
         <mu-row gutter>
@@ -55,7 +56,7 @@
               <mu-row>
                 <!-- 项目名称 -->
                 <mu-col :span="10">
-                  <mu-card-header :title="item.projectName" :sub-title="item.createTime">
+                  <mu-card-header :title="item.projectName" :sub-title="moment(item.createTime).format('YYYY-MM-DD HH:mm')">
                     <mu-avatar 
                       slot="avatar" 
                       color="blue" 
@@ -113,6 +114,18 @@
             :max-length="32">
           </mu-text-field>
         </mu-form-item>
+        <mu-form-item 
+          label="项目URL(必填)" 
+          prop="projectUrl"
+          :error-text="projectUrlErrText"
+          @click.native="projectUrlErrText = ''"
+          :rules="requiredRule">
+          <mu-text-field  
+            v-model="selectProject.projectUrl" 
+            :max-length="32"
+            placeholder="项目的托管地址">
+          </mu-text-field>
+        </mu-form-item>
         <mu-form-item label="项目成员" prop="desc">
           <mu-select 
             :max-height="200"
@@ -128,7 +141,7 @@
               v-for="(member, index) in members" 
               :key="index" 
               :label="member.username" 
-              :value="member.userId">
+              :value="member">
               <mu-list-item-action avatar>
                 <mu-avatar :size="36" color="secondary">
                   {{member.username.substring(0, 1)}}
@@ -200,39 +213,47 @@ import { mixins } from 'vue-class-component'
 import head from '~/mixins/head'
 import layout from '~/mixins/layout'
 import graphql from '~/graphql'
-import { Res, Project, Member } from '~/constant/interface'
+import { Res, Project, User } from '~/common/types'
+import { COMMON_CODE }  from '~/common/constants'
+import moment from 'moment'
 
 @Component
 export default class extends mixins(head, layout) {
   readonly title: string = "主页"
+  readonly moment = moment
+
   del: boolean = false
   add: boolean = false
   modify: boolean = false
+
   searchName: string = '' // 搜索的项目名称
   delName: string = '' // 删除的项目名称
   project: Project[] = [] // 项目列表数据
   selectProject: Project = { // 选中要操作的项目
     projectName : '',
+    projectUrl: '',
     projectDesc: '',
     projectMember: []
   }  
-  members: Member[] = [] // 用户列表
+  members: User[] = [] // 用户列表
+
+  projectUrlErrText: string = '' // 项目url错误信息
 
   requiredRule: Array<object> = [
     { validate: (val) => !!val, message: '请填写字段信息！'}
   ]
 
-  /** 
+   /** 
    * @Author: zhuxiankang 
    * @Date:   2018-09-10 18:35:29  
    * @Desc:   渲染项目列表 
    * @Parm:    
    */  
-  asyncData () {
-    graphql('project-getList', (res: Res) => {
-      return {
+  asyncData ({ params }, cb) {
+    graphql('project-getList', async (res: Res) => {
+      cb(null, {
         project: <Project[]>res.data
-      }
+      })
     })
   }
 
@@ -280,9 +301,11 @@ export default class extends mixins(head, layout) {
   openAddDialog(): void {
     this.add = true
     this.members = []
+    this.projectUrlErrText = ''
     Object.assign(this.selectProject, {
       projectName : '',
       projectDesc: '',
+      projectUrl: '',
       projectMember: []
     })
   }
@@ -296,7 +319,7 @@ export default class extends mixins(head, layout) {
   searchMembers() : void {
     if(this.members.length) return
     graphql('user-query', (res: Res) => {
-      this.members = <Member[]>res.data
+      this.members = <User[]>res.data
     })
   }
 
@@ -310,10 +333,20 @@ export default class extends mixins(head, layout) {
   addProject(): void {
     this.$refs.form['validate']().then((valid: boolean) => {
       if(!valid) return
-      graphql('project-add', this.selectProject, (res: Res) => {
+      const { selectProject } = this
+      graphql('project-add', {
+        ...selectProject,
+        projectMember: JSON.stringify(selectProject.projectMember)
+      }, (res: Res) => {
+        // 项目url重复
+        if(res.code === COMMON_CODE.PROJECT_URL_REPEAT) {
+          this.projectUrlErrText = res.msg
+          return
+        } 
+        this.projectUrlErrText = ''
         this.$toast.success(res.msg)
         this.add = false
-        this.queryProjects()
+        this.searchProjects()
       })
     })
   }

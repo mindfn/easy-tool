@@ -24,6 +24,7 @@
       "~/*" : ["./*"],
       "~/": ["./"],
       "~/assets/*": ["./assets/*"],
+      "~/common/*": ["./common/*"],
       "~/components/*": ["./components/*"],
       "~/middleware/*": ["./middleware/*"],
       "~/pages/*": ["./pages/*"],
@@ -32,8 +33,7 @@
       "~/store/*": ["./store/*"],
       "~router": ["./.nuxt/router"],
       "~/api/*": ["./api/*"],
-      "~/server/*": ["./server/*"],
-      "*":  ["./server/*"]
+      "~/server/*": ["./server/*"]
     }
   },
   "include": [

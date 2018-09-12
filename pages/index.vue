@@ -74,7 +74,7 @@ import { Component } from 'nuxt-property-decorator'
 import { mixins } from 'vue-class-component'
 import head from '~/mixins/head'
 import graphql from '~/graphql'
-import { Res, Login } from '~/constant/interface'
+import { Res, User } from '~/common/types'
 import Vue from 'vue'
 
 
@@ -83,7 +83,7 @@ import Vue from 'vue'
 export default class extends mixins(head) {
   readonly title:string = "登录"
 
-  form: Login = {
+  form: User = {
     username: '',
     password: ''
   }

@@ -29,7 +29,7 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import { Mutation } from 'vuex-class'
 import SIDE from '~/constant/side'
-import { Common } from '~/constant/interface'
+import { Common } from '~/common/types'
 
 @Component
 export default class ESide extends Vue {

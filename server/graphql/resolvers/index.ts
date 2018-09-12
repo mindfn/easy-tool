@@ -1,5 +1,5 @@
-import user from './user.resolvers'
-import project from './project.resolvers'
+import user from './user.resolver'
+import project from './project.resolver'
 
 const resolvers = {
   Mutation: {

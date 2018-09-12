@@ -40,7 +40,7 @@ import eSide from '~/components/eSide.vue'
 import { Component, Vue, Watch } from 'nuxt-property-decorator'
 import { State } from 'vuex-class'
 import BREADCRUMBS from '~/constant/breadcrumb'
-import { Common } from '~/constant/interface'
+import { Common } from '~/common/types'
 
 @Component({
   components: {
