@@ -101,7 +101,7 @@ const query = {
    * @Desc:   通过项目名称搜索项目 
    * @Parm:    
    */  
-  async projectByName(parent: any, args: resolveArgs, { models, req }: resolveCtx)  {
+  async projectByName(parent: any, args: resolveArgs, { models, req }: resolveCtx): Promise<resolveRes>   {
     try {
       let projects: ProjectModel[] = await models.Project.find({
         $or: [ {projectName: { $regex: new RegExp(args.projectName, 'i') } }]
@@ -110,6 +110,29 @@ const query = {
         TRUE,
         RES.QUERY_SUCCESS,
         projects
+      )
+    } catch(err) {
+      console.error(err)
+      return resolveResponse(
+        ERROR,
+        err.message
+      ) 
+    }
+  },
+
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-09-13 11:50:52  
+   * @Desc:   通过项目ID搜索项目 
+   * @Parm:    
+   */  
+  async projectByID(parent: any, args: resolveArgs, { models, req }: resolveCtx): Promise<resolveRes> {
+    try {
+      let project: ProjectModel | null = await models.Project.findById(args.projectId)
+      return resolveResponse(
+        TRUE,
+        RES.QUERY_SUCCESS,
+        project
       )
     } catch(err) {
       console.error(err)

@@ -17,15 +17,6 @@
           class="e-flex-row"
           fill>
           <div class="e-home">
-            <mu-breadcrumbs>
-              <mu-breadcrumbs-item 
-                v-for="(breadcrumb, index) in breadcrumbs" 
-                :key="index"
-                :to="breadcrumb.to"
-                :disabled="breadcrumb.disabled">
-                {{breadcrumb.text}}
-              </mu-breadcrumbs-item>
-            </mu-breadcrumbs>
             <nuxt/>
           </div>
         </mu-flex>
@@ -39,7 +30,6 @@ import eMenu from '~/components/eMenu.vue'
 import eSide from '~/components/eSide.vue'
 import { Component, Vue, Watch } from 'nuxt-property-decorator'
 import { State } from 'vuex-class'
-import BREADCRUMBS from '~/constant/breadcrumb'
 import { Common } from '~/common/types'
 
 @Component({
@@ -50,23 +40,15 @@ import { Common } from '~/common/types'
 })
 export default class extends Vue {
   @State(state => state.menu.show) show
-
-  /** 
-   * @Author: zhuxiankang 
-   * @Date:   2018-08-06 11:23:43  
-   * @Desc:   根据路由获取面包屑 
-   * @Parm:    
-   */  
-  get breadcrumbs (): Common {
-    return BREADCRUMBS[this.$route.path]
-  }
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .e {
   height: 100vh;
   background-color: #f5f7f9;
+  font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", Helvetica, Tahoma, "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  
   .e-body {
     width: 100%;
     height: 100%;
@@ -82,4 +64,67 @@ export default class extends Vue {
     width: 100%;
   }
 }
+
+.page-container {
+  height: 100%;
+  padding: 12px;
+  >.mu-card {
+    height: 100%;
+    .mu-card-header-title  {
+      padding-right: 0;
+      .mu-card-title {
+        font-size: 18px;
+      }
+    }
+    >.row {
+      border-bottom: 1px solid rgba(0, 0, 0, .1);
+      >.col-4 {
+        line-height: 75px;
+        text-align: right;
+        padding-right: 64px;
+        >.mu-input {
+          width: 160px;
+          margin-right: 32px;
+          .fa-search {
+            margin-right: 16px;
+            color: rgb(189, 189, 189);
+          }
+          .fa-close {
+            cursor: pointer;
+            font-size: 18px;
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+          }
+        }
+        >.mu-button {
+          vertical-align: middle;
+        }
+      }
+    }
+  }
+}
+
+.page-body {
+  padding: 28px 32px;
+  height: calc(~"100% - 76px");
+  overflow: auto;
+}
+
+.page-body-default {
+  height: 100%;
+  display: flex;
+  display: -webkit-flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  img {
+    display: block;
+    margin-bottom: 32px;
+  }
+  div {
+    color: rgba(0, 0, 0, .57);
+  }
+}
+
 </style>

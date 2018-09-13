@@ -56,4 +56,9 @@ type Query {
   projectByName(
     projectName: String!
   ): ProjectsResponse
+
+  # 通过项目ID查询项目
+  projectByID(
+    projectId: String!
+  ): ProjectResponse
 }

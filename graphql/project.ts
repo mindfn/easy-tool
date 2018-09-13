@@ -26,7 +26,6 @@ export default {
             projectId,
             projectName,
             projectDesc,
-            createTime,
             projectMember {
               username,
               userId
@@ -40,10 +39,10 @@ export default {
   /** 
    * @Author: zhuxiankang 
    * @Date:   2018-08-10 14:41:25  
-   * @Desc:   搜索项目 
-   * @Parm:   params: 项目名称和_id 
+   * @Desc:   搜索项目名称 
+   * @Parm:   params: 项目名称
    */  
-  query(params: object) : Lokka {
+  queryByName(params: object) : Lokka {
     return client.query(
       `query projectByName($projectName:String!){
         data: projectByName(projectName:$projectName) {
@@ -53,6 +52,34 @@ export default {
             projectId,
             projectName,
             projectDesc,
+            projectMember {
+              username,
+              userId
+            }
+          }
+        }
+      }`,
+      params
+    )
+  },
+
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-09-13 11:54:02  
+   * @Desc:   通过项目ID搜索项目 
+   * @Parm:    
+   */  
+  queryById(params: object) : Lokka {
+    return client.query(
+      `query projectByID($projectId:String!){
+        data: projectByID(projectId:$projectId) {
+          code,
+          msg,
+          data {
+            projectId,
+            projectName,
+            projectDesc,
+            projectUrl,
             createTime,
             projectMember {
               username,

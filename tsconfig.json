@@ -32,6 +32,7 @@
       "~/plugins/*": ["./plugins/*"],
       "~/static/*": ["./static/*"],
       "~/store/*": ["./store/*"],
+      "~/utils/*": ["./utils/*"],
       "~router": ["./.nuxt/router"],
       "~/api/*": ["./api/*"],
       "~/server/*": ["./server/*"]

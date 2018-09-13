@@ -77,8 +77,6 @@ import graphql from '~/graphql'
 import { Res, User } from '~/common/types'
 import Vue from 'vue'
 
-
-
 @Component
 export default class extends mixins(head) {
   readonly title:string = "登录"
@@ -122,7 +120,7 @@ export default class extends mixins(head) {
       ...form,
       password: Vue.prototype.$encrypt(data.data, form.password)
     }, (res: Res) => {
-      this.$router.push('/home')
+      this.$router.push('/project')
     })
   }
 
@@ -141,8 +139,6 @@ export default class extends mixins(head) {
   }
 }
 </script>
-
-
 
 <style lang="less" scoped>
 .page-login {

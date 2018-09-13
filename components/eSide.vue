@@ -69,7 +69,8 @@ export default class ESide extends Vue {
   }
 
   created() {
-    this.handlerSelectItem(this.$route.path)
+    const path = this.$route.path.split('/')[1]
+    this.handlerSelectItem(`/${path}`)
   } 
 }
 </script>

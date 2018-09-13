@@ -46,7 +46,9 @@ module.exports = {
   css: [{
     src:'~/assets/font-awesome-4.7.0/css/font-awesome.min.css'
   }, {
-    src:'~/assets/scrollbar/scrollbar.css' 
+    src:'~/assets/style/scrollbar.css' 
+  }, {
+    src: '~/assets/style/transition.css'
   }],
   build: {
     vendor: [

@@ -2,7 +2,7 @@
 export default [{
   icon: 'fa fa-file-o',
   title: '项目管理',
-  to: '/home',
+  to: '/project',
   selected: true,
 }, {
   icon: 'fa fa-file-text-o',
