@@ -26,6 +26,7 @@ export default {
             projectId,
             projectName,
             projectDesc,
+            projectUrl,
             projectMember {
               username,
               userId
@@ -51,6 +52,7 @@ export default {
           data {
             projectId,
             projectName,
+            projectUrl,
             projectDesc,
             projectMember {
               username,
@@ -118,8 +120,26 @@ export default {
    */  
   add(params) {
     return client.mutate(
-      `($projectName:String!, $projectDesc: String, $projectUrl: String!, $projectMember: [String]!) {
+      `($projectName:String!, $projectDesc!: String, $projectUrl: String!, $projectMember: [String]!) {
         data: addProject(projectName: $projectName, projectDesc: $projectDesc, projectUrl: $projectUrl, projectMember: $projectMember) {
+          code,
+          msg
+        }
+      }`,
+      params
+    )
+  },
+
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-09-14 16:17:14  
+   * @Desc:   更新项目 
+   * @Parm:    
+   */  
+  update(params) {
+    return client.mutate(
+      `($projectId: String!, $projectName:String!, $projectDesc: String!, $projectUrl: String!, $projectMember: [String]!) {
+        data: updateProject(projectId: $projectId, projectName: $projectName, projectDesc: $projectDesc, projectUrl: $projectUrl, projectMember: $projectMember) {
           code,
           msg
         }

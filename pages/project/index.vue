@@ -1,7 +1,7 @@
 <template>
   <div class="page-container">
     <mu-card>
-      <!-- 项目头部 -->
+      <!-- 卡片头部 -->
       <mu-row>
         <!-- 描述 -->
         <mu-col :span="8">
@@ -36,9 +36,9 @@
         </mu-col>
       </mu-row>    
 
-      <!-- 项目主体 -->
+      <!-- 卡片主体 -->
       <div class="page-body">
-        <!-- 默认 -->
+        <!-- 缺省列表 -->
         <div 
           class="page-body-default"
           v-if="!projects.length"
@@ -46,13 +46,13 @@
           <img src="~assets/img/default/default.jpg" alt="">
           <div>啊哈，么有数据！</div>
         </div>
-        <!-- 列表 -->
+        <!-- 项目列表 -->
         <mu-row gutter>
           <mu-col 
             sm="12" 
             md="12" 
             lg="12" 
-            xl="2"
+            xl="3"
             v-for="(item, index) in projects" 
             :key="index">
             <mu-card class="page-project" @click="enterProject(item)">
@@ -78,6 +78,9 @@
                     <mu-button small fab color="red" @click.stop="openDeleteDialog(index)">
                       <i class="fa fa fa-trash"></i>
                     </mu-button>
+                    <mu-button small fab color="success" @click.stop="openEditDialog(index)">
+                      <i class="fa fa fa-pencil"></i>
+                    </mu-button>
                   </mu-col>
                 </mu-row>
               </mu-card-text>
@@ -88,7 +91,12 @@
     </mu-card>
 
     <!-- 项目添加 -->
-    <p-project-edit :type="PROJECT.ADD" :show.sync="add"></p-project-edit>
+    <p-project-edit 
+      :type="type" 
+      :show.sync="edit" 
+      :data="currentProject"
+      @refresh="refreshProjects">
+    </p-project-edit>
 
     <!-- 项目删除 -->
     <mu-dialog 
@@ -126,8 +134,7 @@ import { mixins } from 'vue-class-component'
 import head from '~/mixins/head'
 import layout from '~/mixins/layout'
 import graphql from '~/graphql'
-import { Res, Project, User } from '~/common/types'
-import { COMMON_CODE }  from '~/common/constants'
+import { Res, Project } from '~/common/types'
 import moment from 'moment'
 import pProjectEdit from '~/components/pProjectEdit.vue'
 import { PROJECT } from '~/constant/project'
@@ -145,12 +152,14 @@ export default class extends mixins(head, layout) {
   readonly spell =  spellFormat
 
   del: boolean = false
-  add: boolean = false
+  edit: boolean = false
+
+  type:number = PROJECT.ADD // 项目编辑类型
 
   searchName: string = '' // 搜索名称
   delName: string = '' // 删除的项目名称
   projects: Project[] = [] // 项目列表数据
-  currentProject: Project = { // 当前要操作的项目
+  currentProject: Project = { // 当前要删除的项目
     projectName : '',
     projectUrl: '',
     projectDesc: '',
@@ -211,36 +220,36 @@ export default class extends mixins(head, layout) {
    * @Parm:    
    */  
   openAddDialog(): void {
-    this.add = true
+    this.edit = true
+    this.type = PROJECT.ADD
   }
 
-  // /** 
-  //  * @Author: zhuxiankang 
-  //  * @Date:   2018-08-14 16:26:17  
-  //  * @Desc:   添加项目  
-  //  * @Parm:    
-  //  */  
-  // addProject(): void {
-  //   this.$refs.form['validate']().then((valid: boolean) => {
-  //     if(!valid) return
-  //     const { selectProject } = this
-  //     graphql('project-add', {
-  //       ...selectProject,
-  //       projectMember: JSON.stringify(selectProject.projectMember)
-  //     }, (res: Res) => {
-  //       // 项目url重复
-  //       if(res.code === COMMON_CODE.PROJECT_URL_REPEAT) {
-  //         this.projectUrlErrText = res.msg
-  //         return
-  //       } 
-  //       this.projectUrlErrText = ''
-  //       this.$toast.success(res.msg)
-  //       this.add = false
-  //       this.searchProjects()
-  //     })
-  //   })
-  // }
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-09-14 18:53:17  
+   * @Desc:   打开编辑项目对话框 
+   * @Parm:    
+   */  
+  openEditDialog(index: number): void {
+    this.edit = true
+    this.type = PROJECT.EDIT
+    const project = this.projects[index]
+    this.currentProject = {
+      ...project,
+      projectMember: JSON.parse(JSON.stringify(project.projectMember))
+    }
+  }
 
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-09-14 09:19:10  
+   * @Desc:   刷新项目列表 
+   * @Parm:    
+   */  
+  refreshProjects() {
+    this.edit = false
+    this.searchProjects()
+  }
 
   /** 
    * @Author: zhuxiankang 
@@ -330,6 +339,7 @@ export default class extends mixins(head, layout) {
         height: 100%;
         .mu-button {
           float: right;
+          margin-right: 8px;
         }
       }
       .page-project-avatar {
@@ -344,7 +354,7 @@ export default class extends mixins(head, layout) {
   &:hover {
     .mu-button {
       opacity: 1;
-      transition: all 1s cubic-bezier(.4,0,.2,1);
+      transition: all .5s cubic-bezier(.4,0,.2,1);
     }
   }
 }

@@ -14,8 +14,7 @@ export interface Res {
 export interface User {
   username: string,
   password?: string,
-  userId?: string,
-  projectIds?: ProjectId[]
+  userId?: string
 }
 
 // 项目Id接口
@@ -32,4 +31,8 @@ export interface Project {
   projectMember?: User[]
 }
 
+// 资源接口
+export interface Static {
+  
+}
 

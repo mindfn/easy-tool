@@ -3,7 +3,9 @@
   <mu-dialog 
     :title="editType === PROJECT.ADD ? '添加项目' : '编辑项目'" 
     width="520" 
-    :open.sync="visible">
+    :open.sync="visible"
+    @close="closeDialog"
+    >
     <mu-form 
       ref="form" 
       :model="project">
@@ -40,7 +42,7 @@
         </mu-text-field>
       </mu-form-item>
       <mu-form-item label="项目成员" prop="desc">
-        <mu-select 
+        <mu-select
           :max-height="200"
           filterable 
           multiple 
@@ -48,6 +50,11 @@
           v-model="project.projectMember" 
           @click.native="searchUsers"
           full-width>
+          <template slot="selection" slot-scope="scope">
+            <mu-chip color="teal">
+              {{ scope.label }}
+            </mu-chip>
+          </template>
           <mu-option 
             ripple
             avatar
@@ -56,7 +63,7 @@
             :label="user.username" 
             :value="user">
             <mu-list-item-action avatar>
-              <mu-avatar :size="36" color="secondary">
+              <mu-avatar :size="36" color="teal">
                 {{ spell(user.username) }}
               </mu-avatar>
             </mu-list-item-action>
@@ -98,6 +105,7 @@ import { PROJECT }  from '~/constant/project'
 import { Project, User, Res } from '~/common/types'
 import graphql from '~/graphql'
 import { spellFormat } from '~/utils'
+import { COMMON_CODE }  from '~/common/constants'
 
 @Component
 export default class PProjectEdit extends Vue {
@@ -127,9 +135,40 @@ export default class PProjectEdit extends Vue {
   @Prop()
   show!: boolean
 
+  @Prop()
+  data!: Project
+
   @Watch('show')
   onShowChanged(val: boolean) {
     this.visible = val
+    this.editType = this.type
+
+    console.log(this.type)
+
+    if(this.type === PROJECT.ADD) {
+      this.project = {
+        projectName : '',
+        projectId: '',
+        projectUrl: '',
+        projectDesc: '',
+        projectMember: []
+      }
+    } else {
+      this.users = []
+      this.searchUsers(() => {
+        let { project } = this
+        this.project = this.data
+        let projectMember = this.data.projectMember
+        if(!projectMember || !projectMember.length) return
+        let users: User[] = []
+        // 获取当前项目成员
+        for(let member of projectMember) {
+          let find = this.users.find(user => user.userId === member.userId)
+          if(find) users.push(find)
+        }
+        this.project.projectMember = users
+      })
+    }
   }
 
   /** 
@@ -138,10 +177,11 @@ export default class PProjectEdit extends Vue {
    * @Desc:   搜索人员信息 
    * @Parm:    
    */  
-  searchUsers() : void {
+  searchUsers(cb: Function) : void {
     if(this.users.length) return
     graphql('user-query', (res: Res) => {
       this.users = <User[]>res.data
+      cb && cb()
     })
   }
 
@@ -152,12 +192,26 @@ export default class PProjectEdit extends Vue {
    * @Parm:    
    */  
   updateProject() {
-    // 添加项目
-    if(this.editType === PROJECT.ADD) {
-      
-    } else {
+    this.projectUrlErrText = ''
+    this.$refs.form['validate']().then((valid: boolean) => {
+      if(!valid) return
+      const { project } = this
+      let { editType } = this
 
-    }
+      graphql(editType === PROJECT.ADD ? 'project-add' : 'project-update', {
+        ...project,
+        projectMember: JSON.stringify(project.projectMember)
+      }, (res: Res) => {
+        // 项目url重复
+        if(res.code === COMMON_CODE.PROJECT_URL_REPEAT) {
+          this.projectUrlErrText = res.msg
+          return
+        } 
+        this.$emit('refresh', project)
+        this.projectUrlErrText = ''
+        this.$toast.success(res.msg)
+      })
+    })
   }
 
   /** 

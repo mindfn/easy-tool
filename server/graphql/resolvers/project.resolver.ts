@@ -54,13 +54,46 @@ const mutation = {
    * @Desc:   删除项目 
    * @Parm:    
    */  
-  async deleteProject(parent: any, args: resolveArgs, { models, req }: resolveCtx) {
+  async deleteProject(parent: any, args: resolveArgs, { models, req }: resolveCtx): Promise<resolveRes>  {
     try {
       await models.Project.remove({_id: args.projectId})
       return resolveResponse(
         TRUE,
         RES.DEL_SUCCESS
       ) 
+    } catch(err) {
+      console.error(err)
+      return resolveResponse(
+        ERROR,
+        err.message
+      ) 
+    }
+  },
+
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-09-14 16:21:43  
+   * @Desc:   更新项目 
+   * @Parm:    
+   */  
+  async updateProject(parent: any, args: resolveArgs, { models, req }: resolveCtx) {
+    try {
+     let project: ProjectModel | null = await models.Project.findById(args.projectId)
+     if(project) {
+      args.projectMember = JSON.parse(args.projectMember)
+      Object.assign(project, args)
+      await project.save()
+      return resolveResponse(
+        TRUE,
+        RES.UPDATE_SUCCESS
+      )  
+     } else {
+      return resolveResponse(
+        ERROR,
+        RES.PROJECT_ERR
+      )  
+     }
+
     } catch(err) {
       console.error(err)
       return resolveResponse(

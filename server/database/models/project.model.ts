@@ -26,31 +26,52 @@ const MemberSchema = new Schema({
   },
 })
 
-// 项目多语言
-const I18nSchema = new Schema({
-  i18nName: {
+// 项目资源
+const StaticDataSchema = new Schema({
+  staticVersion: {
+    type: Number,
+    required: true,
+    unique: true,
+    index: true
+  },
+
+  staticData: {
+    type: Array,
+    required: true
+  },
+
+  staticTag: {
+    type: Number
+  }
+})
+
+
+// 新增虚拟属性staticTypeId
+StaticDataSchema.virtual('staticDataId').get(function (this: any) {
+  return this._id.toString()
+})
+
+
+// 项目静态类型
+const StaticTypeSchema = new Schema({
+  typeName: {
     type: String,
     required: true,
     trim: true,
     unique: true,
     index: true
   },
-  i18nVersion: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true
+  typeValue: {
+    type: Number,
+    required: true
   },
-  i18nDesc: String,
-  // 前端多语言
-  i18nFrontData: String,
-  // 后端多语言
-  i18nBackEndData: String
+  typeDesc: String,
+  typeData: [StaticDataSchema]
 }, option)
 
 
-// 新增虚拟属性staticId
-I18nSchema.virtual('i18nId').get(function (this: any) {
+// 新增虚拟属性staticTypeId
+StaticTypeSchema.virtual('staticTypeId').get(function (this: any) {
   return this._id.toString()
 })
 
@@ -80,8 +101,8 @@ const ProjectSchema = new Schema({
   projectMember: [MemberSchema],
   projectDesc: String,
 
-  // 项目多语言
-  projectI18n: [I18nSchema]
+  // 项目静态资源
+  projectStatic: [StaticTypeSchema]
 }, option)
 
 // 新增虚拟属性projectId

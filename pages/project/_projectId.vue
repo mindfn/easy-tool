@@ -1,18 +1,19 @@
 <template>
   <div class="page-container">
-     <mu-card>
+    <mu-card>
+      <!-- 卡片头部 -->
       <mu-row>
-        <!-- 项目描述 -->
+        <!-- 描述 -->
         <mu-col :span="8">
           <mu-card-header 
-            :title="project.projectName" 
-            :sub-title="`项目ID: ${project.projectId}`">
+            :title="`${project.projectName} (${project.projectDesc})`" 
+            :sub-title="`ID: ${project.projectId}`">
             <mu-avatar slot="avatar" @click="leaveProject">
               <i class="fa fa-arrow-left"></i>
             </mu-avatar>
           </mu-card-header>
         </mu-col>
-        <!-- 项目编辑 -->
+        <!-- 编辑 -->
         <mu-col :span="4">
           <mu-text-field 
             placeholder="搜索资源名称">
@@ -27,13 +28,14 @@
             fab 
             small 
             color="blue"
-            @click="openEditDialog">
-            <i class="fa fa-pencil"></i>
+            @click="openAddDialog">
+            <i class="fa fa-plus"></i>
           </mu-button>
         </mu-col>
       </mu-row>    
+      <!-- 卡片主体 -->
       <div class="page-body">
-        <!-- 暂无数据 -->
+        <!-- 缺省列表 -->
         <div 
           class="page-body-default"
           align-items="center">
@@ -50,22 +52,39 @@
 <script lang="ts">
 import { Component } from 'nuxt-property-decorator'
 import { mixins } from 'vue-class-component'
-import { Res, Project, User } from '~/common/types'
+import { Res, Project } from '~/common/types'
 import graphql from '~/graphql'
 import head from '~/mixins/head'
 import layout from '~/mixins/layout'
+import pStaticEdit from '~/components/pStaticEdit.vue'
+import { STATIC } from '~/constant/project'
 
-@Component
+@Component({
+  components: {
+    pStaticEdit
+  }
+})
 export default class extends mixins(head, layout) {
   readonly title: string = "项目资源管理"
+  readonly STATIC = STATIC
+
   edit: boolean = false
 
-  project: Project = { // 项目信息
-    projectName : '',
-    projectUrl: '',
-    projectDesc: '',
-    projectMember: []
-  }
+  // static: Project = {
+  //   projectId: '',
+  //   projectName : '',
+  //   projectUrl: '',
+  //   projectDesc: '',
+  //   projectMember: []
+  // }
+
+  // currentStatic: Project = { // 当前要编辑的资源类型
+  //   projectId: '',
+  //   projectName : '',
+  //   projectUrl: '',
+  //   projectDesc: '',
+  //   projectMember: []
+  // } 
 
   /** 
    * @Author: zhuxiankang 
@@ -94,21 +113,11 @@ export default class extends mixins(head, layout) {
   /** 
    * @Author: zhuxiankang 
    * @Date:   2018-09-13 15:05:34  
-   * @Desc:   打开项目编辑对话框 
+   * @Desc:   打开添加静态资源对话框 
    * @Parm:    
    */  
-  openEditDialog() {
+  openAddDialog() {
     this.edit = true
-  }
-
-  /** 
-   * @Author: zhuxiankang 
-   * @Date:   2018-09-13 15:16:25  
-   * @Desc:   编辑项目 
-   * @Parm:    
-   */  
-  editProject() {
-
   }
 }
 </script>
@@ -119,8 +128,16 @@ export default class extends mixins(head, layout) {
 .page-container {
   .mu-avatar {
     &:hover {
+      transition: all .3s cubic-bezier(.4,0,.2,1);
       cursor: pointer;
       background: rgb(33, 150, 243);
+    }
+  }
+
+  .mu-card-header-title {
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    .mu-card-title {
+      font-weight: bold;
     }
   }
 }

@@ -39,12 +39,21 @@ type Mutation {
     projectName: String!,
     projectUrl: String!,
     projectMember: [String],
-    projectDesc: String
+    projectDesc: String!
   ): CommonResponse
 
   # 删除项目
   deleteProject(
     projectId: String!
+  ): CommonResponse
+
+  # 更新项目
+  updateProject(
+    projectId: String!
+    projectName: String!,
+    projectUrl: String!,
+    projectMember: [String],
+    projectDesc: String!
   ): CommonResponse
 }
 
