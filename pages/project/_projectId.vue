@@ -6,8 +6,8 @@
         <!-- 描述 -->
         <mu-col :span="8">
           <mu-card-header 
-            :title="`${project.projectName} (${project.projectDesc})`" 
-            :sub-title="`ID: ${project.projectId}`">
+            :title="project.projectName" 
+            :sub-title="project.projectDesc">
             <mu-avatar slot="avatar" @click="leaveProject">
               <i class="fa fa-arrow-left"></i>
             </mu-avatar>
@@ -15,15 +15,6 @@
         </mu-col>
         <!-- 编辑 -->
         <mu-col :span="4">
-          <mu-text-field 
-            placeholder="搜索资源名称">
-            <template slot="prepend">
-              <i class="fa fa-search"></i>
-            </template>
-            <template slot="append">
-              <i class="fa fa-close"></i>
-            </template>
-          </mu-text-field>
           <mu-button 
             fab 
             small 
@@ -38,13 +29,60 @@
         <!-- 缺省列表 -->
         <div 
           class="page-body-default"
-          align-items="center">
+          align-items="center"
+          v-if="!project.projectStatic.length">
           <img src="~assets/img/default/default.jpg" alt="">
           <div>啊哈，么有数据！</div>
         </div>
         <!-- 资源列表 -->
+        <mu-row gutter>
+          <mu-col 
+            sm="12" 
+            md="12" 
+            lg="12" 
+            xl="3"
+            v-for="(item, index) in project.projectStatic" 
+            :key="index">
+            <mu-card class="page-card">
+              <mu-card-media 
+                :title="item.staticName"
+                :sub-title="item.staticDesc"
+                :style="{backgroundImage: `url(/img/projects/${index}.jpg)`}">
+              </mu-card-media>
+              <mu-card-text>
+                <mu-row>
+                  <mu-col :span="8">
+                    <div class="page-card-avatar">
+                      <mu-badge 
+                        :color="STATIC_VIEW[item.staticType].color" 
+                        :content="STATIC_VIEW[item.staticType].label">
+                      </mu-badge>
+                    </div>
+                  </mu-col>
+                  <mu-col :span="4">
+                    <mu-button small fab color="red" @click.stop="openDeleteDialog(index)">
+                      <i class="fa fa fa-trash"></i>
+                    </mu-button>
+                    <mu-button small fab color="success" @click.stop="openEditDialog(index)">
+                      <i class="fa fa fa-pencil"></i>
+                    </mu-button>
+                  </mu-col>
+                </mu-row>
+              </mu-card-text>
+            </mu-card>
+          </mu-col>    
+        </mu-row>  
       </div>
     </mu-card>
+
+    <!-- 资源类型编辑 -->
+    <p-static-edit
+      :type="type"
+      :show.sync="edit"
+      :projectId="$route.params.projectId"
+      :data="currentStatic"
+      @refresh="refreshStatics">
+    </p-static-edit>
   </div>
 </template>
 
@@ -52,12 +90,13 @@
 <script lang="ts">
 import { Component } from 'nuxt-property-decorator'
 import { mixins } from 'vue-class-component'
-import { Res, Project } from '~/common/types'
+import { Res, Project, Static } from '~/common/types'
 import graphql from '~/graphql'
 import head from '~/mixins/head'
 import layout from '~/mixins/layout'
 import pStaticEdit from '~/components/pStaticEdit.vue'
-import { STATIC } from '~/constant/project'
+import { EDIT_TYPE } from '~/constant/project'
+import { STATIC_VIEW } from '~/common/constants'
 
 @Component({
   components: {
@@ -65,26 +104,26 @@ import { STATIC } from '~/constant/project'
   }
 })
 export default class extends mixins(head, layout) {
-  readonly title: string = "项目资源管理"
-  readonly STATIC = STATIC
+  readonly title: string = "项目资源类型管理"
+  readonly STATIC_VIEW = STATIC_VIEW
 
   edit: boolean = false
+  type:number = EDIT_TYPE.ADD // 资源编辑类型
 
-  // static: Project = {
-  //   projectId: '',
-  //   projectName : '',
-  //   projectUrl: '',
-  //   projectDesc: '',
-  //   projectMember: []
-  // }
+  statics: Static[] = [] // 资源类型列表
 
-  // currentStatic: Project = { // 当前要编辑的资源类型
-  //   projectId: '',
-  //   projectName : '',
-  //   projectUrl: '',
-  //   projectDesc: '',
-  //   projectMember: []
-  // } 
+  project: Project = { // 当前项目信息
+    projectName: '',
+    projectDesc: '',
+    projectStatic: []
+  }
+
+  currentStatic: Static = { // 当前要编辑的资源类型
+    staticId: '',
+    staticName: '',
+    staticType: 0,
+    staticDesc: ''
+  } 
 
   /** 
    * @Author: zhuxiankang 
@@ -118,9 +157,36 @@ export default class extends mixins(head, layout) {
    */  
   openAddDialog() {
     this.edit = true
+    this.type = EDIT_TYPE.ADD
+  }
+
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-09-15 09:45:25  
+   * @Desc:   刷新静态资源类型 
+   * @Parm:    
+   */  
+  refreshStatics() {
+    this.edit = false
+    graphql('project-queryById', { projectId: this.$route.params.projectId  },  (res: Res) => {
+      this.project = <Project>res.data
+    })
   }
 }
 </script>
+
+
+<style lang="less">
+.page-card {
+  .mu-card-text { 
+    .mu-badge {
+      line-height: 3.5;
+      padding: 0 15px;
+    }
+  }
+}
+</style>
+
 
 
 <style lang="less" scoped>
@@ -138,6 +204,69 @@ export default class extends mixins(head, layout) {
     font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
     .mu-card-title {
       font-weight: bold;
+    }
+  }
+}
+
+.page-card {
+  height: 300px;
+  margin-bottom: 32px;
+  border: 1px solid rgba(0, 0, 0, .12);
+  cursor: pointer;
+  &:hover {
+    background-color: rgba(240, 240, 240, .4);
+    .mu-card-media {
+      transition: all .5s ease;
+      background-size: 100% 100%;
+    }
+  }
+  .mu-card-media {
+    padding: 1px;
+    height: 73%;
+    opacity: .5;
+    background-size: 60% 80%;
+    transition: all .15s cubic-bezier(.4,0,.2,1);
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    .mu-card-media-title {
+      height: 90px;
+      background-color: black;
+      opacity: .8;
+      color: white;
+      .mu-card-title, .mu-card-sub-title {
+        overflow-x: scroll;
+        white-space:nowrap;
+        color: white;
+      }
+    }
+  }
+  .mu-card-text {
+    height: 27%;
+    .row {
+      height: 100%;
+      .mu-avatar {
+        margin: 0 4px 6px 0;
+        font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+      }
+      .col {
+        height: 100%;
+        .mu-button {
+          float: right;
+          margin-right: 8px;
+        }
+      }
+      .page-card-avatar {
+        height: 100%;
+        overflow: auto;
+      }
+    }
+  }
+  .mu-button {
+    opacity: 0;
+  }
+  &:hover {
+    .mu-button {
+      opacity: 1;
+      transition: all .5s cubic-bezier(.4,0,.2,1);
     }
   }
 }

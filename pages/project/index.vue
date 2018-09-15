@@ -55,7 +55,7 @@
             xl="3"
             v-for="(item, index) in projects" 
             :key="index">
-            <mu-card class="page-project" @click="enterProject(item)">
+            <mu-card class="page-card" @click="enterProject(item)">
               <mu-card-media 
                 :title="item.projectName"
                 :sub-title="item.projectDesc"
@@ -64,7 +64,7 @@
               <mu-card-text>
                 <mu-row>
                   <mu-col :span="8">
-                    <div class="page-project-avatar">
+                    <div class="page-card-avatar">
                       <mu-tooltip 
                         :content="member.username"
                         v-for="(member, index) in item.projectMember" :key="index">
@@ -90,7 +90,7 @@
       </div>
     </mu-card>
 
-    <!-- 项目添加 -->
+    <!-- 项目编辑 -->
     <p-project-edit 
       :type="type" 
       :show.sync="edit" 
@@ -137,7 +137,7 @@ import graphql from '~/graphql'
 import { Res, Project } from '~/common/types'
 import moment from 'moment'
 import pProjectEdit from '~/components/pProjectEdit.vue'
-import { PROJECT } from '~/constant/project'
+import { EDIT_TYPE } from '~/constant/project'
 import { spellFormat } from '~/utils'
 
 @Component({
@@ -148,13 +148,12 @@ import { spellFormat } from '~/utils'
 export default class extends mixins(head, layout) {
   readonly title: string = "项目管理"
   readonly moment = moment
-  readonly PROJECT = PROJECT
   readonly spell =  spellFormat
 
   del: boolean = false
   edit: boolean = false
 
-  type:number = PROJECT.ADD // 项目编辑类型
+  type:number = EDIT_TYPE.ADD // 项目编辑类型
 
   searchName: string = '' // 搜索名称
   delName: string = '' // 删除的项目名称
@@ -221,7 +220,7 @@ export default class extends mixins(head, layout) {
    */  
   openAddDialog(): void {
     this.edit = true
-    this.type = PROJECT.ADD
+    this.type = EDIT_TYPE.ADD
   }
 
   /** 
@@ -232,7 +231,7 @@ export default class extends mixins(head, layout) {
    */  
   openEditDialog(index: number): void {
     this.edit = true
-    this.type = PROJECT.EDIT
+    this.type = EDIT_TYPE.EDIT
     const project = this.projects[index]
     this.currentProject = {
       ...project,
@@ -296,7 +295,7 @@ export default class extends mixins(head, layout) {
 
 
 <style lang="less" scoped>
-.page-project {
+.page-card {
   height: 300px;
   margin-bottom: 32px;
   border: 1px solid rgba(0, 0, 0, .12);
@@ -342,7 +341,7 @@ export default class extends mixins(head, layout) {
           margin-right: 8px;
         }
       }
-      .page-project-avatar {
+      .page-card-avatar {
         height: 100%;
         overflow: auto;
       }

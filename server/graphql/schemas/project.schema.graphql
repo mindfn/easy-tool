@@ -8,6 +8,14 @@ type Member {
   username: String
 }
 
+# 静态资源类型
+type Static {
+  staticId: String,
+  staticName: String,
+  staticType: Int,
+  staticDesc: String
+}
+
 # 项目
 type Project {
   projectId: String,
@@ -15,6 +23,7 @@ type Project {
   projectUrl: String,
   projectMember: [Member],
   projectDesc: String,
+  projectStatic: [Static]
   createTime: String,
   updateTime: String
 }

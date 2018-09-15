@@ -1,2 +1,3 @@
 # import Query.*, Mutation.* from "user.schema.graphql"
 # import Query.*, Mutation.* from "project.schema.graphql"
+# import Mutation.* from "static.schema.graphql"

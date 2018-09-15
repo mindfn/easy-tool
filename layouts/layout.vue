@@ -106,8 +106,8 @@ export default class extends Vue {
 }
 
 .page-body {
-  padding: 60px 120px;
-  height: calc(~"100% - 76px");
+  padding: 40px 120px;
+  height: calc(~"100% - 102px");
   overflow: auto;
 }
 

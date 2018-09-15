@@ -1,9 +1,4 @@
-export enum PROJECT {
-  ADD = -1, // 添加
-  EDIT // 编辑
-}
-
-export enum STATIC {
+export enum EDIT_TYPE {
   ADD = -1, // 添加
   EDIT // 编辑
 }

@@ -1,22 +1,20 @@
 <template>
   <!-- 项目编辑 -->
   <mu-dialog 
-    :title="editType === PROJECT.ADD ? '添加项目' : '编辑项目'" 
+    :title="editType === EDIT_TYPE.ADD ? '添加项目' : '编辑项目'" 
     width="520" 
     :open.sync="visible"
     @close="closeDialog"
     >
     <mu-form 
       ref="form" 
-      :model="project">
+      :model="projectData">
       <mu-form-item
-        v-show="editType === PROJECT.EDIT" 
-        label="项目ID(用于同步项目数据的唯一标识)" 
-        prop="projectName"
-        :rules="requiredRule">
+        v-show="editType === EDIT_TYPE.EDIT" 
+        label="项目ID">
         <mu-text-field 
           disabled
-          v-model="project.projectId"
+          v-model="projectData.projectId"
           :max-length="32">
         </mu-text-field>
       </mu-form-item>
@@ -25,7 +23,7 @@
         prop="projectName"
         :rules="requiredRule">
         <mu-text-field 
-          v-model="project.projectName"
+          v-model="projectData.projectName"
           :max-length="32">
         </mu-text-field>
       </mu-form-item>
@@ -36,18 +34,18 @@
         @click.native="projectUrlErrText = ''"
         :rules="requiredRule">
         <mu-text-field  
-          v-model="project.projectUrl" 
+          v-model="projectData.projectUrl" 
           :max-length="128"
           placeholder="项目的托管地址">
         </mu-text-field>
       </mu-form-item>
-      <mu-form-item label="项目成员" prop="desc">
+      <mu-form-item label="项目成员">
         <mu-select
           :max-height="200"
           filterable 
           multiple 
           chips 
-          v-model="project.projectMember" 
+          v-model="projectData.projectMember" 
           @click.native="searchUsers"
           full-width>
           <template slot="selection" slot-scope="scope">
@@ -80,11 +78,12 @@
         prop="projectDesc"
         :rules="requiredRule">
         <mu-text-field  
-          v-model="project.projectDesc" 
+          v-model="projectData.projectDesc" 
           multi-line 
           :max-length="120"
           :rows="1" 
-          :rows-max="2"></mu-text-field>
+          :rows-max="2">
+        </mu-text-field>
       </mu-form-item>
     </mu-form>
     <mu-button 
@@ -101,7 +100,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
-import { PROJECT }  from '~/constant/project'
+import { EDIT_TYPE }  from '~/constant/project'
 import { Project, User, Res } from '~/common/types'
 import graphql from '~/graphql'
 import { spellFormat } from '~/utils'
@@ -109,14 +108,14 @@ import { COMMON_CODE }  from '~/common/constants'
 
 @Component
 export default class PProjectEdit extends Vue {
-  readonly PROJECT = PROJECT
+  readonly EDIT_TYPE = EDIT_TYPE
   readonly spell =  spellFormat
 
   visible: boolean = false
-  editType: number = PROJECT.ADD
+  editType: number = EDIT_TYPE.ADD
 
   projectUrlErrText: string = ''
-  project: Project = { // 项目信息
+  projectData: Project = { // 项目信息
     projectName : '',
     projectId: '',
     projectUrl: '',
@@ -142,11 +141,10 @@ export default class PProjectEdit extends Vue {
   onShowChanged(val: boolean) {
     this.visible = val
     this.editType = this.type
+    this.projectUrlErrText = ''
 
-    console.log(this.type)
-
-    if(this.type === PROJECT.ADD) {
-      this.project = {
+    if(this.type === EDIT_TYPE.ADD) {
+      this.projectData = {
         projectName : '',
         projectId: '',
         projectUrl: '',
@@ -156,8 +154,8 @@ export default class PProjectEdit extends Vue {
     } else {
       this.users = []
       this.searchUsers(() => {
-        let { project } = this
-        this.project = this.data
+        let { projectData } = this
+        this.projectData = this.data
         let projectMember = this.data.projectMember
         if(!projectMember || !projectMember.length) return
         let users: User[] = []
@@ -166,7 +164,7 @@ export default class PProjectEdit extends Vue {
           let find = this.users.find(user => user.userId === member.userId)
           if(find) users.push(find)
         }
-        this.project.projectMember = users
+        this.projectData.projectMember = users
       })
     }
   }
@@ -195,19 +193,18 @@ export default class PProjectEdit extends Vue {
     this.projectUrlErrText = ''
     this.$refs.form['validate']().then((valid: boolean) => {
       if(!valid) return
-      const { project } = this
-      let { editType } = this
+      const { projectData } = this
 
-      graphql(editType === PROJECT.ADD ? 'project-add' : 'project-update', {
-        ...project,
-        projectMember: JSON.stringify(project.projectMember)
+      graphql(this.editType === EDIT_TYPE.ADD ? 'project-add' : 'project-update', {
+        ...projectData,
+        projectMember: JSON.stringify(projectData.projectMember)
       }, (res: Res) => {
         // 项目url重复
         if(res.code === COMMON_CODE.PROJECT_URL_REPEAT) {
           this.projectUrlErrText = res.msg
           return
         } 
-        this.$emit('refresh', project)
+        this.$emit('refresh')
         this.projectUrlErrText = ''
         this.$toast.success(res.msg)
       })

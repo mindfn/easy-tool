@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose'
 import option from './option'
 const { Schema } = mongoose
+import * as CON from '../../../common/constants'
 
 // 项目成员
 const MemberSchema = new Schema({
@@ -26,55 +27,30 @@ const MemberSchema = new Schema({
   },
 })
 
-// 项目资源
-const StaticDataSchema = new Schema({
-  staticVersion: {
-    type: Number,
-    required: true,
-    unique: true,
-    index: true
-  },
 
-  staticData: {
-    type: Array,
-    required: true
-  },
-
-  staticTag: {
-    type: Number
-  }
-})
-
-
-// 新增虚拟属性staticTypeId
-StaticDataSchema.virtual('staticDataId').get(function (this: any) {
-  return this._id.toString()
-})
-
-
-// 项目静态类型
-const StaticTypeSchema = new Schema({
-  typeName: {
+// 项目静态资源类型
+const StaticSchema = new Schema({
+  staticName: {
     type: String,
-    required: true,
-    trim: true,
     unique: true,
-    index: true
-  },
-  typeValue: {
-    type: Number,
+    trim: true,
+    index: true,
     required: true
   },
-  typeDesc: String,
-  typeData: [StaticDataSchema]
-}, option)
-
-
-// 新增虚拟属性staticTypeId
-StaticTypeSchema.virtual('staticTypeId').get(function (this: any) {
-  return this._id.toString()
+  staticType: {
+    type: Number,
+    required: true,
+    enum: CON.STATIC_ARR
+  },
+  staticDesc: String
+}, {
+  ...option
 })
 
+// 新增虚拟属性projectId
+StaticSchema.virtual('staticId').get(function (this: any) {
+  return this._id.toString()
+})
 
 // 项目
 const ProjectSchema = new Schema({
@@ -102,7 +78,7 @@ const ProjectSchema = new Schema({
   projectDesc: String,
 
   // 项目静态资源
-  projectStatic: [StaticTypeSchema]
+  projectStatic: [StaticSchema]
 }, option)
 
 // 新增虚拟属性projectId

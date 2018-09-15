@@ -11,7 +11,8 @@ export const GRAPHQL = {
     PROJECT_URL_REPEAT: '项目URL已经存在与其他项目，请确认URL是否正确！',
     DEL_FAIL: '删除失败！',
     DEL_SUCCESS: '删除成功！',
-    PROJECT_ERR: '项目不存在！'
+    PROJECT_ERR: '项目不存在！',
+    STATIC_NAME_REPEAT: '资源类型名称已经存在，请重新命名资源类型！'
   }
 }
 

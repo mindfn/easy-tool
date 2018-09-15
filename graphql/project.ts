@@ -81,11 +81,11 @@ export default {
             projectId,
             projectName,
             projectDesc,
-            projectUrl,
-            createTime,
-            projectMember {
-              username,
-              userId
+            projectStatic {
+              staticId,
+              staticDesc,
+              staticType,
+              staticName
             }
           }
         }
@@ -120,7 +120,7 @@ export default {
    */  
   add(params) {
     return client.mutate(
-      `($projectName:String!, $projectDesc!: String, $projectUrl: String!, $projectMember: [String]!) {
+      `($projectName:String!, $projectDesc: String!, $projectUrl: String!, $projectMember: [String]) {
         data: addProject(projectName: $projectName, projectDesc: $projectDesc, projectUrl: $projectUrl, projectMember: $projectMember) {
           code,
           msg
@@ -138,7 +138,7 @@ export default {
    */  
   update(params) {
     return client.mutate(
-      `($projectId: String!, $projectName:String!, $projectDesc: String!, $projectUrl: String!, $projectMember: [String]!) {
+      `($projectId: String!, $projectName:String!, $projectDesc: String!, $projectUrl: String!, $projectMember: [String]) {
         data: updateProject(projectId: $projectId, projectName: $projectName, projectDesc: $projectDesc, projectUrl: $projectUrl, projectMember: $projectMember) {
           code,
           msg

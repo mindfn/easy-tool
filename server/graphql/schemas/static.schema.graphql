@@ -1,0 +1,21 @@
+# import * from './common.schema.graphql'
+
+### Graphql Type ###
+# 资源类型
+type Static {
+  staticId: String,
+  staticName: String,
+  staticType: Int,
+  staticDesc: String
+}
+
+### Graphql Schema ###
+type Mutation {
+  # 添加项目
+  addStatic(
+    projectId: String!,
+    staticName: String!,
+    staticType: Int!,
+    staticDesc: String!,
+  ): CommonResponse
+} 
