@@ -22,7 +22,8 @@ export interface Static {
   staticId?: string,
   staticName: string,
   staticType: number,
-  staticDesc: string
+  staticDesc: string,
+  [propName: string]: any
 }
 
 // 项目接口

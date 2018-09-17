@@ -16,7 +16,7 @@ export default {
    * @Desc:   添加资源类型 
    * @Parm:    
    */  
-  add(params) {
+  add(params): Lokka {
     return client.mutate(
       `($projectId:String!, $staticName:String!, $staticDesc: String!, $staticType: Int!) {
         data: addStatic(projectId: $projectId, staticName: $staticName, staticDesc: $staticDesc, staticType: $staticType) {
@@ -26,5 +26,43 @@ export default {
       }`,
       params
     )
+  },  
+
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-09-17 09:20:32  
+   * @Desc:   删除资源类型 
+   * @Parm:    
+   */  
+  delete(params): Lokka {
+    return client.mutate(
+      `($projectId:String!, $staticId:String!) {
+        data: deleteStatic(projectId: $projectId, staticId: $staticId) {
+          code,
+          msg
+        }
+      }`,
+      params
+    )
+  },
+
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-09-17 11:40:02  
+   * @Desc:   更新资源类型 
+   * @Parm:    
+   */  
+  update(params) {
+    return client.mutate(
+      `($staticName:String!, $staticDesc:String!, $staticId:String!, $projectId:String!) {
+        data: updateStatic(staticName: $staticName, staticDesc: $staticDesc, staticId: $staticId, projectId: $projectId) {
+          code,
+          msg
+        }
+      }`,
+      params
+    )
   }
+
+  
 }

@@ -7,6 +7,15 @@
     <mu-form 
       ref="form" 
       :model="staticData">
+      <mu-form-item
+        v-show="editType === EDIT_TYPE.EDIT" 
+        label="资源ID(用于同步项目资源)">
+        <mu-text-field 
+          disabled
+          v-model="staticData.staticId"
+          :max-length="32">
+        </mu-text-field>
+      </mu-form-item>
       <mu-form-item 
         label="资源类型名称(必填)" 
         prop="staticName"
@@ -17,10 +26,14 @@
           :max-length="32">
         </mu-text-field>
       </mu-form-item>
-      <mu-form-item prop="radio" label="资源类型">
+      <mu-form-item 
+        prop="radio" 
+        label="资源类型"
+        :error-text="staticTypeErrText">
         <mu-radio 
           v-for="(item, index) in STATIC_VIEW"
           v-model="staticData.staticType"
+          :disabled="editType === EDIT_TYPE.EDIT"
           :key="index"
           :value="item.value" 
           :label="item.label">
@@ -71,6 +84,7 @@ export default class extends Vue {
   visible: boolean = false
   editType: number = EDIT_TYPE.ADD
   staticNameErrText: string = ''
+  staticTypeErrText: string = ''
 
   staticData: Static = { // 项目资源类型
     staticId: '',
@@ -96,19 +110,18 @@ export default class extends Vue {
   projectId!: string
 
   @Watch('show')
-  onShowChanged(val: boolean) {
+  onShowChanged(val: boolean) : void {
     this.visible = val
     this.editType = this.type
-    this.staticNameErrText = ''
+    this.clearFormValidate()
 
-    if(this.type === EDIT_TYPE.ADD ) {
-       this.staticData = {
+    this.staticData =  this.type === EDIT_TYPE.ADD 
+    ? {
         staticId: '',
         staticName: '',
         staticType: STATIC.I18N, // 默认显示多语言
-        staticDesc: ''
-      }
-    }
+        staticDesc: ''}
+    : this.data     
   }
 
   /** 
@@ -117,8 +130,8 @@ export default class extends Vue {
    * @Desc:   更新项目资源类型 
    * @Parm:    
    */  
-  updateStatic() {
-    this.staticNameErrText = ''
+  updateStatic() : void {
+    this.clearFormValidate()
 
     this.$refs.form['validate']().then((valid: boolean) => {
       if(!valid) return
@@ -127,11 +140,14 @@ export default class extends Vue {
           projectId: this.projectId
        }, (res: Res) => {
          if(res.code === COMMON_CODE.STATIC_NAME_REPEAT) {
-          this.staticNameErrText = res.msg
-          return
+            this.staticNameErrText = res.msg
+            return
+         } else if(res.code === COMMON_CODE.STATIC_TYPE_REPEAT) {
+            this.staticTypeErrText = res.msg
+            return
          }
          this.$emit('refresh')
-         this.staticNameErrText = ''
+         this.clearFormValidate()
          this.$toast.success(res.msg)
        })
     })
@@ -143,9 +159,20 @@ export default class extends Vue {
    * @Desc:   关闭对话框 
    * @Parm:    
    */  
-  closeDialog() {
+  closeDialog() : void {
     this.visible = false
     this.$emit('update:show', false)
+  }
+
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-09-17 11:26:46  
+   * @Desc:   清除校验信息 
+   * @Parm:    
+   */  
+  clearFormValidate() : void {
+    this.staticNameErrText = ''
+    this.staticTypeErrText = ''
   }
 }
 </script>

@@ -6,17 +6,30 @@ const { RES } = GRAPHQL
 const { ERROR, TRUE } = COMMON_CODE
 
 const mutation = {
-  async addStatic(parent: any, args: resolveArgs, { models, req }: resolveCtx) {
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-09-17 09:24:04  
+   * @Desc:   添加静态资源类型 
+   * @Parm:    
+   */  
+  async addStatic(parent: any, args: resolveArgs, { models, req }: resolveCtx): Promise<resolveRes>   {
     try {
       let project: ProjectModel | null = await models.Project.findById(args.projectId)
       if(project && project.projectStatic) {
         let projectStatic = project.projectStatic || []
-        // 判断资源类型名称是否重复
-        if(projectStatic.length && projectStatic.find(item => item.staticName === args.staticName)) {
-          return resolveResponse(
-            COMMON_CODE.STATIC_NAME_REPEAT,
-            RES.STATIC_NAME_REPEAT
-          )  
+        // 判断资源类型名称以及资源类型是否重复
+        for(let sta of projectStatic) {
+          if(sta.staticName === args.staticName) {
+            return resolveResponse(
+              COMMON_CODE.STATIC_NAME_REPEAT,
+              RES.STATIC_NAME_REPEAT
+            )  
+          } else if(sta.staticType === args.staticType) {
+            return resolveResponse(
+              COMMON_CODE.STATIC_TYPE_REPEAT,
+              RES.STATIC_NAME_REPEAT
+            )  
+          }
         }
         project.projectStatic.push({
           staticName: args.staticName,
@@ -41,14 +54,96 @@ const mutation = {
         err.message
       ) 
     }
+  },
+
+
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-09-17 11:44:24  
+   * @Desc:   更新静态资源类型 
+   * @Parm:    
+   */  
+  async updateStatic(parent: any, args: resolveArgs, { models, req }: resolveCtx) {
+    try {
+      let project: ProjectModel | null = await models.Project.findById(args.projectId)
+      if(project && project.projectStatic) {
+        let projectStatic = project.projectStatic || []
+        let currentStatic
+
+        for(let sta of projectStatic) {
+          if(sta.staticId === args.staticId) {
+            currentStatic = sta
+            continue
+          }
+          // 判断资源类型名称以及资源类型是否重复
+          if(sta.staticName === args.staticName) {
+            return resolveResponse(
+              COMMON_CODE.STATIC_NAME_REPEAT,
+              RES.STATIC_NAME_REPEAT
+            )  
+          }
+        }
+
+        currentStatic.staticName = args.staticName
+        currentStatic.staticDesc = args.staticDesc
+        await project.save()
+        return resolveResponse(
+          TRUE,
+          RES.UPDATE_SUCCESS
+        )  
+      } else {
+        return resolveResponse(
+          ERROR,
+          RES.PROJECT_ERR
+        )  
+      }
+    } catch(err) {
+      console.error(err.message)
+      return resolveResponse(
+        ERROR,
+        err.message
+      ) 
+    }
+  },
+
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-09-17 09:26:55  
+   * @Desc:   删除静态资源类型 
+   * @Parm:    
+   */  
+  async deleteStatic(parent: any, args: resolveArgs, { models, req }: resolveCtx) : Promise<resolveRes> {
+    try {
+      let project = await models.Project.findById(args.projectId)
+      if(project && project.projectStatic) {
+        let index = project.projectStatic.findIndex(sta => sta.staticId === args.staticId)
+        if(index !== -1) {
+          project.projectStatic.splice(index, 1)
+        }
+        await project.save()
+        return resolveResponse(
+          TRUE,
+          RES.ADD_SUCCESS
+        ) 
+      } else {
+        return resolveResponse(
+          ERROR,
+          RES.PROJECT_ERR
+        ) 
+      }
+    } catch(err) {
+      console.error(err.message)
+      return resolveResponse(
+        ERROR,
+        err.message
+      ) 
+    }
   }
 }
 
-const query = {
-}
+
 
 
 export default {
-  mutation,
-  query
+  mutation
 }

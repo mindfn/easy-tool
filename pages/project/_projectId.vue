@@ -83,6 +83,34 @@
       :data="currentStatic"
       @refresh="refreshStatics">
     </p-static-edit>
+
+    <!-- 静态资源删除 -->
+    <mu-dialog 
+      class="page-dialog-del"
+      title="删除资源确认" 
+      width="360" 
+      :open.sync="del">
+      <p>如果您继续删除，必须知道此操作无法撤消，这将永久删除<strong>{{ currentStatic.staticName }}</strong>！</p>
+      <p>请输入资源名称以进行确认。</p>
+      <mu-text-field 
+        v-model="delName" 
+        placeholder="请输入资源名称">
+      </mu-text-field>
+      <mu-button 
+        slot="actions" 
+        flat 
+        @click="del = false">
+        关闭
+      </mu-button>
+      <mu-button 
+        :disabled="delName !== currentStatic.staticName"
+        slot="actions" 
+        flat 
+        color="primary" 
+        @click="delProject">
+        确认
+      </mu-button>
+    </mu-dialog>
   </div>
 </template>
 
@@ -108,11 +136,13 @@ export default class extends mixins(head, layout) {
   readonly STATIC_VIEW = STATIC_VIEW
 
   edit: boolean = false
+  del: boolean = false
   type:number = EDIT_TYPE.ADD // 资源编辑类型
 
-  statics: Static[] = [] // 资源类型列表
+  delName: string = ''
 
   project: Project = { // 当前项目信息
+    projectId: '',
     projectName: '',
     projectDesc: '',
     projectStatic: []
@@ -158,6 +188,55 @@ export default class extends mixins(head, layout) {
   openAddDialog() {
     this.edit = true
     this.type = EDIT_TYPE.ADD
+  }
+
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-09-17 09:06:49  
+   * @Desc:   打开删除静态资源对话框 
+   * @Parm:    
+   */  
+  openDeleteDialog(index) {
+    try {
+      if(!this.project 
+        || !this.project.projectStatic
+        || !this.project.projectStatic.length) return
+      this.del = true
+      this.delName = ''
+      this.currentStatic = JSON.parse(JSON.stringify(this.project.projectStatic[index]))
+    } catch(err) {
+      this.$toast.success(err.msg)
+    }
+  }
+
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-09-17 09:10:17  
+   * @Desc:   删除资源 
+   * @Parm:    
+   */  
+  delProject() {
+    graphql('sta-delete', { 
+      projectId: this.project.projectId, 
+      staticId: this.currentStatic.staticId 
+    }, (res: Res) => {
+      this.del = false
+      this.$toast.success(res.msg)
+      this.refreshStatics()
+    })
+  }
+
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-09-17 09:12:05  
+   * @Desc:   打开编辑资源对话框 
+   * @Parm:    
+   */  
+  openEditDialog(index) {
+    if(!this.project.projectStatic) return
+    this.edit = true
+    this.type = EDIT_TYPE.EDIT
+    this.currentStatic = JSON.parse(JSON.stringify(this.project.projectStatic[index]))
   }
 
   /** 

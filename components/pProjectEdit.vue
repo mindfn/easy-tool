@@ -138,7 +138,7 @@ export default class PProjectEdit extends Vue {
   data!: Project
 
   @Watch('show')
-  onShowChanged(val: boolean) {
+  onShowChanged(val: boolean) : void {
     this.visible = val
     this.editType = this.type
     this.projectUrlErrText = ''
@@ -189,7 +189,7 @@ export default class PProjectEdit extends Vue {
    * @Desc:   更新项目 
    * @Parm:    
    */  
-  updateProject() {
+  updateProject() : void {
     this.projectUrlErrText = ''
     this.$refs.form['validate']().then((valid: boolean) => {
       if(!valid) return
@@ -203,7 +203,7 @@ export default class PProjectEdit extends Vue {
         if(res.code === COMMON_CODE.PROJECT_URL_REPEAT) {
           this.projectUrlErrText = res.msg
           return
-        } 
+        }
         this.$emit('refresh')
         this.projectUrlErrText = ''
         this.$toast.success(res.msg)
@@ -217,7 +217,7 @@ export default class PProjectEdit extends Vue {
    * @Desc:   关闭对话框 
    * @Parm:    
    */  
-  closeDialog() {
+  closeDialog() : void {
     this.visible = false
     this.$emit('update:show', false)
   }

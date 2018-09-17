@@ -60,7 +60,7 @@ const mutation = {
         }
       }
     } catch(err) {
-      console.error(err)
+      console.error(err.message)
       return resolveResponse(
         ERROR,
         err.message
@@ -154,7 +154,7 @@ const query = {
       //   RES.QUERY_FAIL
       // )
     } catch(err) {
-      console.error(err)
+      console.error(err.message)
       return resolveResponse(
         ERROR, 
         err.message

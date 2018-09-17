@@ -11,11 +11,25 @@ type Static {
 
 ### Graphql Schema ###
 type Mutation {
-  # 添加项目
+  # 添加资源类型
   addStatic(
     projectId: String!,
     staticName: String!,
     staticType: Int!,
     staticDesc: String!,
+  ): CommonResponse
+
+  # 删除资源类型
+  deleteStatic(
+    staticId: String!,
+    projectId: String!
+  ): CommonResponse
+
+  # 更新资源类型
+  updateStatic(
+    staticId: String!,
+    projectId: String!,
+    staticName: String!,
+    staticDesc: String!
   ): CommonResponse
 } 

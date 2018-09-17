@@ -10,8 +10,7 @@ const resolvers = {
   },
   Query: {
     ...user.query,
-    ...project.query,
-    ...sta.query
+    ...project.query
   }
 }
 

@@ -16,7 +16,7 @@ export default {
    * @Desc:   获取项目列表
    * @Parm:   
    */  
-  getList() : Lokka {
+  getList(): Lokka {
     return client.query(
       `{
         data: projects {
@@ -43,7 +43,7 @@ export default {
    * @Desc:   搜索项目名称 
    * @Parm:   params: 项目名称
    */  
-  queryByName(params: object) : Lokka {
+  queryByName(params: object): Lokka {
     return client.query(
       `query projectByName($projectName:String!){
         data: projectByName(projectName:$projectName) {
@@ -71,7 +71,7 @@ export default {
    * @Desc:   通过项目ID搜索项目 
    * @Parm:    
    */  
-  queryById(params: object) : Lokka {
+  queryById(params: object): Lokka {
     return client.query(
       `query projectByID($projectId:String!){
         data: projectByID(projectId:$projectId) {
@@ -100,7 +100,7 @@ export default {
    * @Desc:   删除项目 
    * @Parm:   projectId: 项目id 
    */  
-  delete(projectId: string) {
+  delete(projectId: string): Lokka {
     return client.mutate(
       `($projectId:String!) {
         data: deleteProject(projectId: $projectId) {
@@ -118,7 +118,7 @@ export default {
    * @Desc:   添加项目 
    * @Parm:    
    */  
-  add(params) {
+  add(params): Lokka {
     return client.mutate(
       `($projectName:String!, $projectDesc: String!, $projectUrl: String!, $projectMember: [String]) {
         data: addProject(projectName: $projectName, projectDesc: $projectDesc, projectUrl: $projectUrl, projectMember: $projectMember) {
@@ -136,7 +136,7 @@ export default {
    * @Desc:   更新项目 
    * @Parm:    
    */  
-  update(params) {
+  update(params): Lokka {
     return client.mutate(
       `($projectId: String!, $projectName:String!, $projectDesc: String!, $projectUrl: String!, $projectMember: [String]) {
         data: updateProject(projectId: $projectId, projectName: $projectName, projectDesc: $projectDesc, projectUrl: $projectUrl, projectMember: $projectMember) {

@@ -40,7 +40,7 @@ const mutation = {
         ) 
       }
     } catch(err) {
-      console.error(err)
+      console.error(err.message)
       return resolveResponse(
         ERROR,
         err.message
@@ -62,7 +62,7 @@ const mutation = {
         RES.DEL_SUCCESS
       ) 
     } catch(err) {
-      console.error(err)
+      console.error(err.message)
       return resolveResponse(
         ERROR,
         err.message
@@ -76,7 +76,7 @@ const mutation = {
    * @Desc:   更新项目 
    * @Parm:    
    */  
-  async updateProject(parent: any, args: resolveArgs, { models, req }: resolveCtx) {
+  async updateProject(parent: any, args: resolveArgs, { models, req }: resolveCtx): Promise<resolveRes> {
     try {
      let project: ProjectModel | null = await models.Project.findById(args.projectId)
      if(project) {
@@ -95,7 +95,7 @@ const mutation = {
      }
 
     } catch(err) {
-      console.error(err)
+      console.error(err.message)
       return resolveResponse(
         ERROR,
         err.message
@@ -120,7 +120,7 @@ const query = {
         projects
       )
     } catch(err) {
-      console.error(err)
+      console.error(err.message)
       return resolveResponse(
         ERROR,
         err.message
@@ -145,7 +145,7 @@ const query = {
         projects
       )
     } catch(err) {
-      console.error(err)
+      console.error(err.message)
       return resolveResponse(
         ERROR,
         err.message
@@ -168,7 +168,7 @@ const query = {
         project
       )
     } catch(err) {
-      console.error(err)
+      console.error(err.message)
       return resolveResponse(
         ERROR,
         err.message
