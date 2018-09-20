@@ -44,6 +44,11 @@ export default class extends Vue {
 </script>
 
 <style lang="less">
+
+body {
+  overflow: hidden;
+}
+
 .e {
   height: 100vh;
   background-color: #f5f7f9;
@@ -66,6 +71,19 @@ export default class extends Vue {
 }
 
 .page-container {
+  .mu-avatar {
+    &:hover {
+      transition: all .3s cubic-bezier(.4,0,.2,1);
+      cursor: pointer;
+      background: rgb(33, 150, 243);
+    }
+  }
+  .mu-card-header-title {
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    .mu-card-title {
+      font-weight: bold;
+    }
+  }
   height: 100%;
   padding: 12px;
   >.mu-card {

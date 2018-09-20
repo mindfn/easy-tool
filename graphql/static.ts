@@ -8,6 +8,8 @@
 
 import { client } from '~/graphql/lokka'
 import { Lokka } from 'lokka'
+// import applo from '~/plugins/vue-applo'
+// console.log(applo)
 
 export default {
   /** 
@@ -18,8 +20,8 @@ export default {
    */  
   add(params): Lokka {
     return client.mutate(
-      `($projectId:String!, $staticName:String!, $staticDesc: String!, $staticType: Int!) {
-        data: addStatic(projectId: $projectId, staticName: $staticName, staticDesc: $staticDesc, staticType: $staticType) {
+      `($projectId:String!, $staticName:String!, $staticVersion:String!, $staticDesc: String!, $staticType: Int!) {
+        data: addStatic(projectId: $projectId, staticName: $staticName, staticVersion:$staticVersion, staticDesc: $staticDesc, staticType: $staticType) {
           code,
           msg
         }
@@ -54,14 +56,51 @@ export default {
    */  
   update(params) {
     return client.mutate(
-      `($staticName:String!, $staticDesc:String!, $staticId:String!, $projectId:String!) {
-        data: updateStatic(staticName: $staticName, staticDesc: $staticDesc, staticId: $staticId, projectId: $projectId) {
+      `($staticName:String!, $staticVersion:String!, $staticDesc:String!, $staticId:String!, $projectId:String!) {
+        data: updateStatic(staticName: $staticName, staticVersion:$staticVersion, staticDesc: $staticDesc, staticId: $staticId, projectId: $projectId) {
           code,
           msg
         }
       }`,
       params
     )
+  },
+
+
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-09-13 11:54:02  
+   * @Desc:   通过项目ID和资源ID搜索资源
+   * @Parm:    
+   */  
+  queryById(params: object): Lokka {
+    return client.query(
+      `query staticByID($id:String!){
+        data: staticByID(id: $id) {
+          code,
+          msg,
+          data {
+            staticId,
+            staticName,
+            staticDesc,
+            staticVersion,
+            staticData
+          }
+        }
+      }`,
+      params
+    )
+  },
+
+
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-09-19 13:38:15  
+   * @Desc:   上传多语言导入文件 
+   * @Parm:    
+   */  
+  uploadI18ns(params: object) {
+    
   }
 
   

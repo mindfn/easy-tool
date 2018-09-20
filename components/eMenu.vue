@@ -4,8 +4,7 @@
     <mu-menu slot="left">
       <mu-button 
         flat 
-        class="e-menu-title"
-        @click="toggleShowMenu">
+        class="e-menu-title">
         <i class="fa fa-superpowers"></i>
         <a>Easy Tool</a>
       </mu-button>

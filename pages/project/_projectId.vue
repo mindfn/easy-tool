@@ -43,7 +43,7 @@
             xl="3"
             v-for="(item, index) in project.projectStatic" 
             :key="index">
-            <mu-card class="page-card">
+            <mu-card class="page-card"  @click="enterStatic(item)">
               <mu-card-media 
                 :title="item.staticName"
                 :sub-title="item.staticDesc"
@@ -53,18 +53,28 @@
                 <mu-row>
                   <mu-col :span="8">
                     <div class="page-card-avatar">
-                      <mu-badge 
+                      <!-- <mu-badge 
                         :color="STATIC_VIEW[item.staticType].color" 
                         :content="STATIC_VIEW[item.staticType].label">
                       </mu-badge>
+                      <mu-badge 
+                        color="success" 
+                        :content="item.staticVersion">
+                      </mu-badge> -->
+                      <mu-button  :color="STATIC_VIEW[item.staticType].color">
+                        {{ STATIC_VIEW[item.staticType].label }}
+                      </mu-button>
+                      <mu-button class="page-card-version"  color="green300">
+                        {{ item.staticVersion }}
+                      </mu-button>
                     </div>
                   </mu-col>
                   <mu-col :span="4">
                     <mu-button small fab color="red" @click.stop="openDeleteDialog(index)">
-                      <i class="fa fa fa-trash"></i>
+                      <i class="fa fa-trash"></i>
                     </mu-button>
-                    <mu-button small fab color="success" @click.stop="openEditDialog(index)">
-                      <i class="fa fa fa-pencil"></i>
+                    <mu-button small fab color="blue" @click.stop="openEditDialog(index)">
+                      <i class="fa fa-pencil"></i>
                     </mu-button>
                   </mu-col>
                 </mu-row>
@@ -149,6 +159,7 @@ export default class extends mixins(head, layout) {
   }
 
   currentStatic: Static = { // 当前要编辑的资源类型
+    staticVersion: '',
     staticId: '',
     staticName: '',
     staticType: 0,
@@ -167,16 +178,6 @@ export default class extends mixins(head, layout) {
         project: <Project>res.data
       })
     })
-  }
-
-  /** 
-   * @Author: zhuxiankang 
-   * @Date:   2018-09-13 10:14:45  
-   * @Desc:   离开当前项目的资源管理
-   * @Parm:    
-   */  
-  leaveProject() {
-    this.$router.push('/project')
   }
 
   /** 
@@ -251,41 +252,32 @@ export default class extends mixins(head, layout) {
       this.project = <Project>res.data
     })
   }
+
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-09-13 10:14:45  
+   * @Desc:   离开当前项目的资源管理
+   * @Parm:    
+   */  
+  leaveProject() {
+    this.$router.push('/project')
+  }
+
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-09-17 13:49:59  
+   * @Desc:   进入资源类型管理 
+   * @Parm:    
+   */  
+  enterStatic(sta: Static) {
+    this.$router.push(`/project/static/${this.$route.params.projectId}-${sta.staticId}`)
+  }
 }
 </script>
 
 
-<style lang="less">
-.page-card {
-  .mu-card-text { 
-    .mu-badge {
-      line-height: 3.5;
-      padding: 0 15px;
-    }
-  }
-}
-</style>
-
-
 
 <style lang="less" scoped>
-
-.page-container {
-  .mu-avatar {
-    &:hover {
-      transition: all .3s cubic-bezier(.4,0,.2,1);
-      cursor: pointer;
-      background: rgb(33, 150, 243);
-    }
-  }
-
-  .mu-card-header-title {
-    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
-    .mu-card-title {
-      font-weight: bold;
-    }
-  }
-}
 
 .page-card {
   height: 300px;
@@ -326,7 +318,7 @@ export default class extends mixins(head, layout) {
         margin: 0 4px 6px 0;
         font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
       }
-      .col {
+      .col-4 {
         height: 100%;
         .mu-button {
           float: right;
@@ -339,17 +331,27 @@ export default class extends mixins(head, layout) {
       }
     }
   }
-  .mu-button {
-    opacity: 0;
-  }
-  &:hover {
+
+  .col-4 {
     .mu-button {
-      opacity: 1;
-      transition: all .5s cubic-bezier(.4,0,.2,1);
+      opacity: 0;
+    }
+  }
+  
+  &:hover {
+    .col-4 {
+      .mu-button {
+        opacity: 1;
+        transition: all .5s cubic-bezier(.4,0,.2,1);
+      }
     }
   }
 }
 
+.page-card-version {
+  margin-left: -4px;
+  box-shadow: none;
+}
 
 </style>
 

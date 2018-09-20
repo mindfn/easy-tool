@@ -22,6 +22,8 @@ module.exports = {
     {name: '项目模块[Node]'},
     {name: '静态资源模块[Vue]'},
     {name: '静态资源模块[Node]'},
+    {name: '多语言模块[Vue]'},
+    {name: '多语言模块[Node]'},
     {name: '配置项目'},
     {name: '缺陷修复'},
     {name: '更新日志'},

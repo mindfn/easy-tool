@@ -11,6 +11,7 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "experimentalDecorators": true,
+    "downlevelIteration": true,
     "noImplicitAny": false,
     "noImplicitThis": false,
     "strictNullChecks": true,

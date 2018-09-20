@@ -76,10 +76,10 @@
                   </mu-col>
                   <mu-col :span="4">
                     <mu-button small fab color="red" @click.stop="openDeleteDialog(index)">
-                      <i class="fa fa fa-trash"></i>
+                      <i class="fa fa-trash"></i>
                     </mu-button>
-                    <mu-button small fab color="success" @click.stop="openEditDialog(index)">
-                      <i class="fa fa fa-pencil"></i>
+                    <mu-button small fab color="blue" @click.stop="openEditDialog(index)">
+                      <i class="fa fa-pencil"></i>
                     </mu-button>
                   </mu-col>
                 </mu-row>
@@ -295,6 +295,23 @@ export default class extends mixins(head, layout) {
 
 
 <style lang="less" scoped>
+
+.page-container {
+  .mu-avatar {
+    &:hover {
+      transition: all .3s cubic-bezier(.4,0,.2,1);
+      cursor: pointer;
+      background: rgb(33, 150, 243);
+    }
+  }
+  .mu-card-header-title {
+    font-family: Roboto,Lato,sans-serif;
+    .mu-card-title {
+      font-weight: normal;
+    }
+  }
+}
+
 .page-card {
   height: 300px;
   margin-bottom: 32px;

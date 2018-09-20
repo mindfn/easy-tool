@@ -63,6 +63,7 @@ module.exports = {
 
   plugins: [
     '~/plugins/museui', 
+    '~/plugins/upload',
     {src: '~/plugins/jsencrypt.ts', ssr: false}
   ],
 

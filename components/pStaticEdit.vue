@@ -17,12 +17,24 @@
         </mu-text-field>
       </mu-form-item>
       <mu-form-item 
-        label="资源类型名称(必填)" 
+        label="资源名称(必填)" 
         prop="staticName"
         :error-text="staticNameErrText"
         :rules="requiredRule">
         <mu-text-field 
           v-model="staticData.staticName"
+          :max-length="32">
+        </mu-text-field>
+      </mu-form-item>
+      <mu-form-item 
+        label="资源版本(必填)" 
+        prop="staticVersion"
+        :error-text="staticVersionErrText"
+        :rules="versionRule">
+        <mu-text-field 
+          v-model="staticData.staticVersion"
+          :disabled="editType === EDIT_TYPE.EDIT"
+          color="green300"
           :max-length="32">
         </mu-text-field>
       </mu-form-item>
@@ -40,7 +52,7 @@
         </mu-radio>
       </mu-form-item>
       <mu-form-item 
-        label="资源类型描述(必填)" 
+        label="资源描述(必填)" 
         prop="staticDesc"
         :rules="requiredRule">
         <mu-text-field  
@@ -85,9 +97,11 @@ export default class extends Vue {
   editType: number = EDIT_TYPE.ADD
   staticNameErrText: string = ''
   staticTypeErrText: string = ''
+  staticVersionErrText: string = ''
 
   staticData: Static = { // 项目资源类型
     staticId: '',
+    staticVersion: '',
     staticName: '',
     staticType: STATIC.I18N, // 默认显示多语言
     staticDesc: ''
@@ -96,6 +110,12 @@ export default class extends Vue {
   requiredRule: Array<object> = [
     { validate: (val) => !!val, message: '请填写字段信息！'}
   ]
+
+  versionRule: Array<object> = [
+    ...this.requiredRule,
+    { validate: (val) => !!/^\d+(\.\d+){0,3}$/.test(val), message: '资源版本必须是数字和小数点组合的x、x.x、x.x.x格式，例如1.2.3！'}
+  ]
+
 
   @Prop()
   type!: number 
@@ -119,6 +139,7 @@ export default class extends Vue {
     ? {
         staticId: '',
         staticName: '',
+        staticVersion: '',
         staticType: STATIC.I18N, // 默认显示多语言
         staticDesc: ''}
     : this.data     
@@ -142,7 +163,7 @@ export default class extends Vue {
          if(res.code === COMMON_CODE.STATIC_NAME_REPEAT) {
             this.staticNameErrText = res.msg
             return
-         } else if(res.code === COMMON_CODE.STATIC_TYPE_REPEAT) {
+         } else if(res.code === COMMON_CODE.STATIC_VERSION_REPEAT) {
             this.staticTypeErrText = res.msg
             return
          }
@@ -173,6 +194,7 @@ export default class extends Vue {
   clearFormValidate() : void {
     this.staticNameErrText = ''
     this.staticTypeErrText = ''
+    this.staticVersionErrText = ''
   }
 }
 </script>

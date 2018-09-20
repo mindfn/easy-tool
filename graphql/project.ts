@@ -83,6 +83,7 @@ export default {
             projectDesc,
             projectStatic {
               staticId,
+              staticVersion,
               staticDesc,
               staticType,
               staticName

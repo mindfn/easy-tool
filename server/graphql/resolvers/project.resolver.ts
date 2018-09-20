@@ -120,7 +120,6 @@ const query = {
         projects
       )
     } catch(err) {
-      console.error(err.message)
       return resolveResponse(
         ERROR,
         err.message

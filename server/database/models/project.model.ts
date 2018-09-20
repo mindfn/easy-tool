@@ -13,7 +13,7 @@ const MemberSchema = new Schema({
   },
 
   userId: {
-    type: Schema.Types.ObjectId,
+    type: String,
     required: true,
     unique: true,
     index: true
@@ -27,10 +27,16 @@ const MemberSchema = new Schema({
   },
 })
 
-
 // 项目静态资源类型
 const StaticSchema = new Schema({
   staticName: {
+    type: String,
+    unique: true,
+    trim: true,
+    index: true,
+    required: true
+  },
+  staticVersion: {
     type: String,
     unique: true,
     trim: true,
@@ -47,7 +53,7 @@ const StaticSchema = new Schema({
   ...option
 })
 
-// 新增虚拟属性projectId
+// 新增虚拟属性staticId
 StaticSchema.virtual('staticId').get(function (this: any) {
   return this._id.toString()
 })

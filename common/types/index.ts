@@ -23,6 +23,7 @@ export interface Static {
   staticName: string,
   staticType: number,
   staticDesc: string,
+  staticVersion: string,
   [propName: string]: any
 }
 
@@ -36,3 +37,12 @@ export interface Project {
   projectStatic?: Static[]
 }
 
+// 多语言接口
+export interface I18n {
+  staticId: string,
+  i18nFrontEndData?: string,
+  i18nBackEndData?: string,
+  i18nFrontImportTime?: string,
+  i18nBackEndImportTime?: string,
+  i18nFrontSyncTime?: string
+}

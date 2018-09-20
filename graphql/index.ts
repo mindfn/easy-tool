@@ -14,7 +14,6 @@ import Toast from 'muse-ui-toast/dist/muse-ui-toast.common'
 import Loading from 'muse-ui-loading/dist/muse-ui-loading.common'
 import toastConfig from '~/plugins/museui'
 import { LoadingInstance } from 'muse-ui-loading'
-
 Toast.config(toastConfig)
 
 

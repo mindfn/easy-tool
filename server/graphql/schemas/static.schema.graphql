@@ -1,12 +1,22 @@
 # import * from './common.schema.graphql'
 
 ### Graphql Type ###
-# 资源类型
+
+# 静态资源类型
 type Static {
   staticId: String,
   staticName: String,
   staticType: Int,
-  staticDesc: String
+  staticDesc: String,
+  staticVersion: String,
+  staticData: String
+}
+
+# 资源
+type StaticResponse {
+  code: Int!,
+  msg: String!,
+  data: Static
 }
 
 ### Graphql Schema ###
@@ -16,6 +26,7 @@ type Mutation {
     projectId: String!,
     staticName: String!,
     staticType: Int!,
+    staticVersion: String!,
     staticDesc: String!,
   ): CommonResponse
 
@@ -30,6 +41,15 @@ type Mutation {
     staticId: String!,
     projectId: String!,
     staticName: String!,
+    staticVersion: String!,
     staticDesc: String!
   ): CommonResponse
 } 
+
+
+type Query {
+  # 通过项目ID和静态资源ID查询资源
+  staticByID(
+    id: String!
+  ): StaticResponse
+}

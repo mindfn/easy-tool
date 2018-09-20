@@ -13,7 +13,8 @@ type Static {
   staticId: String,
   staticName: String,
   staticType: Int,
-  staticDesc: String
+  staticDesc: String,
+  staticVersion: String
 }
 
 # 项目

@@ -14,7 +14,7 @@ export const GRAPHQL = {
     PROJECT_ERR: '项目不存在！',
     STATIC_ERR: '静态资源不存在！',
     STATIC_NAME_REPEAT: '资源类型名称已经存在，请重新命名资源类型！',
-    STATIC_TYPE_REPEAT: '资源类型已经存在，请重新选择资源类型！'
+    STATIC_TYPE_VERSION_REPEAT: '当前资源类型对应的版本已经存在，请重新设置版本！'
   }
 }
 

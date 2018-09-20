@@ -17,21 +17,23 @@ const mutation = {
       let project: ProjectModel | null = await models.Project.findById(args.projectId)
       if(project && project.projectStatic) {
         let projectStatic = project.projectStatic || []
-        // 判断资源类型名称以及资源类型是否重复
         for(let sta of projectStatic) {
+          // 判断资源名称是否已存在
           if(sta.staticName === args.staticName) {
             return resolveResponse(
               COMMON_CODE.STATIC_NAME_REPEAT,
               RES.STATIC_NAME_REPEAT
             )  
-          } else if(sta.staticType === args.staticType) {
+          // 判断资源类型对应的版本是否已存在
+          } else if(sta.staticType === args.staticType && sta.staticVersion && args.staticType) {
             return resolveResponse(
-              COMMON_CODE.STATIC_TYPE_REPEAT,
-              RES.STATIC_NAME_REPEAT
-            )  
+              COMMON_CODE.STATIC_VERSION_REPEAT,
+              RES.STATIC_TYPE_VERSION_REPEAT
+            ) 
           }
         }
         project.projectStatic.push({
+          staticVersion: args.staticVersion,
           staticName: args.staticName,
           staticType: args.staticType,
           staticDesc: args.staticDesc
@@ -94,7 +96,7 @@ const mutation = {
       } else {
         return resolveResponse(
           ERROR,
-          RES.PROJECT_ERR
+          RES.STATIC_ERR
         )  
       }
     } catch(err) {
@@ -128,7 +130,7 @@ const mutation = {
       } else {
         return resolveResponse(
           ERROR,
-          RES.PROJECT_ERR
+          RES.STATIC_ERR
         ) 
       }
     } catch(err) {
@@ -141,9 +143,48 @@ const mutation = {
   }
 }
 
-
+const query = {
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-09-17 15:27:41  
+   * @Desc:   通过项目ID和静态资源ID搜索资源
+   * @Parm:    
+   */  
+  async staticByID(parent: any, args: resolveArgs, { models, req }: resolveCtx) {
+    try {
+      const ids = args.id.split('-')
+      let project = await models.Project.findById(ids[0])
+      if(project && project.projectStatic) {
+        let staToObj
+        const sta = project.projectStatic.find(sta => sta.staticId === ids[1])
+        const staticData = await models.I18n.findOne({ staticId: ids[1] })
+        if(sta) staToObj = sta.toObject()
+        return resolveResponse(
+          TRUE,
+          RES.QUERY_SUCCESS,
+          {
+            ...staToObj,
+            staticData: JSON.stringify(staticData)
+          }
+        )
+      } else {
+        return resolveResponse(
+          ERROR,
+          RES.STATIC_ERR
+        )  
+      }
+    } catch(err) {
+      console.error(err.message)
+      return resolveResponse(
+        ERROR,
+        err.message
+      ) 
+    }
+  }
+}
 
 
 export default {
-  mutation
+  mutation,
+  query
 }

@@ -4,8 +4,7 @@
     :title="editType === EDIT_TYPE.ADD ? '添加项目' : '编辑项目'" 
     width="520" 
     :open.sync="visible"
-    @close="closeDialog"
-    >
+    @close="closeDialog">
     <mu-form 
       ref="form" 
       :model="projectData">
@@ -221,7 +220,6 @@ export default class PProjectEdit extends Vue {
     this.visible = false
     this.$emit('update:show', false)
   }
-
 }
 </script>
 
