@@ -25,7 +25,7 @@
             <mu-icon left value=" " class="fa fa-upload"></mu-icon>
             开发导入
           </mu-button>
-          <mu-button flat textColor="grey600" @click="openImportDialog">
+          <mu-button flat textColor="grey600" @click="openImportTranslateDialog">
             <mu-icon left value=" " class="fa fa-upload"></mu-icon>
             翻译导入
           </mu-button>
@@ -33,6 +33,10 @@
             <mu-icon left value=" " class="fa fa-download"></mu-icon>
             导出多语言
           </mu-button>
+          <!-- 列表统计 -->
+          <div class="page-toolbar-right"> 
+            <mu-badge :content="`共${i18nData.length}条`" color="secondary"></mu-badge>
+          </div>
           <!-- 多语言分类 -->
           <div class="page-toolbar-right">  
             <mu-chip 
@@ -88,6 +92,13 @@
       :staticId="$route.params.id.split('-')[1]"
       @refresh="refreshI18n">
     </p-i18n-upload>
+
+    <!-- 导入翻译多语言 -->
+    <p-i18n-translate-upload
+      :show.sync="uploadTranslate"
+      :staticId="$route.params.id.split('-')[1]"
+      @refresh="refreshI18n">
+    </p-i18n-translate-upload>
   </div>
 </template>
 
@@ -101,11 +112,13 @@ import graphql from '~/graphql'
 import { Res } from '~/common/types'
 import {  STATIC_I18N_TABLE_COLUMNS, STATIC_I18N_TABLE_TITLES, STATIC_I18N_TYPE } from '~/common/constants'
 import pI18nUpload from '~/components/pI18nUpload.vue'
+import pI18nTranslateUpload from '~/components/pI18nTranslateUpload.vue'
 import i18n from '~/server/express/controllers/i18n.controller';
 
 @Component({
   components: {
-    pI18nUpload
+    pI18nUpload,
+    pI18nTranslateUpload
   }
 })
 export default class extends mixins(head, layout) {
@@ -113,7 +126,9 @@ export default class extends mixins(head, layout) {
 
   searchVisible: boolean = false
   upload: boolean = false
+  uploadTranslate: boolean = false
   i18nType: number = STATIC_I18N_TYPE.ALL
+
   i18nData: any[] = [] // 全部多语言
   i18nBackEndData: any[] = [] // 前端多语言
   i18nFrontEndData: any[] = [] // 后端多语言
@@ -207,7 +222,6 @@ export default class extends mixins(head, layout) {
     }
   }
 
-
   /** 
    * @Author: zhuxiankang 
    * @Date:   2018-09-18 20:53:07  
@@ -216,6 +230,16 @@ export default class extends mixins(head, layout) {
    */  
   openImportDialog() {
     this.upload = true
+  }
+
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-09-21 16:39:36  
+   * @Desc:   导入翻译多语言 
+   * @Parm:    
+   */  
+  openImportTranslateDialog() {
+    this.uploadTranslate = true
   }
 
   /** 

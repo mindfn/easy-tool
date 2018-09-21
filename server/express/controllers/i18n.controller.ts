@@ -13,6 +13,79 @@ const moment = require('moment')
 const { TEMP_EXCEL, RES } = EXPRESS
 const { TRUE, ERROR } = COMMON_CODE
 
+
+/** 
+ * @Author: zhuxiankang 
+ * @Date:   2018-09-21 17:06:05  
+ * @Desc:   检测上传的excel表头是否符合模板格式 
+ * @Parm:    
+ */
+function excelCaptionValidate(i18nSheet: any): any {
+  // 判断表格是否存在数据(不包括表头，所以是小于等于1)
+  if(i18nSheet.length <= 1) {
+    return {
+      code: ERROR,
+      msg: RES.EXCEL_SHEET_EMPTY,
+      data: null
+    }
+  }
+
+  // 判断表头是否存在且是否符合模板表头
+  const caption = i18nSheet[0]
+  if(caption.length < TEMP_EXCEL.CAPTION.length) {
+    return {
+      code: COMMON_CODE.ERROR,
+      msg: RES.EXCEL_CAPTION_ERR,
+      data: null
+    }
+  }
+
+  let resCaption = ''
+  const CAPTION = TEMP_EXCEL.CAPTION
+  for(let index=0, len=CAPTION.length; index < len; index ++) {
+    let cap = CAPTION[index].trim()
+    if(cap !== caption[index].trim()) {
+      resCaption = `excel表头信息错误：第${index + 1}列的内容错误, 应为"${cap}"`
+      break
+    }
+  }
+  if(resCaption) {
+    return {
+      code: COMMON_CODE.ERROR,
+      msg: resCaption,
+      data: null
+    }
+  }
+
+  return {
+    code: COMMON_CODE.TRUE
+  }
+}
+
+/** 
+ * @Author: zhuxiankang 
+ * @Date:   2018-09-21 17:42:51  
+ * @Desc:   将excel数据转化成json数据存储 
+ * @Parm:    
+ */
+function transfromExcelToJson(i18nSheet: any): any {
+  let tableData = <any[]>[]
+  // 转成数据库需要存储的格式
+  for(let column of i18nSheet) {
+    let tableRowData = {}
+    for(let index=0,len=STATIC_I18N_TABLE_COLUMNS.length; index < len; index++) {
+      // 过滤excel的空列
+      if(!column[index]) continue
+      tableRowData[STATIC_I18N_TABLE_COLUMNS[index]] = column[index]
+    }
+    if(!Object.keys(tableRowData).length) continue
+    tableData.push(tableRowData)
+  }
+  return tableData
+}
+
+
+
 let i18n = {
   /** 
    * @Author: zhuxiankang 
@@ -28,6 +101,11 @@ let i18n = {
     form.parse(req, (err: any, fileds: Fields, file: Files) => {
       if(err) {
         console.error(err.message)
+        res.json({
+          code: ERROR,
+          msg: err.message,
+          data: null
+        })
       }
       let i18nData = JSON.parse(<string>fileds.i18nData)
       // 上传excel
@@ -56,61 +134,21 @@ let i18n = {
     let xlsxSheets = xlsx.parse(file.multExcel.path)
     let i18nSheet = xlsxSheets[0].data
 
-    // 判断表格是否存在数据(不包括表头，所以是小于等于1)
-    if(i18nSheet.length <= 1) {
-      callback({
-        code: ERROR,
-        msg: RES.EXCEL_SHEET_EMPTY,
-        data: null
-      })
-      return
-    }
+    // 检测表头是否符合要求
+    let result = excelCaptionValidate(i18nSheet)
 
-    // 判断表头是否存在且是否符合模板表头
-    const caption = i18nSheet[0]
-    if(caption.length < TEMP_EXCEL.CAPTION.length) {
-      callback({
-        code: COMMON_CODE.ERROR,
-        msg: RES.EXCEL_CAPTION_ERR,
-        data: null
-      })
-      return
+    if(result.code === COMMON_CODE.ERROR) {
+      callback(result)
     }
-
-    let resCaption = ''
-    const CAPTION = TEMP_EXCEL.CAPTION
-    for(let index=0, len=CAPTION.length; index < len; index ++) {
-      let cap = CAPTION[index].trim()
-      if(cap !== caption[index].trim()) {
-        resCaption = `excel表头信息错误：第${index + 1}列的内容错误, 应为"${cap}"`
-        break
-      }
-    }
-    if(resCaption) {
-      callback({
-        code: COMMON_CODE.ERROR,
-        msg: resCaption,
-        data: null
-      })
-      return
-    }
-
+  
     // 移除表头信息
     i18nSheet.shift()
 
-    let tableData = <any[]>[]
-
-    // 转成数据库需要存储的格式
-    for(let column of i18nSheet) {
-      let tableRowData = {}
-      for(let index=0,len=STATIC_I18N_TABLE_COLUMNS.length; index < len; index++) {
-        tableRowData[STATIC_I18N_TABLE_COLUMNS[index]] = column[index] || ''
-      }
-      tableData.push(tableRowData)
-    }
+    // 将excel转化成数据库json格式
+    let i18nData = transfromExcelToJson(i18nSheet)
 
     // 存储到数据库  
-    i18n.storeI18n(tableData, type, staticId, callback)
+    i18n.storeI18n(i18nData, type, staticId, callback)
   },
 
   /** 
@@ -121,6 +159,62 @@ let i18n = {
    */  
   uploadJson(file: Files, type: number, staticId: string, callback: Function): void {
 
+  },
+
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-09-21 16:50:39  
+   * @Desc:   导入翻译态多语言 
+   * @Parm:    
+   */  
+  async uploadTranslate(req: Request, res: Response) {
+    const { I18n } = models
+    const form = new fromidable.IncomingForm()
+    form.encoding = 'utf-8'
+    form.keepExtensions = true
+
+    form.parse(req, async (err: any, fileds: Fields, file: Files) => {
+      if(err) {
+        console.error(err.message)
+        res.json({
+          code: ERROR,
+          msg: err.message,
+          data: null
+        })
+      }
+
+      
+      // 获取开发态多语言
+      let i18n: I18nModel | null = await I18n.findOne({ staticId: fileds.staticId })
+      if(!i18n) {
+        res.json({
+          code: ERROR,
+          msg: RES.UPLOAD_TRANSLATE_NOT_UPLOAD_DEV,
+          data: null
+        })
+      }
+
+      let xlsxSheets = xlsx.parse(file.multExcel.path)
+      let i18nSheet = xlsxSheets[0].data
+      
+      // 检测表头是否符合要求
+      let result = excelCaptionValidate(i18nSheet)
+      if(result.code === COMMON_CODE.ERROR) {
+        res.json(result)
+      }
+  
+      // 移除表头信息
+      i18nSheet.shift()
+
+      // 将excel转化成数据库json格式
+      let i18nData = transfromExcelToJson(i18nSheet)
+      
+
+
+      
+
+      
+    })
   },
 
   /** 

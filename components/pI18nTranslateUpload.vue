@@ -1,19 +1,16 @@
 <template>
   <!-- 项目编辑 -->
   <mu-dialog 
-    title="开发导入多语言" 
+    title="翻译导入多语言" 
     width="520" 
     :open.sync="visible"
     @close="closeDialog">
     <mu-form 
-      ref="form" :model="i18nData">
-      <mu-form-item prop="radio" label="导入类型">
-        <mu-radio v-model="i18nData.type" :value="STATIC_I18N_TYPE.FRONT" label="前端"></mu-radio>
-        <mu-radio v-model="i18nData.type" :value="STATIC_I18N_TYPE.BACK" label="后端"></mu-radio>
-      </mu-form-item>
-      <mu-form-item prop="radio" label="导入格式">
-        <mu-radio v-model="i18nData.format" :value="STATIC_I18N_FORMAT.XLSX" label="xlsx"></mu-radio>
-        <mu-radio v-model="i18nData.format" :value="STATIC_I18N_FORMAT.JSON" label="json"></mu-radio>
+      ref="form">
+      <mu-form-item>
+        <mu-alert color="info" >
+          请导入xlsx格式的excel文件！
+        </mu-alert>
       </mu-form-item>
       <mu-form-item prop="radio" label="导入文件">
         <mu-text-field readonly v-model="fileName" :error-text="fileErrText">
@@ -22,8 +19,8 @@
               text="选择文件"
               type="default"
               ref="upload"
-              :action="`${proxyHttp}/i18n/upload/dev`"
-              :data="{ i18nData: JSON.stringify(i18nData), staticId: staticId }"
+              :action="`${proxyHttp}/i18n/upload/translate`"
+              :data="{ staticId: staticId }"
               :autoUpload = "false"
               name="multExcel"
               @change="showFileName"
@@ -49,31 +46,17 @@
 import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
 import { Res } from '~/common/types'
 import graphql from '~/graphql'
-import { STATIC_I18N_TYPE, STATIC_I18N_FORMAT }  from '~/common/constants'
 import config from '~/nuxt.config'
 import { COMMON_CODE }  from '~/common/constants'
-
-
-interface Form {
-  type: number,
-  format: number
-}
 
 @Component
 export default class PProjectEdit extends Vue {
   readonly proxyHttp: string = config.proxyHttp
-  readonly STATIC_I18N_TYPE = STATIC_I18N_TYPE
-  readonly STATIC_I18N_FORMAT = STATIC_I18N_FORMAT
 
   visible: boolean = false
 
-  i18nData: Form = {
-    type: STATIC_I18N_TYPE.BACK, // 类型
-    format: STATIC_I18N_FORMAT.XLSX // 格式
-  }
-
-  fileName: string = ''
   fileErrText: string = ''
+  fileName: string = ''
 
   @Prop()
   show!: boolean
@@ -156,6 +139,3 @@ export default class PProjectEdit extends Vue {
   }
 }
 </script>
-
-
-
