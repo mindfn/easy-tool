@@ -19,109 +19,49 @@
       </mu-row>   
        <!-- 卡片主体 -->
       <div class="page-body">
-
         <!-- 操作栏 -->
         <div class="page-body-toolbar">
-          <!-- <mu-button flat textColor="grey600">
-            <mu-icon left value=" " class="fa fa-plus"></mu-icon>
-            添加
-          </mu-button>
-          <mu-button flat textColor="grey600">
-            <mu-icon left value=" " class="fa fa-trash"></mu-icon>
-            批量删除
-          </mu-button> -->
           <mu-button flat textColor="grey600" @click="openImportDialog">
             <mu-icon left value=" " class="fa fa-upload"></mu-icon>
-            导入
+            开发导入
+          </mu-button>
+          <mu-button flat textColor="grey600" @click="openImportDialog">
+            <mu-icon left value=" " class="fa fa-upload"></mu-icon>
+            翻译导入
           </mu-button>
           <mu-button flat textColor="grey600">
             <mu-icon left value=" " class="fa fa-download"></mu-icon>
-            导出
+            导出多语言
           </mu-button>
-          <!-- 搜索展开和收起 -->
-          <!-- <div class="page-toolbar-right">
-            <mu-button 
-              fab 
-              small 
-              color="blue"
-              @click="toggleSearchVisible">
-              <i class="fa fa-filter"></i>
-            </mu-button>
-          </div> -->
-
-          <!-- 搜索关键信息 -->
-          <!-- <div class="page-toolbar-right">
-            <mu-text-field 
-              v-model="searchKey"
-              placeholder="搜索多语言" 
-              @input.native="searchKeys">
-              <template slot="prepend">
-                <i class="fa fa-search page-toolbar-search"></i>
-              </template>
-              <template slot="append" v-if="searchKey">
-                <i class="fa fa-close" @click="clearSearch"></i>
-              </template>
-            </mu-text-field>
-          </div> -->
-          <!-- 版本查询 -->
+          <!-- 多语言分类 -->
           <div class="page-toolbar-right">  
-            <mu-chip class="demo-chip">
+            <mu-chip 
+              :class="i18nType === STATIC_I18N_TYPE.ALL ? 'page-chip-selected' : ''" 
+              @click="showI18nType(STATIC_I18N_TYPE.ALL)">
               所有多语言
             </mu-chip>
-            <mu-chip class="demo-chip">
+            <mu-chip 
+              :class="i18nType === STATIC_I18N_TYPE.FRONT ? 'page-chip-selected' : ''"
+              @click="showI18nType(STATIC_I18N_TYPE.FRONT)">
               前端多语言
             </mu-chip>
-            <mu-chip class="demo-chip">
+            <mu-chip 
+              :class="i18nType === STATIC_I18N_TYPE.BACK ? 'page-chip-selected' : ''"
+              @click="showI18nType(STATIC_I18N_TYPE.BACK)">
               后端多语言
             </mu-chip>
           </div>
         </div>
-
-        <!-- 搜索栏 -->
-        <!-- <mu-expand-transition>
-          <div v-show="searchVisible" class="page-body-search">
-            <mu-row>
-              <mu-form inline label-position="left" :model="i18nSearch">
-                <mu-col :span="3">
-                  <mu-form-item prop="input" label="关键信息">
-                    <mu-text-field  v-model="i18nSearch.key"></mu-text-field>
-                  </mu-form-item>
-                </mu-col>
-                <mu-col :span="3">
-                  <mu-form-item prop="input" label="上传起始时间">
-                    <mu-date-input v-model="i18nSearch.createdTime" ></mu-date-input>
-                  </mu-form-item>
-                </mu-col>
-                <mu-col :span="3">
-                  <mu-form-item prop="input" label="同步起始时间">
-                    <mu-date-input v-model="i18nSearch.updateTime"></mu-date-input>
-                  </mu-form-item>
-                </mu-col>
-                <mu-col :span="3">
-                  <mu-form-item prop="input" label="">
-                    <mu-button color="blue">
-                      查询
-                    </mu-button>
-                    <mu-button>
-                      重置
-                    </mu-button>
-                  </mu-form-item>
-                </mu-col>
-              </mu-form>
-            </mu-row>
-          </div>
-        </mu-expand-transition> -->
- 
         <!-- 列表 -->
         <div class="page-body-table">
           <!-- 暂无数据 -->
-          <!-- <div 
+          <div 
             class="page-body-default"
             align-items="center"
             v-if="!i18nData.length">
             <img src="~assets/img/default/default.jpg" alt="">
             <div>啊哈，么有数据！</div>
-          </div> -->
+          </div>
           <mu-container>
             <mu-paper :z-depth="1">
               <mu-data-table 
@@ -134,23 +74,6 @@
                   <td>{{ sta.staticVersion }}</td>
                   <td>{{scope.row.chinese}}</td>
                   <td>{{scope.row.english}}</td>
-                  <!-- <td>
-                    <mu-button 
-                      flat
-                      small 
-                      type="text"
-                      color="blue300"
-                      class="page-table-btn">
-                      编辑
-                    </mu-button>
-                    <mu-button 
-                      flat
-                      small 
-                      color="red300"
-                      class="page-table-btn">
-                      删除
-                    </mu-button>  
-                  </td> -->
                 </template>
               </mu-data-table>
             </mu-paper>
@@ -159,13 +82,12 @@
       </div>
     </mu-card> 
 
-    <!-- 导入多语言 -->
+    <!-- 导入开发多语言 -->
     <p-i18n-upload
       :show.sync="upload"
       :staticId="$route.params.id.split('-')[1]"
       @refresh="refreshI18n">
     </p-i18n-upload>
-
   </div>
 </template>
 
@@ -177,7 +99,7 @@ import head from '~/mixins/head'
 import layout from '~/mixins/layout'
 import graphql from '~/graphql'
 import { Res } from '~/common/types'
-import {  STATIC_I18N_TABLE_COLUMNS, STATIC_I18N_TABLE_TITLES } from '~/common/constants'
+import {  STATIC_I18N_TABLE_COLUMNS, STATIC_I18N_TABLE_TITLES, STATIC_I18N_TYPE } from '~/common/constants'
 import pI18nUpload from '~/components/pI18nUpload.vue'
 import i18n from '~/server/express/controllers/i18n.controller';
 
@@ -187,11 +109,14 @@ import i18n from '~/server/express/controllers/i18n.controller';
   }
 })
 export default class extends mixins(head, layout) {
+  readonly STATIC_I18N_TYPE = STATIC_I18N_TYPE
+
   searchVisible: boolean = false
   upload: boolean = false
-  i18nData = [] // 全部多语言
-  i18nBackEndData = [] // 前端多语言
-  i18nFrontEndData = [] // 后端多语言
+  i18nType: number = STATIC_I18N_TYPE.ALL
+  i18nData: any[] = [] // 全部多语言
+  i18nBackEndData: any[] = [] // 前端多语言
+  i18nFrontEndData: any[] = [] // 后端多语言
 
   i18nColumns = [
     { title: '关键信息', name: 'key' },
@@ -219,11 +144,11 @@ export default class extends mixins(head, layout) {
         i18nFrontEndData = staticData.i18nFrontEndData && JSON.parse(staticData.i18nFrontEndData)
       }
 
-      if(i18nBackEndData.length && !i18nFrontEndData)  {
+      if(i18nBackEndData && i18nBackEndData.length && !i18nFrontEndData)  {
         i18nData = i18nBackEndData
-      } else if(i18nFrontEndData.length && !i18nBackEndData) {
+      } else if(i18nFrontEndData && i18nFrontEndData.length && !i18nBackEndData) {
         i18nData = i18nFrontEndData
-      } else if(i18nFrontEndData.length && i18nBackEndData.length) {
+      } else if(i18nFrontEndData && i18nBackEndData && i18nFrontEndData.length && i18nBackEndData.length) {
         // 前后端多语言合并，默认前端覆盖后端重复key值的多语言
         i18nData = [
           ...i18nFrontEndData,
@@ -251,17 +176,37 @@ export default class extends mixins(head, layout) {
    */  
   leaveStatic() {
     this.$router.push(`/project/${this.$route.params.id.split('-')[0]}`)
-  }
+  } 
 
   /** 
    * @Author: zhuxiankang 
-   * @Date:   2018-09-18 16:17:12  
-   * @Desc:   显示或隐藏搜索栏 
+   * @Date:   2018-09-21 15:38:13  
+   * @Desc:    
    * @Parm:    
    */  
-  toggleSearchVisible() {
-    this.searchVisible = !this.searchVisible
+  showI18nType(type: number) {
+    this.i18nType = type
+    switch(this.i18nType) {
+      case STATIC_I18N_TYPE.ALL:
+        this.i18nData = [
+          ...this.i18nFrontEndData,
+          ...this.i18nBackEndData
+        ]
+        break
+
+      case STATIC_I18N_TYPE.FRONT:
+        this.i18nData = this.i18nFrontEndData
+        break  
+      
+      case STATIC_I18N_TYPE.BACK:
+        this.i18nData = this.i18nBackEndData
+        break
+
+      default:
+        break  
+    }
   }
+
 
   /** 
    * @Author: zhuxiankang 
@@ -315,7 +260,10 @@ export default class extends mixins(head, layout) {
       text-align: center;
       min-width: 80px;
     }
-
+    .mu-chip.page-chip-selected {
+      background-color: rgb(33, 150, 243);
+      color: white;
+    }
     .mu-input  {
       margin-bottom: 0;
     }
@@ -334,19 +282,20 @@ export default class extends mixins(head, layout) {
 }
 
 .page-body-table {
-  overflow: auto;
+  overflow-y: hidden;
+  overflow-x: auto;
   max-width: 99%;
   margin: 0 auto;
   height: calc(100% - 60px);
 
+  .container {
+    max-width: 2000px;
+    padding: 0;
+  }
+
   .page-table-btn {
     min-width: 40px;
   }
-}
-
-.container {
-  max-width: 2000px;
-  padding: 0;
 }
 </style>
 

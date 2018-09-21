@@ -1,7 +1,7 @@
 import { resolveResponse } from '../../utils'
 import { GRAPHQL } from '../../constant'
 import  { COMMON_CODE }  from '../../../common/constants'
-import { resolveArgs, resolveCtx, resolveRes, ProjectModel } from '../../types'
+import { resolveArgs, resolveCtx, resolveRes, ProjectModel, I18nModel } from '../../types'
 const { RES } = GRAPHQL
 const { ERROR, TRUE } = COMMON_CODE
 
@@ -120,7 +120,10 @@ const mutation = {
       if(project && project.projectStatic) {
         let index = project.projectStatic.findIndex(sta => sta.staticId === args.staticId)
         if(index !== -1) {
+          // 删除当前项目的静态资源类型
           project.projectStatic.splice(index, 1)
+          // 删除静态资源对应的多语言(如果存在)
+          await models.I18n.deleteOne({staticId: args.staticId})
         }
         await project.save()
         return resolveResponse(

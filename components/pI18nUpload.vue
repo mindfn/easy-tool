@@ -1,14 +1,13 @@
 <template>
   <!-- 项目编辑 -->
   <mu-dialog 
-    title="导入多语言" 
+    title="开发导入多语言" 
     width="520" 
     :open.sync="visible"
     @close="closeDialog">
     <mu-form 
       ref="form" :model="i18nData">
       <mu-form-item prop="radio" label="导入类型">
-        <mu-radio v-model="i18nData.type" :value="STATIC_I18N_TYPE.ALL" label="全部"></mu-radio>
         <mu-radio v-model="i18nData.type" :value="STATIC_I18N_TYPE.FRONT" label="前端"></mu-radio>
         <mu-radio v-model="i18nData.type" :value="STATIC_I18N_TYPE.BACK" label="后端"></mu-radio>
       </mu-form-item>
@@ -54,6 +53,7 @@ import graphql from '~/graphql'
 import { spellFormat } from '~/utils'
 import { COMMON_CODE, STATIC_I18N_TYPE, STATIC_I18N_FORMAT }  from '~/common/constants'
 import config from '~/nuxt.config'
+
 
 interface Form {
   type: number,
@@ -129,7 +129,6 @@ export default class PProjectEdit extends Vue {
    * @Parm:    
    */  
   uploadSuccess(res) {
-    console.log(res)
   }
 
   /** 
@@ -154,7 +153,7 @@ export default class PProjectEdit extends Vue {
     } 
     if(this.fileErrText) return
     this.$refs.upload['submit']()
-  } 
+  }
 }
 </script>
 
