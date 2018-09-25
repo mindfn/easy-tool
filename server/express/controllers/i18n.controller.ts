@@ -186,6 +186,7 @@ let i18n = {
       
       // 获取开发态多语言
       let i18n: I18nModel | null = await I18n.findOne({ staticId: fileds.staticId })
+
       if(!i18n) {
         res.json({
           code: ERROR,
@@ -208,11 +209,6 @@ let i18n = {
 
       // 将excel转化成数据库json格式
       let i18nData = transfromExcelToJson(i18nSheet)
-      
-
-
-      
-
       
     })
   },

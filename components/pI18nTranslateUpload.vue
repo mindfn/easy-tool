@@ -20,7 +20,7 @@
               type="default"
               ref="upload"
               :action="`${proxyHttp}/i18n/upload/translate`"
-              :data="{ staticId: staticId }"
+              :data="{ staticId }"
               :autoUpload = "false"
               name="multExcel"
               @change="showFileName"

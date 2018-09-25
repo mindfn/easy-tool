@@ -23,7 +23,7 @@
               type="default"
               ref="upload"
               :action="`${proxyHttp}/i18n/upload/dev`"
-              :data="{ i18nData: JSON.stringify(i18nData), staticId: staticId }"
+              :data="{ i18nData: JSON.stringify(i18nData), staticId }"
               :autoUpload = "false"
               name="multExcel"
               @change="showFileName"
