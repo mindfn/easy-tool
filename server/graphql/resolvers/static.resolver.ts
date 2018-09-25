@@ -16,7 +16,7 @@ const mutation = {
     try {
       let project: ProjectModel | null = await models.Project.findById(args.projectId)
       if(project && project.projectStatic) {
-        let projectStatic = project.projectStatic || []
+        let projectStatic = project.projectStatic
         for(let sta of projectStatic) {
           // 判断资源名称是否已存在
           if(sta.staticName === args.staticName) {
