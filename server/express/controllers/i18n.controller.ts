@@ -68,7 +68,7 @@ function excelCaptionValidate(i18nSheet: any): any {
  * @Desc:   将excel数据转化成json数据存储 
  * @Parm:    
  */
-function transfromExcelToJson(i18nSheet: any): any {
+function transformExcelToJson(i18nSheet: any): any {
   let tableData = <any[]>[]
   // 转成数据库需要存储的格式
   for(let column of i18nSheet) {
@@ -145,7 +145,7 @@ let i18n = {
     i18nSheet.shift()
 
     // 将excel转化成数据库json格式
-    let i18nData = transfromExcelToJson(i18nSheet)
+    let i18nData = transformExcelToJson(i18nSheet)
 
     // 存储到数据库  
     i18n.storeI18n(i18nData, type, staticId, callback)
@@ -208,8 +208,7 @@ let i18n = {
       i18nSheet.shift()
 
       // 将excel转化成数据库json格式
-      let i18nData = transfromExcelToJson(i18nSheet)
-      
+      let i18nData = transformExcelToJson(i18nSheet)
     })
   },
 
