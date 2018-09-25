@@ -153,12 +153,15 @@ export default class PProjectEdit extends Vue {
     } else {
       this.users = []
       this.searchUsers(() => {
+        console.log(this.users)
         let { projectData } = this
         this.projectData = this.data
         let projectMember = this.data.projectMember
         if(!projectMember || !projectMember.length) return
         let users: User[] = []
         // 获取当前项目成员
+        // 注意这里必须使用同样的数组引用，否则无法使多选的选项出现，和muse-ui的select组件相关
+        // 注意避免使用filter，新数组无效
         for(let member of projectMember) {
           let find = this.users.find(user => user.userId === member.userId)
           if(find) users.push(find)

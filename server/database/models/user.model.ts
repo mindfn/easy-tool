@@ -26,9 +26,9 @@ const UserSchema = new mongoose.Schema({
 })
 
 // 新增虚拟属性userId
-// UserSchema.virtual('userId').get(function (this: any) {
-//   return this._id.toString()
-// })
+UserSchema.virtual('userId').get(function (this: any) {
+  return this._id.toString()
+})
 
 const User = mongoose.model('User', UserSchema)
 export default User
