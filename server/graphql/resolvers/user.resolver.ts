@@ -2,7 +2,6 @@ import { resolveResponse, loginOA } from '../../utils'
 import { GRAPHQL } from '../../constant'
 import  { COMMON_CODE }  from '../../../common/constants'
 import { resolveArgs, resolveCtx, resolveRes, UserModel } from '../../types'
-import { createMd5Password } from '../../utils'
 const { RES } = GRAPHQL
 const { ERROR, TRUE } = COMMON_CODE
 
@@ -21,43 +20,30 @@ const mutation = {
     try {
       let { username, password } = args
       const { User } = models
-      // 判断用户是否已经注册
-      let user: UserModel | null = await User.findOne({ username })
-      if(user) {
-        if(user.password === createMd5Password(decrypt(password))) {
-          if(req.session) {
-            req.session.user = user
-          } 
-          return resolveResponse(
-            TRUE, 
-            RES.LOGIN_SUCCESS
-          )
-        } else {
-          return resolveResponse(
-            ERROR, 
-            RES.USER_ERR
-          )
-        }
-      } else {
-        // 数据库不存在用户信息，因此需要向ldap发起请求
-        password = decrypt(password)
-        let loginSuccess: boolean | string = await loginOA(username, password)
-        if(loginSuccess)  {
+
+      // 向ldap发起请求
+      let loginSuccess: boolean | string = await loginOA(username, decrypt(password))
+      if(loginSuccess)  {
+        let user: UserModel | null = await User.findOne({ username })
+        // 如果数据库不存在，则存储当前用户
+        if(!user) {
           user = await User.create({
-            username,
-            password
+            username
           })
-          if(req.session) req.session.user = user
-          return resolveResponse(
-            TRUE,
-            RES.LOGIN_SUCCESS
-          )
-        } else {
-          return resolveResponse(
-            ERROR,
-            RES.USER_ERR
-          )
         }
+        if(req.session) {
+          req.session.username = user.username
+          req.session.userId = user.userId
+        }
+        return resolveResponse(
+          TRUE,
+          RES.LOGIN_SUCCESS
+        )
+      } else {
+        return resolveResponse(
+          ERROR,
+          RES.USER_ERR
+        )
       }
     } catch(err) {
       console.error(err.message)

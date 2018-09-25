@@ -1,6 +1,5 @@
 import * as mongoose from 'mongoose'
 import option from './option'
-import { createMd5Password } from '../../utils'
 
 const UserSchema = new mongoose.Schema({
   username: {
@@ -9,14 +8,6 @@ const UserSchema = new mongoose.Schema({
     trim: true,
     unique: true, // Hik的用户名唯一
     index: true  // secondary index
-  },
-  password: {
-    type: String,
-    required: true,
-    trim: true,
-    set(password) {
-      return createMd5Password(password)
-    }
   }
 }, {
   ...option,
