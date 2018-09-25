@@ -3,6 +3,8 @@ export const EXPRESS = {
     EXCEL_SHEET_EMPTY: '上传的xlsx格式文件没有数据！',
     EXCEL_CAPTION_ERR: '上传的xlsx格式文件表头信息不符合模板格式！',
     UPLOAD_TRANSLATE_NOT_UPLOAD_DEV: '未进行开发导入，请先导入开发态多语言！',
+    UPLOAD_TRANSLATE_NOT_UPLOAD_FRONT: '请先导入前端多语言！',
+    UPLOAD_TRANSLATE_NOT_UPLOAD_BACK: '请先导入后端多语言！',
     UPLOAD_SUCCESS: '上传成功！'
   },  
 

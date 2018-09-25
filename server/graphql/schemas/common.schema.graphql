@@ -2,6 +2,6 @@
 ### Graphql Type ###
 
 type CommonResponse {
-  code: Int!,
-  msg: String!
+  code: Int,
+  msg: String
 }

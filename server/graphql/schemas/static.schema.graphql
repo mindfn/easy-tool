@@ -14,8 +14,8 @@ type Static {
 
 # 资源
 type StaticResponse {
-  code: Int!,
-  msg: String!,
+  code: Int,
+  msg: String,
   data: Static
 }
 

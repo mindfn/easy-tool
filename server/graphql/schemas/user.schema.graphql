@@ -4,15 +4,15 @@
 
 # 公钥
 type PublicKeyResponse {
-  code: Int!
-  msg: String!
-  data: String!
+  code: Int
+  msg: String
+  data: String
 }
 
 # 用户
 type UsersResponse {
-  code: Int!
-  msg: String!
+  code: Int
+  msg: String
   data: [UserInfo]
 }
 

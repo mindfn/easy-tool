@@ -153,7 +153,6 @@ export default class PProjectEdit extends Vue {
     } else {
       this.users = []
       this.searchUsers(() => {
-        console.log(this.users)
         let { projectData } = this
         this.projectData = this.data
         let projectMember = this.data.projectMember

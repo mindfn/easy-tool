@@ -5,8 +5,8 @@
     width="520" 
     :open.sync="visible"
     @close="closeDialog">
-    <mu-form 
-      ref="form">
+    <mu-form
+      :model="{}">
       <mu-form-item>
         <mu-alert color="info" >
           请导入xlsx格式的excel文件！

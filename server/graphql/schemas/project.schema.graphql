@@ -30,14 +30,14 @@ type Project {
 }
 
 type ProjectResponse {
-  code: Int!,
-  msg: String!,
+  code: Int,
+  msg: String,
   data: Project
 }
 
 type ProjectsResponse {
-  code: Int!,
-  msg: String!,
+  code: Int,
+  msg: String,
   data: [Project]
 }
 

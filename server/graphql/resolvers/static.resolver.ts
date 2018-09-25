@@ -1,7 +1,7 @@
 import { resolveResponse } from '../../utils'
 import { GRAPHQL } from '../../constant'
 import  { COMMON_CODE }  from '../../../common/constants'
-import { resolveArgs, resolveCtx, resolveRes, ProjectModel, I18nModel } from '../../types'
+import { resolveArgs, resolveCtx, resolveRes, ProjectModel } from '../../types'
 const { RES } = GRAPHQL
 const { ERROR, TRUE } = COMMON_CODE
 

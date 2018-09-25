@@ -6,8 +6,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true,
-    unique: true, // Hik的用户名唯一
-    index: true  // secondary index
+    unique: true // Hik的用户名唯一
   }
 }, {
   ...option,
