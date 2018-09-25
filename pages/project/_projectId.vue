@@ -206,7 +206,7 @@ export default class extends mixins(head, layout) {
       this.delName = ''
       this.currentStatic = JSON.parse(JSON.stringify(this.project.projectStatic[index]))
     } catch(err) {
-      this.$toast.success(err.msg)
+      this.$toast.success(err.message)
     }
   }
 
@@ -234,10 +234,16 @@ export default class extends mixins(head, layout) {
    * @Parm:    
    */  
   openEditDialog(index) {
-    if(!this.project.projectStatic) return
-    this.edit = true
-    this.type = EDIT_TYPE.EDIT
-    this.currentStatic = JSON.parse(JSON.stringify(this.project.projectStatic[index]))
+    try {
+      if(!this.project.projectStatic) return
+      this.edit = true
+      this.type = EDIT_TYPE.EDIT
+      this.currentStatic = JSON.parse(JSON.stringify(this.project.projectStatic[index]))
+    } catch(err) {
+      console.error(err.message)
+      this.$toast.success(err.message)
+    }
+   
   }
 
   /** 

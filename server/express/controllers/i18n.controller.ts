@@ -107,20 +107,29 @@ let i18n = {
           data: null
         })
       }
-      let i18nData = JSON.parse(<string>fileds.i18nData)
-      // 上传excel
-      if(i18nData.format === STATIC_I18N_FORMAT.XLSX) {
-        i18n.uploadExcel(file, i18nData.type, <string>fileds.staticId, (result) => {
-          res.json(result)
+      try {
+        let i18nData = JSON.parse(<string>fileds.i18nData)
+        // 上传excel
+        if(i18nData.format === STATIC_I18N_FORMAT.XLSX) {
+          i18n.uploadExcel(file, i18nData.type, <string>fileds.staticId, (result) => {
+            res.json(result)
+          })
+        // 上传json  
+        } else if(i18nData.format === STATIC_I18N_FORMAT.JSON) {
+          i18n.uploadJson(file, i18nData.type, <string>fileds.staticId, (result) => {
+            res.json(result)
+          })
+        } else {
+          
+        }
+      } catch(err) {
+        res.json({
+          code: ERROR,
+          msg: err.message,
+          data: null
         })
-      // 上传json  
-      } else if(i18nData.format === STATIC_I18N_FORMAT.JSON) {
-        i18n.uploadJson(file, i18nData.type, <string>fileds.staticId, (result) => {
-          res.json(result)
-        })
-      } else {
-        
       }
+     
     })
   },
 

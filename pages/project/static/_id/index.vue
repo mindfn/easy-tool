@@ -148,38 +148,42 @@ export default class extends mixins(head, layout) {
    */  
   asyncData ({ params }, cb) {
     graphql('sta-queryById', params, async (res: Res) => {
+      try {
+        let staticData = JSON.parse(res.data.staticData)
+        let i18nBackEndData = []
+        let i18nFrontEndData = []
+        let i18nData = []
 
-      let staticData = JSON.parse(res.data.staticData)
-      let i18nBackEndData = []
-      let i18nFrontEndData = []
-      let i18nData = []
+        if(staticData) {
+          i18nBackEndData = staticData.i18nBackEndData && JSON.parse(staticData.i18nBackEndData)
+          i18nFrontEndData = staticData.i18nFrontEndData && JSON.parse(staticData.i18nFrontEndData)
+        }
 
-      if(staticData) {
-        i18nBackEndData = staticData.i18nBackEndData && JSON.parse(staticData.i18nBackEndData)
-        i18nFrontEndData = staticData.i18nFrontEndData && JSON.parse(staticData.i18nFrontEndData)
+        if(i18nBackEndData && i18nBackEndData.length && !i18nFrontEndData)  {
+          i18nData = i18nBackEndData
+        } else if(i18nFrontEndData && i18nFrontEndData.length && !i18nBackEndData) {
+          i18nData = i18nFrontEndData
+        } else if(i18nFrontEndData && i18nBackEndData && i18nFrontEndData.length && i18nBackEndData.length) {
+          // 前后端多语言合并，默认前端覆盖后端重复key值的多语言
+          i18nData = [
+            ...i18nFrontEndData,
+            ...i18nBackEndData
+          ]
+        }
+        
+        cb(null, {
+          sta: {
+            ...res.data,
+            staticData: undefined
+          },
+          i18nData,
+          i18nFrontEndData,
+          i18nBackEndData
+        })
+      } catch(err) {
+        console.error(err.message)
       }
-
-      if(i18nBackEndData && i18nBackEndData.length && !i18nFrontEndData)  {
-        i18nData = i18nBackEndData
-      } else if(i18nFrontEndData && i18nFrontEndData.length && !i18nBackEndData) {
-        i18nData = i18nFrontEndData
-      } else if(i18nFrontEndData && i18nBackEndData && i18nFrontEndData.length && i18nBackEndData.length) {
-        // 前后端多语言合并，默认前端覆盖后端重复key值的多语言
-        i18nData = [
-          ...i18nFrontEndData,
-          ...i18nBackEndData
-        ]
-      }
-      
-      cb(null, {
-        sta: {
-          ...res.data,
-          staticData: undefined
-        },
-        i18nData,
-        i18nFrontEndData,
-        i18nBackEndData
-      })
+     
     })
   }
 

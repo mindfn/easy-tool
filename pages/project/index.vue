@@ -230,13 +230,19 @@ export default class extends mixins(head, layout) {
    * @Parm:    
    */  
   openEditDialog(index: number): void {
-    this.edit = true
-    this.type = EDIT_TYPE.EDIT
-    const project = this.projects[index]
-    this.currentProject = {
-      ...project,
-      projectMember: JSON.parse(JSON.stringify(project.projectMember))
+    try {
+      this.edit = true
+      this.type = EDIT_TYPE.EDIT
+      const project = this.projects[index]
+      this.currentProject = {
+        ...project,
+        projectMember: JSON.parse(JSON.stringify(project.projectMember))
+      }
+    } catch(err) {
+      console.error(err.message)
+      this.$toast.success(err.message)
     }
+   
   }
 
   /** 
@@ -263,7 +269,7 @@ export default class extends mixins(head, layout) {
       // 深拷贝
       this.currentProject = JSON.parse(JSON.stringify(this.projects[index]))
     } catch(err) {
-      this.$toast.success(err.msg)
+      this.$toast.success(err.message)
     }
   }
 
