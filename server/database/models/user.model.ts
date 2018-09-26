@@ -6,6 +6,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true,
+    index: true,
     unique: true // Hik的用户名唯一
   }
 }, {

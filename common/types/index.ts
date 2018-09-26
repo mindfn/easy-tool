@@ -39,10 +39,10 @@ export interface Project {
 
 // 多语言接口
 export interface I18n {
-  staticId: string,
-  i18nFrontEndData?: string,
-  i18nBackEndData?: string,
-  i18nFrontImportTime?: string,
-  i18nBackEndImportTime?: string,
-  i18nFrontSyncTime?: string
+  staticId?: string,
+  i18nName: string,
+  i18nDesc: string,
+  i18nData?: string,
+  i18nId?: string
+  i18nImportTime?: string
 }

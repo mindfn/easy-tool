@@ -84,24 +84,16 @@ export default {
             staticName,
             staticDesc,
             staticVersion,
-            staticData
+            staticData {
+              i18nName,
+              i18nDesc,
+              i18nId,
+              i18nImportTime
+            }
           }
         }
       }`,
       params
     )
-  },
-
-
-  /** 
-   * @Author: zhuxiankang 
-   * @Date:   2018-09-19 13:38:15  
-   * @Desc:   上传多语言导入文件 
-   * @Parm:    
-   */  
-  uploadI18ns(params: object) {
-    
   }
-
-  
 }

@@ -78,12 +78,7 @@ body {
       background: rgb(33, 150, 243);
     }
   }
-  .mu-card-header-title {
-    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
-    .mu-card-title {
-      font-weight: bold;
-    }
-  }
+ 
   height: 100%;
   padding: 12px;
   >.mu-card {
@@ -145,4 +140,10 @@ body {
   }
 }
 
+
+.page-list-edit {
+  .mu-button {
+    min-width: 40px;
+  }
+}
 </style>

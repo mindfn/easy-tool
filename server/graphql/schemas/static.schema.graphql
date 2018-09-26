@@ -2,6 +2,16 @@
 
 ### Graphql Type ###
 
+# 多语言
+type I18n {
+  staticId: String,
+  i18nName: String,
+  i18nDesc: String,
+  i18nId: String,
+  i18nData: String,
+  i18nImportTime: String
+}
+
 # 静态资源类型
 type Static {
   staticId: String,
@@ -9,7 +19,7 @@ type Static {
   staticType: Int,
   staticDesc: String,
   staticVersion: String,
-  staticData: String
+  staticData: [I18n]
 }
 
 # 资源
@@ -20,6 +30,7 @@ type StaticResponse {
 }
 
 ### Graphql Schema ###
+
 type Mutation {
   # 添加资源类型
   addStatic(

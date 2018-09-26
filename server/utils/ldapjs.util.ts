@@ -4,10 +4,6 @@ import * as ldapjs from 'ldapjs'
 // Node环境变量配置
 dotenv.config()
 
-const client = ldapjs.createClient({
-  url : <string>process.env.LOAP_URI
-})
-
 /** 
  * @Author: zhuxiankang 
  * @Date:   2018-09-07 19:08:06  
@@ -15,11 +11,20 @@ const client = ldapjs.createClient({
  * @Parm:    
  */
 export const loginOA = (username: string, password: string) : Promise<boolean> => {
+  
+  const client = ldapjs.createClient({
+    url : <string>process.env.LOAP_URI
+  })
 
   return new Promise(( resolve ) => {
-    client.bind(username, password, (err) => {
+    try {
+        client.bind(username, password, (err) => {
+        resolve(err ? false: true)
+        client.destroy()
+      })
+    } catch(err) {
+      console.error(err.message)
       client.destroy()
-      resolve(err ? false: true)
-    })
+    }
   })
 }

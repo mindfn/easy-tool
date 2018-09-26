@@ -123,7 +123,7 @@ const mutation = {
           // 删除当前项目的静态资源类型
           project.projectStatic.splice(index, 1)
           // 删除静态资源对应的多语言(如果存在)
-          await models.I18n.deleteOne({staticId: args.staticId})
+          await models.I18n.deleteMany({staticId: args.staticId})
         }
         await project.save()
         return resolveResponse(
@@ -160,14 +160,14 @@ const query = {
       if(project && project.projectStatic) {
         let staToObj
         const sta = project.projectStatic.find(sta => sta.staticId === ids[1])
-        const staticData = await models.I18n.findOne({ staticId: ids[1] })
+        const staticData = await models.I18n.find({ staticId: ids[1] })
         if(sta) staToObj = sta.toObject()
         return resolveResponse(
           TRUE,
           RES.QUERY_SUCCESS,
           {
             ...staToObj,
-            staticData: JSON.stringify(staticData)
+            staticData
           }
         )
       } else {

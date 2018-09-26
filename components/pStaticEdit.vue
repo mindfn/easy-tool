@@ -7,7 +7,7 @@
     <mu-form 
       ref="form" 
       :model="staticData">
-      <mu-form-item
+      <!-- <mu-form-item
         v-show="editType === EDIT_TYPE.EDIT" 
         label="资源ID(用于同步项目资源)">
         <mu-text-field 
@@ -15,7 +15,7 @@
           v-model="staticData.staticId"
           :max-length="32">
         </mu-text-field>
-      </mu-form-item>
+      </mu-form-item> -->
       <mu-form-item 
         label="资源名称(必填)" 
         prop="staticName"
@@ -168,7 +168,6 @@ export default class extends Vue {
             return
          }
          this.$emit('refresh')
-         this.clearFormValidate()
          this.$toast.success(res.msg)
        })
     })

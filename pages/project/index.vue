@@ -240,7 +240,7 @@ export default class extends mixins(head, layout) {
       }
     } catch(err) {
       console.error(err.message)
-      this.$toast.success(err.message)
+      this.$toast.error(err.message)
     }
    
   }
@@ -269,7 +269,7 @@ export default class extends mixins(head, layout) {
       // 深拷贝
       this.currentProject = JSON.parse(JSON.stringify(this.projects[index]))
     } catch(err) {
-      this.$toast.success(err.message)
+      this.$toast.error(err.message)
     }
   }
 
@@ -311,7 +311,6 @@ export default class extends mixins(head, layout) {
     }
   }
   .mu-card-header-title {
-    font-family: Roboto,Lato,sans-serif;
     .mu-card-title {
       font-weight: normal;
     }
@@ -336,7 +335,6 @@ export default class extends mixins(head, layout) {
     opacity: .5;
     background-size: 60% 80%;
     transition: all .15s cubic-bezier(.4,0,.2,1);
-    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
     .mu-card-media-title {
       height: 90px;
       background-color: black;
@@ -355,7 +353,6 @@ export default class extends mixins(head, layout) {
       height: 100%;
       .mu-avatar {
         margin: 0 4px 6px 0;
-        font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
       }
       .col {
         height: 100%;

@@ -9,6 +9,7 @@
 import user from './user'
 import project from './project'
 import sta from './static'
+import i18n from './i18n'
 import  { COMMON_CODE, COMMON_MSG }  from '~/common/constants'
 import Toast from 'muse-ui-toast/dist/muse-ui-toast.common'
 import Loading from 'muse-ui-loading/dist/muse-ui-loading.common'
@@ -21,7 +22,8 @@ Toast.config(toastConfig)
 const lokka = {
   user,
   project,
-  sta
+  sta,
+  i18n
 }  
 
 /** 

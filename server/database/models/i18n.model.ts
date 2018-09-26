@@ -7,37 +7,28 @@ const i18nSchema = new Schema({
   staticId: {
     type: String,
     required: true,
+    trim: true
+  },
+
+  i18nName: {
+    type: String,
+    required: true,
+    trim: true
+  },
+
+  i18nDesc: {
+    type: String,
+    required: true,
     unique: true,
-    trim: true,
-    index: true
+    trim: true
   },
 
-  // 前端多语言
-  i18nFrontEndData: {
+  i18nData: {
     type: String,
     trim: true
   },
 
-  // 后端多语言
-  i18nBackEndData: {
-    type: String,
-    trim: true
-  },
-
-  // 前端多语言导入时间
-  i18nFrontImportTime: {
-    type: String,
-    trim: true
-  },
-
-  // 后端多语言导入时间
-  i18nBackEndImportTime: {
-    type: String,
-    trim: true
-  },
-
-  // 前端多语言同步时间
-  i18nFrontSyncTime: {
+  i18nImportTime: {
     type: String,
     trim: true
   }
@@ -47,6 +38,11 @@ const i18nSchema = new Schema({
     createdAt: false,
     updatedAt: false
   }
+})
+
+// 新增虚拟属性userId
+i18nSchema.virtual('i18nId').get(function (this: any) {
+  return this._id.toString()
 })
 
 const I18n = mongoose.model('I18n', i18nSchema)

@@ -13,8 +13,7 @@
         label="项目ID">
         <mu-text-field 
           disabled
-          v-model="projectData.projectId"
-          :max-length="32">
+          v-model="projectData.projectId">
         </mu-text-field>
       </mu-form-item>
       <mu-form-item 
@@ -206,7 +205,6 @@ export default class PProjectEdit extends Vue {
           return
         }
         this.$emit('refresh')
-        this.projectUrlErrText = ''
         this.$toast.success(res.msg)
       })
     })
