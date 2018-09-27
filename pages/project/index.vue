@@ -47,7 +47,7 @@
           <div>啊哈，么有数据！</div>
         </div>
         <!-- 项目列表 -->
-        <mu-row gutter>
+        <mu-row gutter v-else>
           <mu-col 
             sm="12" 
             md="12" 
@@ -240,7 +240,7 @@ export default class extends mixins(head, layout) {
       }
     } catch(err) {
       console.error(err.message)
-      this.$toast.error(err.message)
+      // this.$toast.error(err.message)
     }
    
   }
@@ -269,7 +269,8 @@ export default class extends mixins(head, layout) {
       // 深拷贝
       this.currentProject = JSON.parse(JSON.stringify(this.projects[index]))
     } catch(err) {
-      this.$toast.error(err.message)
+      console.error(err.message)
+      // this.$toast.error(err.message)
     }
   }
 

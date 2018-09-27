@@ -14,7 +14,8 @@ type Static {
   staticName: String,
   staticType: Int,
   staticDesc: String,
-  staticVersion: String
+  staticVersion: String,
+  i18nImportFileName: String
 }
 
 # 项目

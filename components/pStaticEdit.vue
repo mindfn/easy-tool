@@ -89,7 +89,7 @@ import graphql from '~/graphql'
 import { COMMON_CODE }  from '~/common/constants'
 
 @Component
-export default class extends Vue {
+export default class PStaticEdit extends Vue {
   readonly EDIT_TYPE = EDIT_TYPE
   readonly STATIC_VIEW = STATIC_VIEW
 

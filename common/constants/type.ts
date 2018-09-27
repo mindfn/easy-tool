@@ -37,19 +37,6 @@ export const STATIC_VIEW = [{
   color: 'cyan300'
 }]
 
-// 多语言类型
-export enum STATIC_I18N_TYPE {
-  ALL = 0, 
-  FRONT,
-  BACK
-}
-
-// 多语言上传文件格式
-export enum STATIC_I18N_FORMAT {
-  XLSX = 0,
-  JSON
-}
-
 // 多语言列表
 export const STATIC_I18N_TABLE_COLUMNS = [
   'resource',                       // Resource (来源)      

@@ -12,7 +12,7 @@ const mutation = {
    * @Desc:   添加静态资源类型 
    * @Parm:    
    */  
-  async addStatic(parent: any, args: resolveArgs, { models, req }: resolveCtx): Promise<resolveRes>   {
+  async addStatic(parent: any, args: resolveArgs, { models, req }: resolveCtx): Promise<resolveRes> {
     try {
       let project: ProjectModel | null = await models.Project.findById(args.projectId)
       if(project && project.projectStatic) {
@@ -46,7 +46,7 @@ const mutation = {
       } else {
         return resolveResponse(
           ERROR,
-          RES.PROJECT_ERR
+          RES.PROJECT_NOT_FOUND
         )  
       }
     } catch(err) {
@@ -65,7 +65,7 @@ const mutation = {
    * @Desc:   更新静态资源类型 
    * @Parm:    
    */  
-  async updateStatic(parent: any, args: resolveArgs, { models, req }: resolveCtx) {
+  async updateStatic(parent: any, args: resolveArgs, { models, req }: resolveCtx): Promise<resolveRes> {
     try {
       let project: ProjectModel | null = await models.Project.findById(args.projectId)
       if(project && project.projectStatic) {
@@ -96,7 +96,7 @@ const mutation = {
       } else {
         return resolveResponse(
           ERROR,
-          RES.STATIC_ERR
+          RES.STATIC_NOT_FOUND
         )  
       }
     } catch(err) {
@@ -133,7 +133,7 @@ const mutation = {
       } else {
         return resolveResponse(
           ERROR,
-          RES.STATIC_ERR
+          RES.STATIC_NOT_FOUND
         ) 
       }
     } catch(err) {
@@ -153,7 +153,7 @@ const query = {
    * @Desc:   通过项目ID和静态资源ID搜索资源
    * @Parm:    
    */  
-  async staticByID(parent: any, args: resolveArgs, { models, req }: resolveCtx) {
+  async staticByID(parent: any, args: resolveArgs, { models, req }: resolveCtx): Promise<resolveRes> {
     try {
       const ids = args.id.split('-')
       let project = await models.Project.findById(ids[0])
@@ -173,7 +173,7 @@ const query = {
       } else {
         return resolveResponse(
           ERROR,
-          RES.STATIC_ERR
+          RES.STATIC_NOT_FOUND
         )  
       }
     } catch(err) {

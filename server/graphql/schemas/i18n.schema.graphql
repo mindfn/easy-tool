@@ -9,13 +9,14 @@ type I18n {
   i18nDesc: String,
   i18nId: String,
   i18nData: String,
-  i18nImportTime: String
+  i18nImportTime: String,
+  i18nImportFileName: String
 }
 
 type I18nsResponse {
   code: Int,
   msg: String,
-  data: [I18n]
+  data: I18n
 }
 
 ### Graphql Schema ###
@@ -27,9 +28,23 @@ type Mutation {
     i18nDesc: String!,
     staticId: String!
   ): CommonResponse
+
+  # 更新多语言
+  updateI18n(
+    i18nId: String!
+    i18nName: String!,
+    i18nDesc: String!
+  ): CommonResponse
+
+  # 删除多语言
+  deleteI18n(
+    i18nId: String!
+  ): CommonResponse
 }
 
 type Query {
-  # 获取多语言列表
-  i18ns: I18nsResponse
+  # 通过多语言ID查询多语言
+  i18nByID(
+    id: String!
+  ): I18nsResponse
 }

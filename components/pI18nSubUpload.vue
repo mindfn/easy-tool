@@ -1,15 +1,17 @@
 <template>
   <!-- 项目编辑 -->
   <mu-dialog 
-    title="翻译导入多语言" 
+    title="导入多语言" 
     width="520" 
     :open.sync="visible"
     @close="closeDialog">
-    <mu-form
-      :model="{}">
+    <mu-form 
+      ref="form" :model="{}">
       <mu-form-item>
         <mu-alert color="info" >
-          请导入xlsx格式的excel文件！
+          导入支持xlsx、json和properties文件格式，需要注意xlsx格式的文件请参考导入模板文件！
+          <br/><br/>
+          导入会完全覆盖当前的多语言信息，如果当前多语言中存在非中文的其他语言，则在中文和关键信息完全一致的情况下，保留其他语言。
         </mu-alert>
       </mu-form-item>
       <mu-form-item prop="radio" label="导入文件">
@@ -19,8 +21,8 @@
               text="选择文件"
               type="default"
               ref="upload"
-              :action="`${proxyHttp}/i18n/upload/translate`"
-              :data="{ staticId }"
+              :action="`${proxyHttp}/i18n/upload/sub`"
+              :data="{ i18nId }"
               :autoUpload = "false"
               name="multExcel"
               @change="showFileName"
@@ -49,20 +51,25 @@ import graphql from '~/graphql'
 import config from '~/nuxt.config'
 import { COMMON_CODE }  from '~/common/constants'
 
+
+interface Form {
+  format: number
+}
+
 @Component
-export default class PProjectEdit extends Vue {
+export default class PI18nSubUpload extends Vue {
   readonly proxyHttp: string = config.proxyHttp
 
   visible: boolean = false
 
-  fileErrText: string = ''
   fileName: string = ''
+  fileErrText: string = ''
 
   @Prop()
   show!: boolean
 
   @Prop() 
-  staticId!: string
+  i18nId!: string
 
   @Watch('show')
   onShowChanged(val: boolean) : void {
@@ -90,12 +97,12 @@ export default class PProjectEdit extends Vue {
    */  
   showFileName(file: string) : void {
     if(!file) return
-    if (/\.(xlsx|json)$/.test(file)) {
+    if (/\.(xlsx|json|properties)$/.test(file)) {
       this.fileName = file
       this.fileErrText = ''
     } else {
       this.fileName = ''
-      this.fileErrText = '上传的文件后缀名必须是.json或者.xlsx!'
+      this.fileErrText = '上传的文件后缀名必须是.json、.xlsx或.properties!'
     }
   }
 
@@ -133,9 +140,12 @@ export default class PProjectEdit extends Vue {
   uploadFile() {
     if(!this.fileName) {
       this.fileErrText = '请选择需要上传的文件！'
-    } 
-    if(this.fileErrText) return
+      return
+    }
     this.$refs.upload['submit']()
   }
 }
 </script>
+
+
+

@@ -21,9 +21,10 @@ export interface User {
 export interface Static {
   staticId?: string,
   staticName: string,
-  staticType: number,
+  staticType?: number,
   staticDesc: string,
   staticVersion: string,
+  staticData?: I18n[],
   [propName: string]: any
 }
 
@@ -43,6 +44,7 @@ export interface I18n {
   i18nName: string,
   i18nDesc: string,
   i18nData?: string,
-  i18nId?: string
-  i18nImportTime?: string
+  i18nId?: string,
+  i18nImportTime?: string,
+  i18nImportFileName?: string
 }

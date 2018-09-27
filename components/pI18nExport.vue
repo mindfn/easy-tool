@@ -32,7 +32,7 @@ import config from '~/nuxt.config'
 import { COMMON_CODE }  from '~/common/constants'
 
 @Component
-export default class PProjectEdit extends Vue {
+export default class PI18nExport extends Vue {
   readonly proxyHttp: string = config.proxyHttp
 
   visible: boolean = false

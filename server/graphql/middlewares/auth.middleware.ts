@@ -14,7 +14,6 @@ const isLogginIn = async (resolve, parent: any, args: resolveArgs, ctx: resolveC
   // console.log('middlewares query: ', query)
   // // 登录登出不需要做权限判断
   // if (/(login|logout|getRsaKey)/.test(query)) {
-  //   console.log('1111')
   //   return resolve()
   // }
   // await resolve(parent, args, ctx)

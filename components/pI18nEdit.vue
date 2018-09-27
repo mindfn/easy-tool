@@ -10,18 +10,23 @@
       ref="form">
       <mu-form-item 
         v-show="type === EDIT_TYPE.EDIT" 
-        label="多语言ID" 
-        prop="i18nName">
+        label="多语言ID(只读)">
         <mu-text-field 
           disabled
           v-model="i18n.i18nId">
         </mu-text-field>
       </mu-form-item>
       <mu-form-item 
-        label="多语言最近导入时间" 
-        v-show="type === EDIT_TYPE.EDIT" 
-        prop="i18nDesc"
-        :rules="requiredRule">
+        label="多语言导入文件名称(只读)" 
+        v-show="type === EDIT_TYPE.EDIT">
+        <mu-text-field  
+          v-model="i18n.i18nImportFileName" 
+          disabled>
+        </mu-text-field>
+      </mu-form-item>
+      <mu-form-item 
+        label="多语言最近导入时间(只读)" 
+        v-show="type === EDIT_TYPE.EDIT">
         <mu-text-field  
           v-model="i18n.i18nImportTime" 
           disabled>
@@ -74,7 +79,7 @@ import { COMMON_CODE }  from '~/common/constants'
 import { EDIT_TYPE }  from '~/constant/project'
 
 @Component
-export default class PProjectEdit extends Vue {
+export default class PI18nEdit extends Vue {
   readonly EDIT_TYPE = EDIT_TYPE
   visible: boolean = false
 
@@ -132,7 +137,6 @@ export default class PProjectEdit extends Vue {
         }
         this.$emit('refresh')
         this.$toast.success(res.msg)
-
       })
     })
   }

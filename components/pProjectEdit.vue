@@ -8,14 +8,14 @@
     <mu-form 
       ref="form" 
       :model="projectData">
-      <mu-form-item
+      <!-- <mu-form-item
         v-show="editType === EDIT_TYPE.EDIT" 
         label="项目ID">
         <mu-text-field 
           disabled
           v-model="projectData.projectId">
         </mu-text-field>
-      </mu-form-item>
+      </mu-form-item> -->
       <mu-form-item 
         label="项目名称(必填)" 
         prop="projectName"

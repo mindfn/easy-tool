@@ -1,19 +1,18 @@
 <template>
   <!-- 项目编辑 -->
   <mu-dialog 
-    title="开发导入多语言" 
+    title="导入多语言" 
     width="520" 
     :open.sync="visible"
     @close="closeDialog">
-    <mu-form 
-      ref="form" :model="i18nData">
-      <mu-form-item prop="radio" label="导入类型">
-        <mu-radio v-model="i18nData.type" :value="STATIC_I18N_TYPE.FRONT" label="前端"></mu-radio>
-        <mu-radio v-model="i18nData.type" :value="STATIC_I18N_TYPE.BACK" label="后端"></mu-radio>
-      </mu-form-item>
-      <mu-form-item prop="radio" label="导入格式">
-        <mu-radio v-model="i18nData.format" :value="STATIC_I18N_FORMAT.XLSX" label="xlsx"></mu-radio>
-        <mu-radio v-model="i18nData.format" :value="STATIC_I18N_FORMAT.JSON" label="json"></mu-radio>
+    <mu-form
+      :model="{}">
+      <mu-form-item>
+        <mu-alert color="info" >
+          导入仅支持xlsx格式的excel文件，请参考下载模板文件！
+          <br/><br/>
+          导入的多语言以当前多语言列表的多语言为主，如果导入的某条多语言信息在多语言列表中不存在（导入多语言的关键信息以及中文和多语言列表中的某条多语言的关键信息以及中文必须完全相同），则会被视为无效，不会做导入处理。
+        </mu-alert>
       </mu-form-item>
       <mu-form-item prop="radio" label="导入文件">
         <mu-text-field readonly v-model="fileName" :error-text="fileErrText">
@@ -22,8 +21,8 @@
               text="选择文件"
               type="default"
               ref="upload"
-              :action="`${proxyHttp}/i18n/upload/dev`"
-              :data="{ i18nData: JSON.stringify(i18nData), staticId }"
+              :action="`${proxyHttp}/i18n/upload/sup`"
+              :data="{ staticId }"
               :autoUpload = "false"
               name="multExcel"
               @change="showFileName"
@@ -49,31 +48,17 @@
 import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
 import { Res } from '~/common/types'
 import graphql from '~/graphql'
-import { STATIC_I18N_TYPE, STATIC_I18N_FORMAT }  from '~/common/constants'
 import config from '~/nuxt.config'
 import { COMMON_CODE }  from '~/common/constants'
 
-
-interface Form {
-  type: number,
-  format: number
-}
-
 @Component
-export default class PProjectEdit extends Vue {
+export default class PI18nSupUpload extends Vue {
   readonly proxyHttp: string = config.proxyHttp
-  readonly STATIC_I18N_TYPE = STATIC_I18N_TYPE
-  readonly STATIC_I18N_FORMAT = STATIC_I18N_FORMAT
 
   visible: boolean = false
 
-  i18nData: Form = {
-    type: STATIC_I18N_TYPE.BACK, // 类型
-    format: STATIC_I18N_FORMAT.XLSX // 格式
-  }
-
-  fileName: string = ''
   fileErrText: string = ''
+  fileName: string = ''
 
   @Prop()
   show!: boolean
@@ -156,6 +141,3 @@ export default class PProjectEdit extends Vue {
   }
 }
 </script>
-
-
-

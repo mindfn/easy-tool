@@ -28,10 +28,54 @@ export default {
    */  
   update(params) {
     return client.mutate(
-      `($i18nName:String!, $i18nDesc: String!, $staticId: String!, $i18nId: String!) {
-        data: updateI18n(i18nName: $i18nName, i18nDesc: $i18nDesc, staticId: $staticId, i18nId: $i18nId) {
+      `($i18nName:String!, $i18nDesc: String!, $i18nId: String!) {
+        data: updateI18n(i18nName: $i18nName, i18nDesc: $i18nDesc, i18nId: $i18nId) {
           code,
           msg
+        }
+      }`,
+      params
+    )
+  },
+
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-09-27 15:19:06  
+   * @Desc:   删除多语言 
+   * @Parm:    
+   */  
+  delete(params) {
+    return client.mutate(
+      `($i18nId: String!) {
+        data: deleteI18n(i18nId: $i18nId) {
+          code,
+          msg
+        }
+      }`,
+      params
+    )
+  },
+
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-09-27 16:46:42  
+   * @Desc:   通过多语言ID搜索多语言  
+   * @Parm:    
+   */  
+  queryById(params) {
+    return client.query(
+      `query ($id: String!) {
+        data: i18nByID(id: $id) {
+          code,
+          msg,
+          data {
+            i18nId,
+            i18nName,
+            i18nDesc,
+            i18nImportTime,
+            i18nImportFileName,
+            i18nData
+          }
         }
       }`,
       params

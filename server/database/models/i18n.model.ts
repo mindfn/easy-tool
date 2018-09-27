@@ -28,6 +28,11 @@ const i18nSchema = new Schema({
     trim: true
   },
 
+  i18nImportFileName: {
+    type: String,
+    trim: true
+  },
+
   i18nImportTime: {
     type: String,
     trim: true

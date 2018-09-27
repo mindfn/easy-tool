@@ -90,7 +90,7 @@ const mutation = {
      } else {
       return resolveResponse(
         ERROR,
-        RES.PROJECT_ERR
+        RES.PROJECT_NOT_FOUND
       )  
      }
 

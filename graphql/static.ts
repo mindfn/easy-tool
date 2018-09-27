@@ -8,8 +8,6 @@
 
 import { client } from '~/graphql/lokka'
 import { Lokka } from 'lokka'
-// import applo from '~/plugins/vue-applo'
-// console.log(applo)
 
 export default {
   /** 
@@ -88,7 +86,8 @@ export default {
               i18nName,
               i18nDesc,
               i18nId,
-              i18nImportTime
+              i18nImportTime,
+              i18nImportFileName
             }
           }
         }

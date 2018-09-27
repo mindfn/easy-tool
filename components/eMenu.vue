@@ -25,7 +25,7 @@ import graphql from '~/graphql'
 import { Res } from '~/common/types'
 
 @Component
-export default class EHeader extends Vue {
+export default class EMenu extends Vue {
 
   @Mutation('menu/toggle') stateToggle
   @State(state => state.menu.show) show
