@@ -92,12 +92,12 @@ export default class PI18nSupUpload extends Vue {
    */  
   showFileName(file: string) : void {
     if(!file) return
-    if (/\.(xlsx|json)$/.test(file)) {
+    if (/\.xlsx$/.test(file)) {
       this.fileName = file
       this.fileErrText = ''
     } else {
       this.fileName = ''
-      this.fileErrText = '上传的文件后缀名必须是.json或者.xlsx!'
+      this.fileErrText = '导入仅支持xlsx格式的excel文件！'
     }
   }
 

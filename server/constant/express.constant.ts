@@ -1,3 +1,9 @@
+export enum EXPRESS_UPLOAD_TYPE {
+  SKIP = 0, // 跳过，只是将数据插入已有数据，如果已有数据中不存在，则视为无效
+  COVER // 覆盖，将数据覆盖当前数据，如果有其他语言，将语言插入当前覆盖的数据中
+}
+
+
 export const EXPRESS = {
   RES: {
     EXCEL_SHEET_EMPTY: '上传的xlsx格式文件没有数据！',
@@ -5,7 +11,10 @@ export const EXPRESS = {
     UPLOAD_TRANSLATE_NOT_UPLOAD_DEV: '未进行开发导入，请先导入开发态多语言！',
     UPLOAD_TRANSLATE_NOT_UPLOAD_FRONT: '请先导入前端多语言！',
     UPLOAD_TRANSLATE_NOT_UPLOAD_BACK: '请先导入后端多语言！',
-    UPLOAD_SUCCESS: '上传成功！'
+    UPLOAD_SUCCESS: '上传成功！',
+    UPLOAD_FORMAT_ERR: '导入的文件格式不正确！',
+    UPLOAD_SUP_EMPTY: '当前多语言列表中不存在多语言信息！',
+    UPLOAD_SUB_OTHER_LANG: '只允许导入带有关键信息和中文的多语言！'
   },  
 
   // EXCEL模板文件
@@ -57,3 +66,5 @@ export const EXPRESS = {
     ]
   }
 }
+
+

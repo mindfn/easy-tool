@@ -87,7 +87,8 @@ export default {
               i18nDesc,
               i18nId,
               i18nImportTime,
-              i18nImportFileName
+              i18nImportFileName,
+              i18nData
             }
           }
         }

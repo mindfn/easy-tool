@@ -26,7 +26,7 @@
             添加多语言
           </mu-button>
           <mu-button 
-            :disabled="!sta.staticData.length"
+            :disabled="disabled"
             flat 
             textColor="grey600" 
             @click="openImportDialog">
@@ -34,7 +34,7 @@
             导入多语言
           </mu-button>
           <mu-button 
-            :disabled="!sta.staticData.length"
+            :disabled="disabled"
             flat 
             textColor="grey600">
             <mu-icon left value=" " class="fa fa-download"></mu-icon>
@@ -172,6 +172,8 @@ export default class extends mixins(head, layout) {
   editType: number = EDIT_TYPE.ADD
   upload: boolean = false
   download: boolean = false
+  disabled: boolean = false // 导入和导出是否需要禁止
+  downloadDisabled: boolean = false
 
   delName: string = ''
 
@@ -209,8 +211,10 @@ export default class extends mixins(head, layout) {
    */  
   asyncData ({ params }, cb) {
     graphql('sta-queryById', params, async (res: Res) => {
+      let { data }  = res
       cb(null, {
-        sta: res.data
+        sta: data,
+        disabled: !data || !data.staticData || data.staticData.every(item => !item.i18nData)
       })
     })
   }
