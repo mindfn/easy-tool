@@ -14,7 +14,9 @@ export const EXPRESS = {
     UPLOAD_SUCCESS: '上传成功！',
     UPLOAD_FORMAT_ERR: '导入的文件格式不正确！',
     UPLOAD_SUP_EMPTY: '当前多语言列表中不存在多语言信息！',
-    UPLOAD_SUB_OTHER_LANG: '只允许导入带有关键信息和中文的多语言！'
+    UPLOAD_SUB_OTHER_LANG: '只允许导入带有关键信息、版本和中文的多语言！',
+    UPLOAD_VERSION_ERR: '导入的版本错误！当前需导入的版本为：',
+    UPLOAD_DATA_ERR: '导入缺少关键信息或中文！'
   },  
 
   // EXCEL模板文件

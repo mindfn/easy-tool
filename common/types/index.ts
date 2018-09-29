@@ -42,6 +42,7 @@ export interface Project {
 export interface I18n {
   staticId?: string,
   i18nName: string,
+  i18nVersion: string, // 同步的是资源版本
   i18nDesc: string,
   i18nData?: string,
   i18nId?: string,

@@ -1,4 +1,4 @@
-import { resolveArgs, resolveCtx, resolveRes, I18nModel } from '../../types'
+import { resolveArgs, resolveCtx, resolveRes, I18nModel, StaticModel } from '../../types'
 import { resolveResponse } from '../../utils'
 import  { COMMON_CODE }  from '../../../common/constants'
 import { GRAPHQL } from '../../constant'
@@ -17,7 +17,7 @@ const mutation = {
     try {
       let { I18n } = models
       let i18n: I18nModel[] | null = await I18n.find({ staticId: args.staticId })
-      
+
       if(!i18n ||!i18n.length) {
         await I18n.create(args)
         return resolveResponse(

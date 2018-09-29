@@ -26,6 +26,7 @@ type Mutation {
   addI18n(
     i18nName: String!,
     i18nDesc: String!,
+    i18nVersion: String!,
     staticId: String!
   ): CommonResponse
 

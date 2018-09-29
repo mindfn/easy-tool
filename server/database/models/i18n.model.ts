@@ -10,6 +10,12 @@ const i18nSchema = new Schema({
     trim: true
   },
 
+  i18nVersion: {
+    type: String,
+    required: true,
+    trim: true
+  },
+
   i18nName: {
     type: String,
     required: true,

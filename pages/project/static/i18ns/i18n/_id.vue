@@ -50,11 +50,20 @@
             <mu-paper :z-depth="1">
               <mu-data-table 
                 :height="710"
-                :columns="i18nColumns" 
+                :columns="[...i18nFixedColumns, ...i18nDynamicColumns]" 
                 :data="i18n.i18nData"
                 fit>
                 <template slot-scope="scope">
-                  
+                  <td>{{ i18n.i18nImportFileName }}</td>
+                  <td>{{ i18n.i18nImportTime }}</td>
+                  <td v-for="(column, index) in i18nDynamicColumns" :key="index">
+                    <template v-if="column.name !== 'version'">
+                      {{ scope.row[column.name]}}
+                    </template>
+                    <template v-else>
+                      <mu-badge :content="scope.row[column.name]"></mu-badge>
+                    </template>
+                  </td>
                 </template>
               </mu-data-table>
             </mu-paper>
@@ -81,10 +90,33 @@ import layout from '~/mixins/layout'
 import graphql from '~/graphql'
 import { Res, I18n } from '~/common/types'
 import pI18nSubUpload from '~/components/pI18nSubUpload.vue'
+import { STATIC_I18N_TABLE_COLUMNS, STATIC_I18N_TABLE_TITLES } from '~/common/constants/type'
 // import pI18nTranslateUpload from '~/components/pI18nTranslateUpload.vue'
 // import pI18nExport from '~/components/pI18nExport.vue'
 // import pI18nEdit from '~/components/pI18nEdit.vue'
 // import { STATIC } from '~/common/constants'
+
+/** 
+ * @Author: zhuxiankang 
+ * @Date:   2018-09-29 10:51:05  
+ * @Desc:   动态计算多语言表头信息 
+ * @Parm:    
+ */
+function dynamicComputeI18nColumns(i18nData): any[] {
+  let columns: any[] = []
+  for(let i=0, len=STATIC_I18N_TABLE_COLUMNS.length; i<len; i++) {
+    let key = STATIC_I18N_TABLE_COLUMNS[i]
+    for(let data of i18nData) {
+      if(!data[key] || columns.some(column => column.name === key)) continue
+      columns.push({
+        // 注意STATIC_I18N_TABLE_TITLES和STATIC_I18N_TABLE_COLUMNS索引的值一一对应
+        title: STATIC_I18N_TABLE_TITLES[i],
+        name: key
+      })
+    }
+  }
+  return columns
+}
 
 
 @Component({
@@ -100,6 +132,7 @@ export default class extends mixins(head, layout) {
   i18n: I18n = {
     i18nName: '',
     i18nId: '',
+    i18nVersion: '',
     i18nDesc: '',
     i18nImportTime: '',
     i18nImportFileName: '',
@@ -107,11 +140,8 @@ export default class extends mixins(head, layout) {
     i18nData: ''
   }
 
-  i18nColumns = [
-    { title: '文件名称', name: 'i18nImportFileName' },
-    { title: '关键信息', name: 'key' },
-    { title: '版本', name: 'version'},
-    { title: '中文', name: 'chinese'},
+  i18nFixedColumns = [
+    { title: '导入文件名称', name: 'i18nImportFileName' },
     { title: '导入时间', name: 'i18nImportTime'}
   ]
 
@@ -124,9 +154,17 @@ export default class extends mixins(head, layout) {
   asyncData ({ params }, cb) {
     // 2对应当前多语言id
     graphql('i18n-queryById', { id: params.id.split('-')[2] }, async (res: Res) => {
-      cb(null, {
-        i18n: res.data
-      })
+      try {
+        let { data } = res
+        let { i18nData } = data
+        if(i18nData) data.i18nData = JSON.parse(i18nData)
+        cb(null, {
+          i18n: res.data,
+          i18nDynamicColumns: data.i18nData && dynamicComputeI18nColumns(data.i18nData)
+        })
+      } catch(err) {
+        console.error(err.message)
+      }
     })
   }
 

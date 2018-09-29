@@ -10,8 +10,8 @@ export default {
    */  
   add(params): Lokka {
     return client.mutate(
-      `($i18nName:String!, $i18nDesc: String!, $staticId: String!) {
-        data: addI18n(i18nName: $i18nName, i18nDesc: $i18nDesc, staticId: $staticId) {
+      `($i18nName:String!, $i18nDesc: String!, $i18nVersion: String!, $staticId: String!) {
+        data: addI18n(i18nName: $i18nName, i18nDesc: $i18nDesc, i18nVersion: $i18nVersion, staticId: $staticId) {
           code,
           msg
         }

@@ -6,6 +6,7 @@ import { EXPRESS, EXPRESS_UPLOAD_TYPE } from '../../constant'
 import models from '../../database/models'
 import i18nExcelCommon from '../commons/i18n.excel.common'
 import { Res } from '../../../common/types'
+const moment = require('moment')
 const { TRUE, ERROR } = COMMON_CODE
 const { RES } = EXPRESS
 
@@ -36,7 +37,6 @@ export default function(req: Request, res: Response): void {
 
     try {
       let fileName = file.multExcel.name
-      let i18nReplaceData //最终需要插入到数据库的多语言信息
       // 数据库已存在的多语言列表信息
       let i18nStoreDatas: any  = await models.I18n.find({ staticId: fileds.staticId })
 
@@ -53,7 +53,6 @@ export default function(req: Request, res: Response): void {
       }
 
       if(/\.xlsx$/.test(fileName)) { 
-
         // 检测Excel是否符合格式要求并获取Excel数据
         let result: Res = i18nExcelCommon.processUploadExcel(file)
 
@@ -63,6 +62,48 @@ export default function(req: Request, res: Response): void {
           return
         } 
 
+        let i18nStoreMatchUpload: any[] = [] // 导入多语言和多语言列表中的多语言一一对应
+
+        // 计算需要覆盖到数据库的导入信息，注意多语言列表上传做跳过处理
+        // 跳过是指以数据库信息为主，当前数据库没有的中文和关键信息，则不会导入
+        for(let i18nStoreData of i18nStoreDatas) {
+          if(!i18nStoreData.i18nData) continue
+          let resultData: Res = i18nExcelCommon.processReplaceI18nData(
+            result.data, 
+            i18nStoreData,
+            EXPRESS_UPLOAD_TYPE.SKIP
+          )
+          
+          // 如果出错终止遍历导入信息，并返回错误信息
+          if(resultData.code === ERROR) {
+            res.json(resultData)
+            return
+          }
+
+          i18nStoreMatchUpload.push({
+            i18nStoreData,
+            ...resultData.data
+          })
+        }
+
+        let uploadErrData: any[] = []
+
+        // 如果无误，存储数据到数据库
+        for(let data of i18nStoreMatchUpload) {
+          let { i18nStoreData } = data
+          uploadErrData = uploadErrData.concat(data.uploadErrI18nData)
+          Object.assign(i18nStoreData, {
+            i18nData: JSON.stringify(data.uploadReplaceI18nData),
+            i18nImportTime: moment().format('YYYY-MM-DD HH:mm')
+          })
+          await i18nStoreData.save()
+        }
+
+        res.json({
+          code: TRUE,
+          meg: RES.UPLOAD_SUCCESS,
+          data: uploadErrData
+        })
 
       } else {
         res.json({

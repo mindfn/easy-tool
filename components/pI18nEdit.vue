@@ -85,6 +85,7 @@ export default class PI18nEdit extends Vue {
 
   i18n: I18n = {
     i18nName: '',
+    i18nVersion: '',
     i18nDesc: '',
     i18nId: '',
     i18nImportTime: ''
@@ -115,7 +116,8 @@ export default class PI18nEdit extends Vue {
     this.type === EDIT_TYPE.ADD 
     ? Object.assign(this.i18n, {
       i18nName: '',
-      i18nDesc: ''
+      i18nDesc: '',
+      i18nVersion: this.data.i18nVersion
     })
     : Object.assign(this.i18n, this.data)
   }

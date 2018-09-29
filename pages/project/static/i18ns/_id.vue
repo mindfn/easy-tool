@@ -73,6 +73,9 @@
                       color="primary">
                     </mu-badge>
                   </td>
+                  <td>
+                    <mu-badge :content="sta.staticVersion"></mu-badge>
+                  </td>
                   <td>{{ scope.row.i18nImportFileName}}</td>
                   <td>{{ scope.row.i18nImportTime}}</td>
                   <td>{{ scope.row.i18nDesc }}</td>
@@ -187,6 +190,7 @@ export default class extends mixins(head, layout) {
 
   currentI18n: I18n = { // 当前要编辑的资源类型
     i18nName: '',
+    i18nVersion: '',
     i18nId: '',
     i18nDesc: '',
     i18nImportTime: '',
@@ -197,6 +201,7 @@ export default class extends mixins(head, layout) {
   i18nColumns = [
     { title: '多语言名称', name: 'i18nName' },
     { title: '多语言ID', name: 'i18nId'},
+    { title: '版本', name: 'version'},
     { title: '导入文件名称', name: 'i18nImportFileName'},
     { title: '多语言最近导入时间', name: 'i18nImportTime'},
     { title: '多语言描述', name: 'i18nDesc'},
@@ -238,6 +243,7 @@ export default class extends mixins(head, layout) {
   openAddDialog() {
     this.edit = true
     this.editType = EDIT_TYPE.ADD
+    this.currentI18n.i18nVersion = this.sta.staticVersion
   } 
 
   /** 

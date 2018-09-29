@@ -43,43 +43,36 @@ export default function(req: Request, res: Response): void {
       if(/\.json$/.test(fileName)) { 
   
       } else if(/\.xlsx$/.test(fileName)) {
-
         // 检测Excel是否符合格式要求并获取Excel数据
         let result: Res = i18nExcelCommon.processUploadExcel(file)
-
         // 表格不符合模板格式要求
         if(result.code === ERROR) {
           res.json(result)
           return
         } 
-
         // 计算需要覆盖到数据库的导入信息，注意单个多语言上传做覆盖处理
+        // 覆盖是指以导入的信息为主，当前数据库的中文和关键信息以导入信息为主
         result = i18nExcelCommon.processReplaceI18nData(
           result.data, 
-          i18nStoreData && i18nStoreData.i18nData,
+          i18nStoreData,
           EXPRESS_UPLOAD_TYPE.COVER
         )
-
         if(result.code === ERROR) {
           res.json(result)
           return
         } 
-
         // 存储导入的多语言信息
         Object.assign(i18nStoreData, {
           i18nData: JSON.stringify(result.data),
           i18nImportTime: moment().format('YYYY-MM-DD HH:mm'),
           i18nImportFileName: fileName
         })
-
         await i18nStoreData.save()
-
         res.json({
           code: TRUE,
           msg: RES.UPLOAD_SUCCESS,
           data: null
         })
-      
       } else if(/\.properties$/.test(fileName)) {
         
       } else {

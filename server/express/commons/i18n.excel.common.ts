@@ -95,19 +95,27 @@ export default {
    * @Desc:   将Excel数据转化成对象数组
    * @Parm:    
    */  
-  transformExcelToArray(i18nExcelData: any, type): Res  {
+  transformExcelToArray(i18nExcelData: any, i18nStoreData: any, type: number): Res  {
     let excelData = <any[]>[]
+
+    const VERSION = 'version' // 版本key
+
     // 转成Json数据格式
-    for(let column of i18nExcelData) {
+    for(let row of i18nExcelData) {
       let excelRowData = {}
       for(let index=0,len=STATIC_I18N_TABLE_COLUMNS.length; index < len; index++) {
+
+        let col = row[index]
+
         // 过滤excel的空列
-        if(!column[index]) continue
+        if(!col) continue
         let excelRowDataKey = STATIC_I18N_TABLE_COLUMNS[index]
 
         // 单个多语言(非多语言列表无法上传非中文的其他语言)
         if(type === EXPRESS_UPLOAD_TYPE.COVER) {
-          if(excelRowDataKey !== 'key' && excelRowDataKey !== 'chinese') {
+          if(excelRowDataKey !== 'key' 
+          && excelRowDataKey !== 'chinese'
+          && excelRowDataKey !== VERSION) {
             return {
               code: ERROR,
               msg: RES.UPLOAD_SUB_OTHER_LANG,
@@ -115,16 +123,103 @@ export default {
             }
           }
         }
-        excelRowData[STATIC_I18N_TABLE_COLUMNS[index]] = column[index]
+
+        // 如果导入的信息存在版本则判断版本是否正确
+        if(excelRowDataKey === VERSION 
+          && col !== i18nStoreData.i18nVersion) {
+            return {
+              code: ERROR,
+              msg: `${RES.UPLOAD_VERSION_ERR}${i18nStoreData.i18nVersion}！`,
+              data: null
+            }
+        } 
+        excelRowData[STATIC_I18N_TABLE_COLUMNS[index]] = col
+        // 这里注入版本信息，版本信息是在资源类型中创建的
+        excelRowData['version'] = i18nStoreData.i18nVersion
+
       }
       if(!Object.keys(excelRowData).length) continue
       excelData.push(excelRowData)
+    }
+
+
+    // 如果上传的文件缺少中文或者关键信息，则视为无效上传
+    if(excelData.every(i18n => !i18n.chinese) || excelData.every(i18n => !i18n.key)) {
+      return {
+        code: ERROR,
+        msg: RES.UPLOAD_DATA_ERR,
+        data: null
+      }
     }
 
     return {
       code: TRUE,
       msg: '',
       data: excelData
+    }
+  },
+
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-09-29 11:42:47  
+   * @Desc:   单个多语言导入数据处理
+   * @Parm:    
+   */  
+  processSubReplaceI18nData(i18nUploadData, i18nStoreData) {
+
+    // 获取各个语言的key, 7是chiense后的english位置，截取english后的所有语言信息key
+    const STATIC_I18N_TABLE_LANGUAGE_COLUMNS = STATIC_I18N_TABLE_COLUMNS.slice(7)
+
+    // 判断是否导入过翻译语言
+    let isTranslated = i18nStoreData.some(i18n => {
+      for(let key of STATIC_I18N_TABLE_LANGUAGE_COLUMNS) {
+        // 是否有其他语言信息
+        if(!i18n[key]) continue
+        return true
+      }
+      return false
+    })
+  },
+
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-09-29 15:20:41  
+   * @Desc:   多语言列表导入数据处理 
+   * @Parm:    
+   */  
+  processPubReplaceI18nData(i18nUploadData, i18nStoreData): Res {
+
+    let uploadErrI18nData: any[] = [] // 错误多语言信息
+
+    for(let i=0,len=i18nStoreData.length; i<len; i++) {
+      let i18nStore = i18nStoreData[i]
+      
+      // 在数据库中寻找关键信息和导入相同的多语言
+      let index = i18nUploadData.findIndex(i18nUpload => i18nUpload.key === i18nStore.key)
+      
+      if(index === -1) {
+        continue
+      }
+
+
+      let i18nFoundUploadData = i18nUploadData[index]
+
+      i18nFoundUploadData.chinese
+      ? i18nFoundUploadData.chinese === i18nStore.chinese
+        // 中文和关键信息一致，则替换数据库信息, 这里需要将该条信息直接覆盖到数据库的信息
+        ? i18nStoreData[i] = i18nFoundUploadData
+        // 否则提示当前导入的多语言信息错误
+        :  uploadErrI18nData.push(i18nFoundUploadData)     
+      : uploadErrI18nData.push(i18nFoundUploadData)
+    }
+
+    return {
+      code: TRUE,
+      msg: '',
+      data: {
+        uploadReplaceI18nData: i18nStoreData,
+        uploadErrI18nData
+      }
     }
   },
 
@@ -135,21 +230,37 @@ export default {
    * @Desc:   计算需要覆盖的多语言信息 
    * @Parm:    
    */  
-  processReplaceI18nData(i18nExcelData: any, i18nStoreData: string | undefined, type: number): Res {
-    let result: Res = this.transformExcelToArray(i18nExcelData, type)
-    if(result.code === ERROR) {
+  processReplaceI18nData(i18nExcelData: any, i18nStoreData: any, type: number): Res {
+    try {
+      let result: Res = this.transformExcelToArray(i18nExcelData, i18nStoreData, type)
+      if(result.code === ERROR) {
+        return result
+      }
+
+      i18nExcelData = result.data
+      let { i18nData } = i18nStoreData
+  
+      // 当前数据库未导入过多语言信息则直接插入导入多语言信息
+      if(!i18nData) {
+        result.data = i18nExcelData
+      // 单个多语言，如果数据库已经存在非中文的其他多语言，则在覆盖的同时需要将其他多语言保存  
+      } else if(type === EXPRESS_UPLOAD_TYPE.COVER) {
+        result.data = this.processSubReplaceI18nData(i18nExcelData, JSON.parse(i18nData))
+      // 多语言列表导入，则需要在中文和关键信息对应的字段中插入其他语言
+      } else {
+        result = this.processPubReplaceI18nData(i18nExcelData, JSON.parse(i18nData))
+      }
+  
       return result
+
+    } catch(err) {
+      console.error(err.message)
+      return {
+        code: ERROR,
+        msg: err.message,
+        data: null
+      }
     }
-
-    i18nExcelData = result.data
-
-    // 当前数据库未导入过多语言信息
-    if(!i18nStoreData) {
-      result.data = i18nExcelData
-    } else {
-      
-    }
-
-    return result
+   
   }
 }
