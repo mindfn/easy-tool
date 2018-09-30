@@ -91,6 +91,7 @@ export default function(req: Request, res: Response): void {
         // 如果无误，存储数据到数据库
         for(let data of i18nStoreMatchUpload) {
           let { i18nStoreData } = data
+
           uploadErrData = uploadErrData.concat(data.uploadErrI18nData)
           Object.assign(i18nStoreData, {
             i18nData: JSON.stringify(data.uploadReplaceI18nData),
