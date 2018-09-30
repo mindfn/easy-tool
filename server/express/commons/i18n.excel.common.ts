@@ -8,6 +8,11 @@ import { STATIC_I18N_TABLE_COLUMNS } from '../../../common/constants/type'
 const { TRUE, ERROR } = COMMON_CODE
 const { TEMP_EXCEL, RES } = EXPRESS
 
+
+// 获取各个语言的key, 7是chiense后的english位置，截取english后的所有语言信息key
+const STATIC_I18N_TABLE_LANGUAGE_COLUMNS = STATIC_I18N_TABLE_COLUMNS.slice(7)
+
+
 export default {
 
   /** 
@@ -113,15 +118,13 @@ export default {
 
         // 单个多语言(非多语言列表无法上传非中文的其他语言)
         if(type === EXPRESS_UPLOAD_TYPE.COVER) {
-          if(excelRowDataKey !== 'key' 
-          && excelRowDataKey !== 'chinese'
-          && excelRowDataKey !== VERSION) {
+          if(STATIC_I18N_TABLE_LANGUAGE_COLUMNS.includes(excelRowDataKey)) {
             return {
               code: ERROR,
               msg: RES.UPLOAD_SUB_OTHER_LANG,
               data: null
             }
-          }
+          } 
         }
 
         // 如果导入的信息存在版本则判断版本是否正确
@@ -144,7 +147,10 @@ export default {
 
 
     // 如果上传的文件缺少中文或者关键信息，则视为无效上传
-    if(excelData.every(i18n => !i18n.chinese) || excelData.every(i18n => !i18n.key)) {
+    if(
+      excelData.every(i18n => !i18n.chinese) 
+      || excelData.every(i18n => !i18n.key)
+      || excelData.some(i18n => !i18n.key || !i18n.chinese)) {
       return {
         code: ERROR,
         msg: RES.UPLOAD_DATA_ERR,
@@ -165,10 +171,7 @@ export default {
    * @Desc:   单个多语言导入数据处理
    * @Parm:    
    */  
-  processSubReplaceI18nData(i18nUploadData, i18nStoreData) {
-
-    // 获取各个语言的key, 7是chiense后的english位置，截取english后的所有语言信息key
-    const STATIC_I18N_TABLE_LANGUAGE_COLUMNS = STATIC_I18N_TABLE_COLUMNS.slice(7)
+  processSubReplaceI18nData(i18nUploadData, i18nStoreData): Res {
 
     // 判断是否导入过翻译语言
     let isTranslated = i18nStoreData.some(i18n => {
@@ -179,6 +182,36 @@ export default {
       }
       return false
     })
+
+    let isCompletelyNew = true // 当前上传文件没有一个多语言信息和数据库匹配(可能上传错了文件)
+
+    // 如果存在其他多语言，则需要保留其他多语言信息
+    if(isTranslated) {
+      for(let i18n of i18nStoreData) {
+        let foundUploadData = i18nUploadData.find(upload => 
+          upload.key === i18n.key && upload.chinese === i18n.chinese )
+        if(!foundUploadData) continue
+        isCompletelyNew = false
+
+        // 需要注意只需要保留多语言信息，例如来源、长度、位置、备注等还是使用上传的信息
+        for(let key of STATIC_I18N_TABLE_LANGUAGE_COLUMNS) {
+          if(!i18n[key]) continue
+          foundUploadData[key] = i18n[key]
+        }
+      }
+    }
+
+    return isCompletelyNew
+    ? {
+      code: ERROR,
+      msg: RES.UPLOAD_COMPLETE_NEW,
+      data: null
+    } 
+    : {
+      code: TRUE,
+      msg: '',
+      data: i18nUploadData
+    }
   },
 
   /** 
@@ -187,7 +220,7 @@ export default {
    * @Desc:   多语言列表导入数据处理 
    * @Parm:    
    */  
-  processPubReplaceI18nData(i18nUploadData, i18nStoreData): Res {
+  processPubReplaceI18nData(i18nUploadData, i18nStoreData): any {
 
     let uploadErrI18nData: any[] = [] // 错误多语言信息
 
@@ -201,7 +234,6 @@ export default {
         continue
       }
 
-
       let i18nFoundUploadData = i18nUploadData[index]
 
       i18nFoundUploadData.chinese
@@ -214,12 +246,8 @@ export default {
     }
 
     return {
-      code: TRUE,
-      msg: '',
-      data: {
-        uploadReplaceI18nData: i18nStoreData,
-        uploadErrI18nData
-      }
+      uploadReplaceI18nData: i18nStoreData,
+      uploadErrI18nData
     }
   },
 
@@ -245,12 +273,12 @@ export default {
         result.data = i18nExcelData
       // 单个多语言，如果数据库已经存在非中文的其他多语言，则在覆盖的同时需要将其他多语言保存  
       } else if(type === EXPRESS_UPLOAD_TYPE.COVER) {
-        result.data = this.processSubReplaceI18nData(i18nExcelData, JSON.parse(i18nData))
+        result = this.processSubReplaceI18nData(i18nExcelData, JSON.parse(i18nData))
       // 多语言列表导入，则需要在中文和关键信息对应的字段中插入其他语言
       } else {
-        result = this.processPubReplaceI18nData(i18nExcelData, JSON.parse(i18nData))
+        result.data = this.processPubReplaceI18nData(i18nExcelData, JSON.parse(i18nData))
       }
-  
+
       return result
 
     } catch(err) {
