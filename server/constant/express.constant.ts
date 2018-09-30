@@ -17,7 +17,13 @@ export const EXPRESS = {
     UPLOAD_SUB_OTHER_LANG: '不允许导入非中文的其他语言信息。',
     UPLOAD_VERSION_ERR: '导入的版本错误！当前需导入的版本为：',
     UPLOAD_DATA_ERR: '导入缺少关键信息或中文！',
-    UPLOAD_COMPLETE_NEW: '为防止误导入其他多语言文件，请确认是否是导入当前多语言，如果是请添加新的多语言并删除当前多语言！'
+    UPLOAD_COMPLETE_NEW: '为防止误导入其他多语言文件，请确认是否是导入当前多语言，如果是请添加新的多语言并删除当前多语言！',
+
+    UPLOAD_JSON_ERR: '上传的JSON文件内容不是有效的对象!',
+    UPLOAD_JSON_EMPTY: '上传的JSON文件不能为空！',
+
+    UPLOAD_PROPERTIES_EMPTY: '上传的properties文件不能为空！',
+    UPLOAD_PROPERTIES_NO_VALUE: '上传的properties文件只有key没有value！'
   },  
 
   // EXCEL模板文件

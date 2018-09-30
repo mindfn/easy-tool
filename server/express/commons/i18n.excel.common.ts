@@ -168,7 +168,7 @@ export default {
   /** 
    * @Author: zhuxiankang 
    * @Date:   2018-09-29 11:42:47  
-   * @Desc:   单个多语言导入数据处理
+   * @Desc:   单个多语言导入数据处理(暂时区分开，防止耦合) 
    * @Parm:    
    */  
   processSubReplaceI18nData(i18nUploadData, i18nStoreData): Res {
@@ -185,19 +185,17 @@ export default {
 
     let isCompletelyNew = true // 当前上传文件没有一个多语言信息和数据库匹配(可能上传错了文件)
 
-    // 如果存在其他多语言，则需要保留其他多语言信息
-    if(isTranslated) {
-      for(let i18n of i18nStoreData) {
-        let foundUploadData = i18nUploadData.find(upload => 
-          upload.key === i18n.key && upload.chinese === i18n.chinese )
-        if(!foundUploadData) continue
-        isCompletelyNew = false
-
-        // 需要注意只需要保留多语言信息，例如来源、长度、位置、备注等还是使用上传的信息
-        for(let key of STATIC_I18N_TABLE_LANGUAGE_COLUMNS) {
-          if(!i18n[key]) continue
-          foundUploadData[key] = i18n[key]
-        }
+    for(let i18n of i18nStoreData) {
+      let foundUploadData = i18nUploadData.find(upload => 
+        upload.key === i18n.key && upload.chinese === i18n.chinese )
+      if(!foundUploadData) continue
+      isCompletelyNew = false
+      if(!isTranslated) continue
+      // 如果存在其他多语言，则需要保留其他多语言信息
+      // 需要注意只需要保留多语言信息，例如来源、长度、位置、备注等还是使用上传的信息
+      for(let key of STATIC_I18N_TABLE_LANGUAGE_COLUMNS) {
+        if(!i18n[key]) continue
+        foundUploadData[key] = i18n[key]
       }
     }
 
@@ -267,8 +265,9 @@ export default {
 
       i18nExcelData = result.data
       let { i18nData } = i18nStoreData
-  
+
       // 当前数据库未导入过多语言信息则直接插入导入多语言信息
+      // 存入数据库读取的时候可能是字符串null
       if(!i18nData) {
         result.data = i18nExcelData
       // 单个多语言，如果数据库已经存在非中文的其他多语言，则在覆盖的同时需要将其他多语言保存  
