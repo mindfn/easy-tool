@@ -3,9 +3,9 @@ import * as fromidable from 'formidable'
 import { Files, Fields } from 'formidable'
 import  { COMMON_CODE }  from '../../../common/constants'
 import { EXPRESS, EXPRESS_UPLOAD_TYPE } from '../../constant'
-import i18nExcelCommon from '../commons/i18n.excel.common'
-import i18nJsonCommon from '../commons/i18n.json.common'
-import i18nPropertiesCommon from '../commons/i18n.properties.common'
+import i18nExcelService from '../services/i18n.excel.upload.service'
+import i18nJsonService from '../services/i18n.json.upload.service'
+import i18nPropertiesService from '../services/i18n.properties.upload.service'
 import { Res } from '../../../common/types'
 import models from '../../database/models'
 const moment = require('moment')
@@ -90,7 +90,7 @@ export default function(req: Request, res: Response): void {
 async function processUploadJsonData(i18nStoreData: any, file: Files, res: Response) {
   try {
     let uploadJsonData = JSON.parse(fs.readFileSync(file.multExcel.path, 'utf-8').toString())
-    let result: Res = i18nJsonCommon.processUploadJson(
+    let result: Res = i18nJsonService.processUploadJson(
       uploadJsonData,
       i18nStoreData
     )
@@ -132,7 +132,7 @@ async function processUploadJsonData(i18nStoreData: any, file: Files, res: Respo
 async function processUploadExcelData(i18nStoreData: any, file: Files, res: Response)  {
   try {
     // 检测Excel是否符合格式要求并获取Excel数据
-    let result: Res = i18nExcelCommon.processUploadExcel(file)
+    let result: Res = i18nExcelService.processUploadExcel(file)
     // 表格不符合模板格式要求
     if(result.code === ERROR) {
       res.json(result)
@@ -140,7 +140,7 @@ async function processUploadExcelData(i18nStoreData: any, file: Files, res: Resp
     } 
     // 计算需要覆盖到数据库的导入信息，注意单个多语言上传做覆盖处理
     // 覆盖是指以导入的信息为主，当前数据库的中文和关键信息以导入信息为主
-    result = i18nExcelCommon.processReplaceI18nData(
+    result = i18nExcelService.processReplaceI18nData(
       result.data, 
       i18nStoreData,
       EXPRESS_UPLOAD_TYPE.COVER
@@ -191,7 +191,7 @@ async function processUploadPropertiesData(i18nStoreData: any, file: Files, res:
     }
 
     try {
-      let result: Res = i18nPropertiesCommon.processUploadProperties(
+      let result: Res = i18nPropertiesService.processUploadProperties(
         uploadPropertiesData,
         i18nStoreData
       )

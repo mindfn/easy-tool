@@ -4,7 +4,7 @@ import { Files, Fields } from 'formidable'
 import  { COMMON_CODE }  from '../../../common/constants'
 import { EXPRESS, EXPRESS_UPLOAD_TYPE } from '../../constant'
 import models from '../../database/models'
-import i18nExcelCommon from '../commons/i18n.excel.common'
+import i18nExcelService from '../services/i18n.excel.upload.service'
 import { Res } from '../../../common/types'
 const moment = require('moment')
 const { TRUE, ERROR } = COMMON_CODE
@@ -54,7 +54,7 @@ export default function(req: Request, res: Response): void {
 
       if(/\.xlsx$/.test(fileName)) { 
         // 检测Excel是否符合格式要求并获取Excel数据
-        let result: Res = i18nExcelCommon.processUploadExcel(file)
+        let result: Res = i18nExcelService.processUploadExcel(file)
 
         // 表格不符合模板格式要求
         if(result.code === ERROR) {
@@ -68,7 +68,7 @@ export default function(req: Request, res: Response): void {
         // 跳过是指以数据库信息为主，当前数据库没有的中文和关键信息，则不会导入
         for(let i18nStoreData of i18nStoreDatas) {
           if(!i18nStoreData.i18nData) continue
-          let resultData: Res = i18nExcelCommon.processReplaceI18nData(
+          let resultData: Res = i18nExcelService.processReplaceI18nData(
             result.data, 
             i18nStoreData,
             EXPRESS_UPLOAD_TYPE.SKIP
@@ -102,7 +102,7 @@ export default function(req: Request, res: Response): void {
 
         res.json({
           code: TRUE,
-          meg: RES.UPLOAD_SUCCESS,
+          msg: RES.UPLOAD_SUCCESS,
           data: uploadErrData
         })
 

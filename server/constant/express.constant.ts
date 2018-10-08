@@ -73,6 +73,46 @@ export const EXPRESS = {
       '34_العربية(Arabic-阿拉伯语)',
       '35_فارسی(Persian-波斯语)'
     ]
+  },
+
+  /* 语言属性对应的文件名称(语言简写) */
+  I18N_FILE_NAMES: {
+    'chinese' :       'zh_CN',                        
+    'english' :       'en_US',
+    'russian' :       'ru',                        
+    'estonia' :       'et',                       
+    'bulgarian':      'bg',                     
+    'hungarian':      'hu',                     
+    'greek':          'el',                      
+    'german':         'de',                         
+    'italian':        'it',                       
+    'czech':          'cs',                        
+    'slovak':         'sk',                       
+    'france':         'fr',                         
+    'polish':         'pl',                        
+    'dutch':          'nl',                          
+    'portuguese':     'pt',                  
+    'spanish':        'es',                      
+    'romanian':       'ro',                      
+    'danish':         'da',                        
+    'swedish':        'sv',                      
+    'norwegian':      'no',                     
+    'finnish':        'fi',                      
+    'croatian':       'hr',                      
+    'slovenian':      'sl',                    
+    'serbian':        'sr',                       
+    'turkish':        'tr',                        
+    'korean':         'ko',                         
+    'traditionalChinese': 'zh_HK',      // zh_TW          
+    'thai':               'th',                           
+    'vietnamese':         'vi',                    
+    'japanese':           'ja',                    
+    'hebrew':             'he',                         
+    'latvian':            'lv',                       
+    'lithuanian':         'lt',                    
+    'brazilianPortuguese':'pt_BR',            
+    'arabic':             'ar',         // 阿拉伯语                        
+    'persian':            'fa'                         
   }
 }
 

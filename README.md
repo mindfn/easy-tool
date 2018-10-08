@@ -18,6 +18,7 @@ npm run pro
 - [Mongoose forces the db option forceServerObjectId false and cannot be overridden. Mongoose defaults the server auto_reconnect options to true which can be overridden. See the node-mongodb-native driver instance for options that it understands.](https://stackoverflow.com/questions/18761595/mongoose-id-affected-before-saving)
 - [This would not work directly via PlayGround, because of fetch options. I've created an [issue](https://github.com/graphcool/graphql-yoga/issues/255) for the same. https://github.com/prisma/graphql-yoga/pull/256/commits/c4c168cfdbcf885b0f3802ce428b8f2491194255,https://github.com/prisma/graphql-yoga/issues/255
 - lokka不支持文件上传功能
+- 后端需要的properties文件的=前后不需要空格，因此需要修改node-properties库文件的write.js文件中的源码
 
 ## 依赖
 

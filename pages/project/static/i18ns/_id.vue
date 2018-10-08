@@ -36,14 +36,16 @@
           <mu-button 
             :disabled="disabled"
             flat 
-            textColor="grey600">
+            textColor="grey600"
+            @click="openDownloadDialog">
             <mu-icon left value=" " class="fa fa-download"></mu-icon>
             导出多语言
           </mu-button>
           <mu-button 
             flat 
-            textColor="grey600">
-            <mu-icon left value=" " class="fa fa-link"></mu-icon>
+            textColor="grey600"
+            @click="downloadTemplate">
+            <mu-icon left value=" " class="fa fa-file-text-o"></mu-icon>
             下载模板
           </mu-button>
         </div>
@@ -141,8 +143,10 @@
     </p-i18n-sup-upload>
 
     <!-- 导出多语言 -->
-    <p-i18n-export>
-    </p-i18n-export>
+    <p-i18n-sup-download
+      :show.sync="download"
+      :staticId="$route.params.id.split('-')[1]">
+    </p-i18n-sup-download>
   </div>
 </template>
 
@@ -156,16 +160,16 @@ import layout from '~/mixins/layout'
 import graphql from '~/graphql'
 import { Res, I18n, Static } from '~/common/types'
 import pI18nSupUpload from '~/components/pI18nSupUpload.vue'
-import pI18nExport from '~/components/pI18nExport.vue'
 import pI18nEdit from '~/components/pI18nEdit.vue'
+import pI18nSupDownload from '~/components/pI18nSupDownload.vue'
 import { STATIC } from '~/common/constants'
-
+import config from '~/nuxt.config'
 
 @Component({
   components: {
     pI18nSupUpload,
-    pI18nExport,
-    pI18nEdit
+    pI18nEdit,
+    pI18nSupDownload
   }
 })
 export default class extends mixins(head, layout) {
@@ -314,6 +318,7 @@ export default class extends mixins(head, layout) {
    */  
   refreshI18n() {
     this.edit = false
+    this.upload = false
     graphql('sta-queryById', { id: this.$route.params.id }, async (res: Res) => {
       this.sta = res.data
     })
@@ -327,6 +332,27 @@ export default class extends mixins(head, layout) {
    */  
   enterI18n(index: number, i18n: I18n) {
     this.$router.push(`/project/static/i18ns/i18n/${this.$route.params.id}-${i18n.i18nId}`)
+  }
+
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-10-08 09:42:07  
+   * @Desc:   打开导出多语言对话框 
+   * @Parm:    
+   */  
+  openDownloadDialog() {
+    this.download = true
+  } 
+
+
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-09-30 17:39:18  
+   * @Desc:   下载模板文件 
+   * @Parm:    
+   */  
+  downloadTemplate() {
+    window.location.href = `${config.proxyHttp}/i18n/download/template`
   }
 }
 </script>

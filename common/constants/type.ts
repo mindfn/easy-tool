@@ -128,3 +128,15 @@ export const STATIC_I18N_TABLE_TITLES = [
   '阿拉伯语',
   '波斯语'
 ]
+
+export const STATIC_I18N_DOWNLOAD_TYPE = [{
+  label: 'xlsx',
+  value: 'xlsx'
+}, {
+  label: 'json',
+  value: 'json'
+}, {
+  label: 'properties',
+  value: 'properties'
+}]
+

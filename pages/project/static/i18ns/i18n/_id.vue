@@ -31,7 +31,8 @@
           <mu-button 
             :disabled="!i18n.i18nData || !i18n.i18nData.length"
             flat 
-            textColor="grey600">
+            textColor="grey600"
+            @click="openDownloadDialog">
             <mu-icon left value=" " class="fa fa-download"></mu-icon>
             导出多语言
           </mu-button>
@@ -75,8 +76,15 @@
     <!-- 导入多语言 -->
     <p-i18n-sub-upload
       :show.sync="upload"
-      :i18nId="$route.params.id.split('-')[2]">
+      :i18nId="$route.params.id.split('-')[2]"
+      @refresh="refreshI18n">
     </p-i18n-sub-upload>
+
+    <!-- 导出多语言 -->
+    <p-i18n-sub-download
+      :show.sync="download"
+      :i18nId="$route.params.id.split('-')[2]">  
+    </p-i18n-sub-download>
   </div>
 </template>
 
@@ -90,6 +98,7 @@ import layout from '~/mixins/layout'
 import graphql from '~/graphql'
 import { Res, I18n } from '~/common/types'
 import pI18nSubUpload from '~/components/pI18nSubUpload.vue'
+import pI18nSubDownload from '~/components/pI18nSubDownload.vue'
 import { STATIC_I18N_TABLE_COLUMNS, STATIC_I18N_TABLE_TITLES } from '~/common/constants/type'
 // import pI18nTranslateUpload from '~/components/pI18nTranslateUpload.vue'
 // import pI18nExport from '~/components/pI18nExport.vue'
@@ -121,13 +130,15 @@ function dynamicComputeI18nColumns(i18nData): any[] {
 
 @Component({
   components: {
-    pI18nSubUpload
+    pI18nSubUpload,
+    pI18nSubDownload
   }
 })
 export default class extends mixins(head, layout) {
   readonly title: string = "项目多语言管理"
 
   upload: boolean = false
+  download: boolean = false
 
   i18n: I18n = {
     i18nName: '',
@@ -144,6 +155,8 @@ export default class extends mixins(head, layout) {
     { title: '导入文件名称', name: 'i18nImportFileName' },
     { title: '导入时间', name: 'i18nImportTime'}
   ]
+
+  i18nDynamicColumns: any[] = []
 
   /** 
    * @Author: zhuxiankang 
@@ -190,6 +203,37 @@ export default class extends mixins(head, layout) {
     this.upload = true
   }
 
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-10-08 09:42:07  
+   * @Desc:   打开导出多语言对话框 
+   * @Parm:    
+   */  
+  openDownloadDialog() {
+    this.download = true
+  } 
+
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-09-30 17:18:02  
+   * @Desc:   刷新多语言列表 
+   * @Parm:    
+   */  
+  refreshI18n() {
+    this.upload = false
+    // 2对应当前多语言id
+    graphql('i18n-queryById', { id: this.$route.params.id.split('-')[2] }, async (res: Res) => {
+      try {
+        let { data } = res
+        let { i18nData } = data
+        if(i18nData) data.i18nData = JSON.parse(i18nData)
+        this.i18n = res.data
+        this.i18nDynamicColumns = data.i18nData && dynamicComputeI18nColumns(data.i18nData)
+      } catch(err) {
+        console.error(err.message)
+      }
+    })
+  }
 }
 </script>
 

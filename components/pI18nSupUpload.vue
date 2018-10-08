@@ -26,8 +26,7 @@
               :autoUpload = "false"
               name="multExcel"
               @change="showFileName"
-              :on-success="uploadSuccess"
-              :on-fail="uploadFail"/>
+              :on-success="uploadSuccess" />
           </template>
         </mu-text-field>
       </mu-form-item>
@@ -114,16 +113,6 @@ export default class PI18nSupUpload extends Vue {
     }
     this.$emit('refresh')
     this.$toast.success(res.msg)
-  }
-
-  /** 
-   * @Author: zhuxiankang 
-   * @Date:   2018-09-19 16:14:44  
-   * @Desc:   上传失败回调 
-   * @Parm:    
-   */  
-  uploadFail() {
-  
   }
 
   /** 
