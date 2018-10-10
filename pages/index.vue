@@ -15,13 +15,12 @@
           <i class="fa fa-paperclip"></i>
         </mu-button>
       </mu-tooltip>  
-      <mu-tooltip content="bitbucket">
+      <mu-tooltip content="github">
         <mu-button 
           icon 
-          color="primary"
           target="__blank"
-          href="https://git.hikvision.com.cn/users/zhuxiankang/repos/easy-tool/browse?at=refs%2Fheads%2Fdev">
-          <i class="fa fa-bitbucket"></i>
+          href="https://github.com/EmptyCup20/easy-tool/tree/dev">
+          <i class="fa fa-github"></i>
         </mu-button>
       </mu-tooltip>  
     </div>

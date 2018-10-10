@@ -62,7 +62,7 @@ module.exports =
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 20);
+/******/ 	return __webpack_require__(__webpack_require__.s = 19);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -70,9 +70,9 @@ module.exports =
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__code__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__code__ = __webpack_require__(26);
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__code__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__message__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__message__ = __webpack_require__(27);
 /* unused harmony namespace reexport */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__type__ = __webpack_require__(3);
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_2__type__["a"]; });
@@ -87,11 +87,11 @@ module.exports =
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__graphql_constant__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__graphql_constant__ = __webpack_require__(36);
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_0__graphql_constant__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__md5_constant__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__md5_constant__ = __webpack_require__(37);
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_1__md5_constant__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__express_constant__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__express_constant__ = __webpack_require__(38);
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_2__express_constant__["a"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_2__express_constant__["b"]; });
 
@@ -104,13 +104,13 @@ module.exports =
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__grqphql_util__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__grqphql_util__ = __webpack_require__(31);
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_0__grqphql_util__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ldapjs_util__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ldapjs_util__ = __webpack_require__(32);
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_1__ldapjs_util__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__md5_util__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__md5_util__ = __webpack_require__(34);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__file_util__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__file_util__ = __webpack_require__(39);
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_3__file_util__["a"]; });
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_3__file_util__["b"]; });
 
@@ -277,9 +277,9 @@ module.exports = require("dotenv");
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__user_model__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__project_model__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__i18n_model__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__user_model__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__project_model__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__i18n_model__ = __webpack_require__(28);
 
 
 
@@ -340,80 +340,18 @@ module.exports = require("path");
 
 /***/ }),
 /* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-const parseArgs = __webpack_require__(48);
-
-const argv = parseArgs(process.argv.slice(2), {
-  alias: {
-    H: "hostname",
-    p: "port"
-  },
-  string: ["H"],
-  unknown: parameter => false
-});
-
-module.exports = {
-  // Web前端请求地址(注意开发态和生产态端口参考.env文件)
-  proxyHttp: 'http://localhost:4000',
-
-  head: {
-    title: "nuxt-type-template",
-    meta: [{ charset: "utf-8" }, {
-      name: "viewport",
-      content: "width=device-width, initial-scale=1"
-    }, {
-      hid: "description",
-      name: "description",
-      content: "Nuxt.js project"
-    }],
-    link: [{
-      rel: "icon",
-      type: "image/x-icon",
-      href: "/favicon.ico"
-    }]
-  },
-  /*
-  ** Customize the progress-bar color
-  */
-  loading: { color: "#3B8070" },
-  /*
-  ** Build configuration
-  */
-  css: [{
-    src: '~/assets/font-awesome-4.7.0/css/font-awesome.min.css'
-  }, {
-    src: '~/assets/style/scrollbar.css'
-  }, {
-    src: '~/assets/style/transition.css'
-  }],
-  build: {
-    vendor: ['muse-ui', 'lokka', 'lokka-transport-http', 'muse-ui-toast/dist/muse-ui-toast.common', 'vuedraggable', 'jsencrypt']
-  },
-
-  plugins: ['~/plugins/museui', '~/plugins/upload', { src: '~/plugins/jsencrypt.ts', ssr: false }],
-
-  modules: ["~/modules/typescript.js"],
-
-  router: {
-    middleware: 'userAuth'
-  }
-};
-
-/***/ }),
-/* 12 */
 /***/ (function(module, exports) {
 
 module.exports = require("formidable");
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_constants__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constant__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_node_xlsx__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_node_xlsx__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_node_xlsx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_node_xlsx__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_constants_type__ = __webpack_require__(3);
 var __assign = (this && this.__assign) || Object.assign || function(t) {
@@ -679,26 +617,26 @@ var STATIC_I18N_TABLE_LANGUAGE_COLUMNS = __WEBPACK_IMPORTED_MODULE_3__common_con
 
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, exports) {
 
 module.exports = require("node-xlsx");
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, exports) {
 
 module.exports = require("properties");
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(__dirname) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_constants__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_constants_type__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constant__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_node_xlsx__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_node_xlsx__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_node_xlsx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_node_xlsx__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_fs__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_fs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_fs__);
@@ -775,7 +713,7 @@ var moment = __webpack_require__(7);
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, "server\\express\\services"))
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -801,7 +739,7 @@ var moment = __webpack_require__(7);
 
 
 
-var archiver = __webpack_require__(18);
+var archiver = __webpack_require__(17);
 
 var STATIC_I18N_TABLE_LANGUAGE_COLUMNS = __WEBPACK_IMPORTED_MODULE_1__common_constants_type__["c" /* STATIC_I18N_TABLE_COLUMNS */].slice(6);
 /* harmony default export */ __webpack_exports__["a"] = ({
@@ -904,13 +842,13 @@ var STATIC_I18N_TABLE_LANGUAGE_COLUMNS = __WEBPACK_IMPORTED_MODULE_1__common_con
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, "server\\express\\services"))
 
 /***/ }),
-/* 18 */
+/* 17 */
 /***/ (function(module, exports) {
 
 module.exports = require("archiver");
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -920,7 +858,7 @@ module.exports = require("archiver");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_path___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_path__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_constants_type__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__constant__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_properties__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_properties__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_properties___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_properties__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils__ = __webpack_require__(2);
 var __values = (this && this.__values) || function (o) {
@@ -939,7 +877,7 @@ var moment = __webpack_require__(7);
 
 
 
-var archiver = __webpack_require__(18);
+var archiver = __webpack_require__(17);
 
 var STATIC_I18N_TABLE_LANGUAGE_COLUMNS = __WEBPACK_IMPORTED_MODULE_2__common_constants_type__["c" /* STATIC_I18N_TABLE_COLUMNS */].slice(6);
 /* harmony default export */ __webpack_exports__["a"] = ({
@@ -1042,18 +980,18 @@ var STATIC_I18N_TABLE_LANGUAGE_COLUMNS = __WEBPACK_IMPORTED_MODULE_2__common_con
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, "server\\express\\services"))
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_dotenv__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_dotenv___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_dotenv__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__database__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__graphql__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_nuxt__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__database__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__graphql__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_nuxt__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_nuxt___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_nuxt__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__express_routes_i18n_route__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__express_routes_i18n_route__ = __webpack_require__(48);
 
 
 
@@ -1062,7 +1000,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 __WEBPACK_IMPORTED_MODULE_0_dotenv__["config"]();
 __WEBPACK_IMPORTED_MODULE_1__database__["a" /* startDB */]();
 var server = __WEBPACK_IMPORTED_MODULE_2__graphql__["a" /* startServer */]();
-var nuxt = new __WEBPACK_IMPORTED_MODULE_3_nuxt__["Nuxt"](__webpack_require__(11));
+var nuxt = new __WEBPACK_IMPORTED_MODULE_3_nuxt__["Nuxt"](__webpack_require__(57));
 if (process.env.DEV_TYPE === 'nuxt') {
     var builder = new __WEBPACK_IMPORTED_MODULE_3_nuxt__["Builder"](nuxt);
     builder.build();
@@ -1072,7 +1010,7 @@ server.express.use(nuxt.render);
 
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1089,18 +1027,18 @@ var startDB = function () {
 
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return startServer; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_graphql_yoga__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_graphql_yoga__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_graphql_yoga___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_graphql_yoga__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_graphql_import__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_graphql_import__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_graphql_import___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_graphql_import__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__database_models__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__resolvers__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__middlewares__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__resolvers__ = __webpack_require__(29);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__middlewares__ = __webpack_require__(44);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_dotenv__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_dotenv___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_dotenv__);
 
@@ -1108,9 +1046,8 @@ var startDB = function () {
 
 
 
-var session = __webpack_require__(47);
+var session = __webpack_require__(46);
 
-var config = __webpack_require__(11);
 __WEBPACK_IMPORTED_MODULE_5_dotenv__["config"]();
 var startServer = function () {
     var context = function (req) { return ({
@@ -1118,12 +1055,14 @@ var startServer = function () {
         req: req.request
     }); };
     var port = process.env["DEV_PORT_" + process.env.DEV_TYPE] || process.env.PRO_PORT;
+    console.log('graphql: ', process.env["URI_" + "production"] + (":" + port));
     var options = {
         cors: {
             credentials: true,
-            origin: ["http://localhost:" + port]
+            origin: [process.env["URI_" + "production"] + (":" + port)]
         },
         port: port,
+        endpoint: '/graphql',
         playground: process.env.DEV_TYPE === 'server' ? '/playground' : false
     };
     var server = new __WEBPACK_IMPORTED_MODULE_0_graphql_yoga__["GraphQLServer"]({
@@ -1138,7 +1077,7 @@ var startServer = function () {
         resave: true,
         saveUninitialized: true,
         cookie: {
-            secure: "production" === 'production',
+            secure: false,
             maxAge: 1000 * 60 * 60 * 12
         }
     }));
@@ -1150,19 +1089,19 @@ var startServer = function () {
 
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports) {
 
 module.exports = require("graphql-yoga");
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports) {
 
 module.exports = require("graphql-import");
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1198,7 +1137,7 @@ var User = __WEBPACK_IMPORTED_MODULE_0_mongoose__["model"]('User', UserSchema);
 
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1287,7 +1226,7 @@ var Project = __WEBPACK_IMPORTED_MODULE_0_mongoose__["model"]('Project', Project
 
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1304,7 +1243,7 @@ var COMMON_CODE;
 
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1315,7 +1254,7 @@ var COMMON_MSG = {
 
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1379,14 +1318,14 @@ var I18n = __WEBPACK_IMPORTED_MODULE_0_mongoose__["model"]('I18n', i18nSchema);
 
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__user_resolver__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__project_resolver__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__static_resolver__ = __webpack_require__(43);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__i18n_resolver__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__user_resolver__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__project_resolver__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__static_resolver__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__i18n_resolver__ = __webpack_require__(43);
 var __assign = (this && this.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
         s = arguments[i];
@@ -1407,7 +1346,7 @@ var resolvers = {
 
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1458,7 +1397,7 @@ var RES = __WEBPACK_IMPORTED_MODULE_1__constant__["c" /* GRAPHQL */].RES;
 var ERROR = __WEBPACK_IMPORTED_MODULE_2__common_constants__["a" /* COMMON_CODE */].ERROR, TRUE = __WEBPACK_IMPORTED_MODULE_2__common_constants__["a" /* COMMON_CODE */].TRUE;
 
 __WEBPACK_IMPORTED_MODULE_3_dotenv__["config"]();
-var key = new (__webpack_require__(41))({ b: 512 });
+var key = new (__webpack_require__(40))({ b: 512 });
 key.setOptions({ encryptionScheme: 'pkcs1' });
 var mutation = {
     login: function (parent, args, _a) {
@@ -1489,9 +1428,11 @@ var mutation = {
                         user = _b.sent();
                         _b.label = 4;
                     case 4:
+                        console.log('login: ', req.sessionID);
                         if (req.session) {
-                            req.session.username = user.username;
                             req.session.userId = user.userId;
+                            req.session.username = user.username;
+                            console.log('login session: ', req.session);
                         }
                         return [2, Object(__WEBPACK_IMPORTED_MODULE_0__utils__["d" /* resolveResponse */])(TRUE, RES.LOGIN_SUCCESS)];
                     case 5: return [2, Object(__WEBPACK_IMPORTED_MODULE_0__utils__["d" /* resolveResponse */])(ERROR, RES.USER_ERR)];
@@ -1538,7 +1479,7 @@ var query = {
     users: function (parent, args, _a) {
         var models = _a.models, req = _a.req;
         return __awaiter(this, void 0, void 0, function () {
-            var users, session_1, err_2;
+            var users, session, err_2;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -1546,11 +1487,9 @@ var query = {
                         return [4, models.User.find()];
                     case 1:
                         users = _b.sent();
-                        session_1 = req.session;
-                        if (session_1) {
-                            return [2, Object(__WEBPACK_IMPORTED_MODULE_0__utils__["d" /* resolveResponse */])(TRUE, RES.QUERY_SUCCESS,  true
-                                    ? users.filter(function (user) { return user.userId !== session_1.userId; })
-                                    : users)];
+                        session = req.session;
+                        if (session) {
+                            return [2, Object(__WEBPACK_IMPORTED_MODULE_0__utils__["d" /* resolveResponse */])(TRUE, RES.QUERY_SUCCESS, users)];
                         }
                         return [2, Object(__WEBPACK_IMPORTED_MODULE_0__utils__["d" /* resolveResponse */])(ERROR, RES.QUERY_FAIL)];
                     case 2:
@@ -1570,7 +1509,7 @@ var query = {
 
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1585,14 +1524,14 @@ var resolveResponse = function (code, msg, data) {
 
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return loginOA; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_dotenv__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_dotenv___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_dotenv__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ldapjs__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ldapjs__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ldapjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_ldapjs__);
 
 
@@ -1617,18 +1556,18 @@ var loginOA = function (username, password) {
 
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports) {
 
 module.exports = require("ldapjs");
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export createMd5Password */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_crypto__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_crypto__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_crypto___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_crypto__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constant__ = __webpack_require__(1);
 
@@ -1639,13 +1578,13 @@ var createMd5Password = function (password) {
 
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports) {
 
 module.exports = require("crypto");
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1662,6 +1601,7 @@ var GRAPHQL = {
         UPDATE_SUCCESS: '更新成功！',
         PROJECT_URL_REPEAT: '项目URL已经存在与其他项目，请确认URL是否正确！',
         DEL_FAIL: '删除失败！',
+        DEL_NO_AUTH: '只有项目创建者才可以删除项目！',
         DEL_SUCCESS: '删除成功！',
         PROJECT_NOT_FOUND: '项目不存在！',
         STATIC_NOT_FOUND: '静态资源不存在！',
@@ -1674,7 +1614,7 @@ var GRAPHQL = {
 
 
 /***/ }),
-/* 38 */
+/* 37 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1685,7 +1625,7 @@ var MD5 = {
 
 
 /***/ }),
-/* 39 */
+/* 38 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1803,7 +1743,7 @@ var EXPRESS = {
 
 
 /***/ }),
-/* 40 */
+/* 39 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1855,13 +1795,13 @@ var delFile = function (path) {
 
 
 /***/ }),
-/* 41 */
+/* 40 */
 /***/ (function(module, exports) {
 
 module.exports = require("node-rsa");
 
 /***/ }),
-/* 42 */
+/* 41 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1967,15 +1907,26 @@ var mutation = {
     deleteProject: function (parent, args, _a) {
         var models = _a.models, req = _a.req;
         return __awaiter(this, void 0, void 0, function () {
-            var err_2;
+            var project, session, err_2;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         _b.trys.push([0, 2, , 3]);
-                        return [4, models.Project.remove({ _id: args.projectId })];
+                        return [4, models.Project.findById(args.projectId)];
                     case 1:
-                        _b.sent();
-                        return [2, Object(__WEBPACK_IMPORTED_MODULE_0__utils__["d" /* resolveResponse */])(TRUE, RES.DEL_SUCCESS)];
+                        project = _b.sent();
+                        session = req.session;
+                        if (!project) {
+                            return [2, Object(__WEBPACK_IMPORTED_MODULE_0__utils__["d" /* resolveResponse */])(ERROR, RES.PROJECT_NOT_FOUND)];
+                        }
+                        if (project.projectCreatorId === (session && session.userId)) {
+                            project.remove();
+                            return [2, Object(__WEBPACK_IMPORTED_MODULE_0__utils__["d" /* resolveResponse */])(TRUE, RES.DEL_SUCCESS)];
+                        }
+                        else {
+                            return [2, Object(__WEBPACK_IMPORTED_MODULE_0__utils__["d" /* resolveResponse */])(ERROR, RES.DEL_NO_AUTH)];
+                        }
+                        return [3, 3];
                     case 2:
                         err_2 = _b.sent();
                         console.error(err_2.message);
@@ -2031,17 +1982,14 @@ var query = {
                         try {
                             for (projects_1 = __values(projects), projects_1_1 = projects_1.next(); !projects_1_1.done; projects_1_1 = projects_1.next()) {
                                 project = projects_1_1.value;
-                                projectMember = project.projectMember;
-                                if (projectMember && req.session) {
-                                    console.log(projectMember);
-                                    console.log(req.sessionID);
-                                    console.log(req.session.username);
-                                    console.log(req.session.userId);
-                                    console.log(projectMember.find(function (member) { return member.userId === (req.session && req.session.userId); }));
+                                if (project.projectCreatorId === args.userId) {
+                                    showProjects.push(project);
+                                    continue;
                                 }
+                                projectMember = project.projectMember;
                                 if (!projectMember
                                     || !projectMember.length
-                                    || !projectMember.find(function (member) { return member.userId === (req.session && req.session.userId); }))
+                                    || !projectMember.find(function (member) { return member.userId === args.userId; }))
                                     continue;
                                 showProjects.push(project);
                             }
@@ -2065,20 +2013,32 @@ var query = {
     projectByName: function (parent, args, _a) {
         var models = _a.models, req = _a.req;
         return __awaiter(this, void 0, void 0, function () {
-            var e_2, _b, projects, showProjects, projects_2, projects_2_1, project, projectMember, err_5;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
+            var e_2, _b, projects, _c, showProjects, projects_2, projects_2_1, project, projectMember, err_5;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
                     case 0:
-                        _c.trys.push([0, 2, , 3]);
+                        _d.trys.push([0, 5, , 6]);
+                        if (!args.projectName) return [3, 2];
                         return [4, models.Project.find({
                                 $or: [{ projectName: { $regex: new RegExp(args.projectName, 'i') } }]
                             })];
                     case 1:
-                        projects = _c.sent();
+                        _c = _d.sent();
+                        return [3, 4];
+                    case 2: return [4, models.Project.find()];
+                    case 3:
+                        _c = _d.sent();
+                        _d.label = 4;
+                    case 4:
+                        projects = _c;
                         showProjects = [];
                         try {
                             for (projects_2 = __values(projects), projects_2_1 = projects_2.next(); !projects_2_1.done; projects_2_1 = projects_2.next()) {
                                 project = projects_2_1.value;
+                                if (project.projectCreatorId === (req.session && req.session.userId)) {
+                                    showProjects.push(project);
+                                    continue;
+                                }
                                 projectMember = project.projectMember;
                                 if (!projectMember
                                     || !projectMember.length
@@ -2095,11 +2055,11 @@ var query = {
                             finally { if (e_2) throw e_2.error; }
                         }
                         return [2, Object(__WEBPACK_IMPORTED_MODULE_0__utils__["d" /* resolveResponse */])(TRUE, RES.QUERY_SUCCESS, showProjects)];
-                    case 2:
-                        err_5 = _c.sent();
+                    case 5:
+                        err_5 = _d.sent();
                         console.error(err_5.message);
                         return [2, Object(__WEBPACK_IMPORTED_MODULE_0__utils__["d" /* resolveResponse */])(ERROR, err_5.message)];
-                    case 3: return [2];
+                    case 6: return [2];
                 }
             });
         });
@@ -2133,7 +2093,7 @@ var query = {
 
 
 /***/ }),
-/* 43 */
+/* 42 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2377,7 +2337,7 @@ var query = {
 
 
 /***/ }),
-/* 44 */
+/* 43 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2535,11 +2495,11 @@ var query = {
 
 
 /***/ }),
-/* 45 */
+/* 44 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__auth_middleware__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__auth_middleware__ = __webpack_require__(45);
 var __read = (this && this.__read) || function (o, n) {
     var m = typeof Symbol === "function" && o[Symbol.iterator];
     if (!m) return o;
@@ -2566,7 +2526,7 @@ var middlewares = __spread(__WEBPACK_IMPORTED_MODULE_0__auth_middleware__["a" /*
 
 
 /***/ }),
-/* 46 */
+/* 45 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2617,271 +2577,29 @@ var isLogginIn = function (resolve, parent, args, ctx) { return __awaiter(_this,
 
 
 /***/ }),
-/* 47 */
+/* 46 */
 /***/ (function(module, exports) {
 
 module.exports = require("express-session");
 
 /***/ }),
-/* 48 */
-/***/ (function(module, exports) {
-
-module.exports = function (args, opts) {
-    if (!opts) opts = {};
-    
-    var flags = { bools : {}, strings : {}, unknownFn: null };
-
-    if (typeof opts['unknown'] === 'function') {
-        flags.unknownFn = opts['unknown'];
-    }
-
-    if (typeof opts['boolean'] === 'boolean' && opts['boolean']) {
-      flags.allBools = true;
-    } else {
-      [].concat(opts['boolean']).filter(Boolean).forEach(function (key) {
-          flags.bools[key] = true;
-      });
-    }
-    
-    var aliases = {};
-    Object.keys(opts.alias || {}).forEach(function (key) {
-        aliases[key] = [].concat(opts.alias[key]);
-        aliases[key].forEach(function (x) {
-            aliases[x] = [key].concat(aliases[key].filter(function (y) {
-                return x !== y;
-            }));
-        });
-    });
-
-    [].concat(opts.string).filter(Boolean).forEach(function (key) {
-        flags.strings[key] = true;
-        if (aliases[key]) {
-            flags.strings[aliases[key]] = true;
-        }
-     });
-
-    var defaults = opts['default'] || {};
-    
-    var argv = { _ : [] };
-    Object.keys(flags.bools).forEach(function (key) {
-        setArg(key, defaults[key] === undefined ? false : defaults[key]);
-    });
-    
-    var notFlags = [];
-
-    if (args.indexOf('--') !== -1) {
-        notFlags = args.slice(args.indexOf('--')+1);
-        args = args.slice(0, args.indexOf('--'));
-    }
-
-    function argDefined(key, arg) {
-        return (flags.allBools && /^--[^=]+$/.test(arg)) ||
-            flags.strings[key] || flags.bools[key] || aliases[key];
-    }
-
-    function setArg (key, val, arg) {
-        if (arg && flags.unknownFn && !argDefined(key, arg)) {
-            if (flags.unknownFn(arg) === false) return;
-        }
-
-        var value = !flags.strings[key] && isNumber(val)
-            ? Number(val) : val
-        ;
-        setKey(argv, key.split('.'), value);
-        
-        (aliases[key] || []).forEach(function (x) {
-            setKey(argv, x.split('.'), value);
-        });
-    }
-
-    function setKey (obj, keys, value) {
-        var o = obj;
-        keys.slice(0,-1).forEach(function (key) {
-            if (o[key] === undefined) o[key] = {};
-            o = o[key];
-        });
-
-        var key = keys[keys.length - 1];
-        if (o[key] === undefined || flags.bools[key] || typeof o[key] === 'boolean') {
-            o[key] = value;
-        }
-        else if (Array.isArray(o[key])) {
-            o[key].push(value);
-        }
-        else {
-            o[key] = [ o[key], value ];
-        }
-    }
-    
-    function aliasIsBoolean(key) {
-      return aliases[key].some(function (x) {
-          return flags.bools[x];
-      });
-    }
-
-    for (var i = 0; i < args.length; i++) {
-        var arg = args[i];
-        
-        if (/^--.+=/.test(arg)) {
-            // Using [\s\S] instead of . because js doesn't support the
-            // 'dotall' regex modifier. See:
-            // http://stackoverflow.com/a/1068308/13216
-            var m = arg.match(/^--([^=]+)=([\s\S]*)$/);
-            var key = m[1];
-            var value = m[2];
-            if (flags.bools[key]) {
-                value = value !== 'false';
-            }
-            setArg(key, value, arg);
-        }
-        else if (/^--no-.+/.test(arg)) {
-            var key = arg.match(/^--no-(.+)/)[1];
-            setArg(key, false, arg);
-        }
-        else if (/^--.+/.test(arg)) {
-            var key = arg.match(/^--(.+)/)[1];
-            var next = args[i + 1];
-            if (next !== undefined && !/^-/.test(next)
-            && !flags.bools[key]
-            && !flags.allBools
-            && (aliases[key] ? !aliasIsBoolean(key) : true)) {
-                setArg(key, next, arg);
-                i++;
-            }
-            else if (/^(true|false)$/.test(next)) {
-                setArg(key, next === 'true', arg);
-                i++;
-            }
-            else {
-                setArg(key, flags.strings[key] ? '' : true, arg);
-            }
-        }
-        else if (/^-[^-]+/.test(arg)) {
-            var letters = arg.slice(1,-1).split('');
-            
-            var broken = false;
-            for (var j = 0; j < letters.length; j++) {
-                var next = arg.slice(j+2);
-                
-                if (next === '-') {
-                    setArg(letters[j], next, arg)
-                    continue;
-                }
-                
-                if (/[A-Za-z]/.test(letters[j]) && /=/.test(next)) {
-                    setArg(letters[j], next.split('=')[1], arg);
-                    broken = true;
-                    break;
-                }
-                
-                if (/[A-Za-z]/.test(letters[j])
-                && /-?\d+(\.\d*)?(e-?\d+)?$/.test(next)) {
-                    setArg(letters[j], next, arg);
-                    broken = true;
-                    break;
-                }
-                
-                if (letters[j+1] && letters[j+1].match(/\W/)) {
-                    setArg(letters[j], arg.slice(j+2), arg);
-                    broken = true;
-                    break;
-                }
-                else {
-                    setArg(letters[j], flags.strings[letters[j]] ? '' : true, arg);
-                }
-            }
-            
-            var key = arg.slice(-1)[0];
-            if (!broken && key !== '-') {
-                if (args[i+1] && !/^(-|--)[^-]/.test(args[i+1])
-                && !flags.bools[key]
-                && (aliases[key] ? !aliasIsBoolean(key) : true)) {
-                    setArg(key, args[i+1], arg);
-                    i++;
-                }
-                else if (args[i+1] && /true|false/.test(args[i+1])) {
-                    setArg(key, args[i+1] === 'true', arg);
-                    i++;
-                }
-                else {
-                    setArg(key, flags.strings[key] ? '' : true, arg);
-                }
-            }
-        }
-        else {
-            if (!flags.unknownFn || flags.unknownFn(arg) !== false) {
-                argv._.push(
-                    flags.strings['_'] || !isNumber(arg) ? arg : Number(arg)
-                );
-            }
-            if (opts.stopEarly) {
-                argv._.push.apply(argv._, args.slice(i + 1));
-                break;
-            }
-        }
-    }
-    
-    Object.keys(defaults).forEach(function (key) {
-        if (!hasKey(argv, key.split('.'))) {
-            setKey(argv, key.split('.'), defaults[key]);
-            
-            (aliases[key] || []).forEach(function (x) {
-                setKey(argv, x.split('.'), defaults[key]);
-            });
-        }
-    });
-    
-    if (opts['--']) {
-        argv['--'] = new Array();
-        notFlags.forEach(function(key) {
-            argv['--'].push(key);
-        });
-    }
-    else {
-        notFlags.forEach(function(key) {
-            argv._.push(key);
-        });
-    }
-
-    return argv;
-};
-
-function hasKey (obj, keys) {
-    var o = obj;
-    keys.slice(0,-1).forEach(function (key) {
-        o = (o[key] || {});
-    });
-
-    var key = keys[keys.length - 1];
-    return key in o;
-}
-
-function isNumber (x) {
-    if (typeof x === 'number') return true;
-    if (/^0x[0-9a-f]+$/i.test(x)) return true;
-    return /^[-+]?(?:\d+(?:\.\d*)?|\.\d+)(e[-+]?\d+)?$/.test(x);
-}
-
-
-
-/***/ }),
-/* 49 */
+/* 47 */
 /***/ (function(module, exports) {
 
 module.exports = require("nuxt");
 
 /***/ }),
-/* 50 */
+/* 48 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_express__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_express__ = __webpack_require__(49);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_express___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_express__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__controllers_i18n_sub_upload_controller__ = __webpack_require__(52);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__controllers_i18n_sup_upload_controller__ = __webpack_require__(55);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__controllers_i18n_sub_download_controller__ = __webpack_require__(56);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__controllers_i18n_sup_download_controller__ = __webpack_require__(57);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_i18n_template_download_service__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__controllers_i18n_sub_upload_controller__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__controllers_i18n_sup_upload_controller__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__controllers_i18n_sub_download_controller__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__controllers_i18n_sup_download_controller__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_i18n_template_download_service__ = __webpack_require__(56);
 
 
 
@@ -2898,25 +2616,25 @@ router.get('/download/sup/:format/:file/:staticId', __WEBPACK_IMPORTED_MODULE_4_
 
 
 /***/ }),
-/* 51 */
+/* 49 */
 /***/ (function(module, exports) {
 
 module.exports = require("express");
 
 /***/ }),
-/* 52 */
+/* 50 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_formidable__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_formidable__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_formidable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_formidable__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_constants__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constant__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_i18n_excel_upload_service__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_i18n_json_upload_service__ = __webpack_require__(53);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_i18n_properties_upload_service__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_i18n_excel_upload_service__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_i18n_json_upload_service__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_i18n_properties_upload_service__ = __webpack_require__(52);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__database_models__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_properties__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_properties__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_properties___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_properties__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_fs__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_fs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_fs__);
@@ -3164,7 +2882,7 @@ function processUploadPropertiesData(i18nStoreData, file, res) {
 
 
 /***/ }),
-/* 53 */
+/* 51 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3339,7 +3057,7 @@ var STATIC_I18N_TABLE_LANGUAGE_COLUMNS = __WEBPACK_IMPORTED_MODULE_2__common_con
 
 
 /***/ }),
-/* 54 */
+/* 52 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3534,16 +3252,16 @@ var STATIC_I18N_TABLE_LANGUAGE_COLUMNS = __WEBPACK_IMPORTED_MODULE_2__common_con
 
 
 /***/ }),
-/* 55 */
+/* 53 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_formidable__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_formidable__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_formidable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_formidable__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_constants__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constant__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__database_models__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_i18n_excel_upload_service__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_i18n_excel_upload_service__ = __webpack_require__(12);
 var __assign = (this && this.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
         s = arguments[i];
@@ -3734,15 +3452,15 @@ var RES = __WEBPACK_IMPORTED_MODULE_2__constant__["a" /* EXPRESS */].RES;
 
 
 /***/ }),
-/* 56 */
+/* 54 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__database_models__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_constants__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_i18n_excel_download_service__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_i18n_json_download_service__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_i18n_properties_download_service__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_i18n_excel_download_service__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_i18n_json_download_service__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_i18n_properties_download_service__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils__ = __webpack_require__(2);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -3846,14 +3564,14 @@ function processDownloadExcel(i18nStoreData, file, res) {
 
 
 /***/ }),
-/* 57 */
+/* 55 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_constants__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_i18n_excel_download_service__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_i18n_json_download_service__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_i18n_properties_download_service__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_i18n_excel_download_service__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_i18n_json_download_service__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_i18n_properties_download_service__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__database_models__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils__ = __webpack_require__(2);
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -3981,7 +3699,7 @@ function processDownloadExcel(i18nStoreData, file, res) {
 
 
 /***/ }),
-/* 58 */
+/* 56 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3993,6 +3711,310 @@ function processDownloadExcel(i18nStoreData, file, res) {
 });
 
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, "server\\express\\services"))
+
+/***/ }),
+/* 57 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const parseArgs = __webpack_require__(58);
+
+const argv = parseArgs(process.argv.slice(2), {
+  alias: {
+    H: "hostname",
+    p: "port"
+  },
+  string: ["H"],
+  unknown: parameter => false
+});
+
+module.exports = {
+  // Web前端请求地址(注意开发态和生产态端口和IP参考.env文件)
+  proxyHttp: 'http://10.13.64.122:5000/graphql',
+
+  head: {
+    title: "nuxt-type-template",
+    meta: [{ charset: "utf-8" }, {
+      name: "viewport",
+      content: "width=device-width, initial-scale=1"
+    }, {
+      hid: "description",
+      name: "description",
+      content: "Nuxt.js project"
+    }],
+    link: [{
+      rel: "icon",
+      type: "image/x-icon",
+      href: "/favicon.ico"
+    }]
+  },
+  /*
+  ** Customize the progress-bar color
+  */
+  loading: { color: "#3B8070" },
+  /*
+  ** Build configuration
+  */
+  css: [{
+    src: '~/assets/font-awesome-4.7.0/css/font-awesome.min.css'
+  }, {
+    src: '~/assets/style/scrollbar.css'
+  }, {
+    src: '~/assets/style/transition.css'
+  }],
+  build: {
+    vendor: ['muse-ui', 'lokka', 'lokka-transport-http', 'muse-ui-toast/dist/muse-ui-toast.common', 'vuedraggable', 'jsencrypt']
+  },
+
+  plugins: ['~/plugins/museui', '~/plugins/upload', { src: '~/plugins/jsencrypt.ts', ssr: false }],
+
+  modules: ["~/modules/typescript.js"],
+
+  router: {
+    middleware: 'userAuth'
+  }
+};
+
+/***/ }),
+/* 58 */
+/***/ (function(module, exports) {
+
+module.exports = function (args, opts) {
+    if (!opts) opts = {};
+    
+    var flags = { bools : {}, strings : {}, unknownFn: null };
+
+    if (typeof opts['unknown'] === 'function') {
+        flags.unknownFn = opts['unknown'];
+    }
+
+    if (typeof opts['boolean'] === 'boolean' && opts['boolean']) {
+      flags.allBools = true;
+    } else {
+      [].concat(opts['boolean']).filter(Boolean).forEach(function (key) {
+          flags.bools[key] = true;
+      });
+    }
+    
+    var aliases = {};
+    Object.keys(opts.alias || {}).forEach(function (key) {
+        aliases[key] = [].concat(opts.alias[key]);
+        aliases[key].forEach(function (x) {
+            aliases[x] = [key].concat(aliases[key].filter(function (y) {
+                return x !== y;
+            }));
+        });
+    });
+
+    [].concat(opts.string).filter(Boolean).forEach(function (key) {
+        flags.strings[key] = true;
+        if (aliases[key]) {
+            flags.strings[aliases[key]] = true;
+        }
+     });
+
+    var defaults = opts['default'] || {};
+    
+    var argv = { _ : [] };
+    Object.keys(flags.bools).forEach(function (key) {
+        setArg(key, defaults[key] === undefined ? false : defaults[key]);
+    });
+    
+    var notFlags = [];
+
+    if (args.indexOf('--') !== -1) {
+        notFlags = args.slice(args.indexOf('--')+1);
+        args = args.slice(0, args.indexOf('--'));
+    }
+
+    function argDefined(key, arg) {
+        return (flags.allBools && /^--[^=]+$/.test(arg)) ||
+            flags.strings[key] || flags.bools[key] || aliases[key];
+    }
+
+    function setArg (key, val, arg) {
+        if (arg && flags.unknownFn && !argDefined(key, arg)) {
+            if (flags.unknownFn(arg) === false) return;
+        }
+
+        var value = !flags.strings[key] && isNumber(val)
+            ? Number(val) : val
+        ;
+        setKey(argv, key.split('.'), value);
+        
+        (aliases[key] || []).forEach(function (x) {
+            setKey(argv, x.split('.'), value);
+        });
+    }
+
+    function setKey (obj, keys, value) {
+        var o = obj;
+        keys.slice(0,-1).forEach(function (key) {
+            if (o[key] === undefined) o[key] = {};
+            o = o[key];
+        });
+
+        var key = keys[keys.length - 1];
+        if (o[key] === undefined || flags.bools[key] || typeof o[key] === 'boolean') {
+            o[key] = value;
+        }
+        else if (Array.isArray(o[key])) {
+            o[key].push(value);
+        }
+        else {
+            o[key] = [ o[key], value ];
+        }
+    }
+    
+    function aliasIsBoolean(key) {
+      return aliases[key].some(function (x) {
+          return flags.bools[x];
+      });
+    }
+
+    for (var i = 0; i < args.length; i++) {
+        var arg = args[i];
+        
+        if (/^--.+=/.test(arg)) {
+            // Using [\s\S] instead of . because js doesn't support the
+            // 'dotall' regex modifier. See:
+            // http://stackoverflow.com/a/1068308/13216
+            var m = arg.match(/^--([^=]+)=([\s\S]*)$/);
+            var key = m[1];
+            var value = m[2];
+            if (flags.bools[key]) {
+                value = value !== 'false';
+            }
+            setArg(key, value, arg);
+        }
+        else if (/^--no-.+/.test(arg)) {
+            var key = arg.match(/^--no-(.+)/)[1];
+            setArg(key, false, arg);
+        }
+        else if (/^--.+/.test(arg)) {
+            var key = arg.match(/^--(.+)/)[1];
+            var next = args[i + 1];
+            if (next !== undefined && !/^-/.test(next)
+            && !flags.bools[key]
+            && !flags.allBools
+            && (aliases[key] ? !aliasIsBoolean(key) : true)) {
+                setArg(key, next, arg);
+                i++;
+            }
+            else if (/^(true|false)$/.test(next)) {
+                setArg(key, next === 'true', arg);
+                i++;
+            }
+            else {
+                setArg(key, flags.strings[key] ? '' : true, arg);
+            }
+        }
+        else if (/^-[^-]+/.test(arg)) {
+            var letters = arg.slice(1,-1).split('');
+            
+            var broken = false;
+            for (var j = 0; j < letters.length; j++) {
+                var next = arg.slice(j+2);
+                
+                if (next === '-') {
+                    setArg(letters[j], next, arg)
+                    continue;
+                }
+                
+                if (/[A-Za-z]/.test(letters[j]) && /=/.test(next)) {
+                    setArg(letters[j], next.split('=')[1], arg);
+                    broken = true;
+                    break;
+                }
+                
+                if (/[A-Za-z]/.test(letters[j])
+                && /-?\d+(\.\d*)?(e-?\d+)?$/.test(next)) {
+                    setArg(letters[j], next, arg);
+                    broken = true;
+                    break;
+                }
+                
+                if (letters[j+1] && letters[j+1].match(/\W/)) {
+                    setArg(letters[j], arg.slice(j+2), arg);
+                    broken = true;
+                    break;
+                }
+                else {
+                    setArg(letters[j], flags.strings[letters[j]] ? '' : true, arg);
+                }
+            }
+            
+            var key = arg.slice(-1)[0];
+            if (!broken && key !== '-') {
+                if (args[i+1] && !/^(-|--)[^-]/.test(args[i+1])
+                && !flags.bools[key]
+                && (aliases[key] ? !aliasIsBoolean(key) : true)) {
+                    setArg(key, args[i+1], arg);
+                    i++;
+                }
+                else if (args[i+1] && /true|false/.test(args[i+1])) {
+                    setArg(key, args[i+1] === 'true', arg);
+                    i++;
+                }
+                else {
+                    setArg(key, flags.strings[key] ? '' : true, arg);
+                }
+            }
+        }
+        else {
+            if (!flags.unknownFn || flags.unknownFn(arg) !== false) {
+                argv._.push(
+                    flags.strings['_'] || !isNumber(arg) ? arg : Number(arg)
+                );
+            }
+            if (opts.stopEarly) {
+                argv._.push.apply(argv._, args.slice(i + 1));
+                break;
+            }
+        }
+    }
+    
+    Object.keys(defaults).forEach(function (key) {
+        if (!hasKey(argv, key.split('.'))) {
+            setKey(argv, key.split('.'), defaults[key]);
+            
+            (aliases[key] || []).forEach(function (x) {
+                setKey(argv, x.split('.'), defaults[key]);
+            });
+        }
+    });
+    
+    if (opts['--']) {
+        argv['--'] = new Array();
+        notFlags.forEach(function(key) {
+            argv['--'].push(key);
+        });
+    }
+    else {
+        notFlags.forEach(function(key) {
+            argv._.push(key);
+        });
+    }
+
+    return argv;
+};
+
+function hasKey (obj, keys) {
+    var o = obj;
+    keys.slice(0,-1).forEach(function (key) {
+        o = (o[key] || {});
+    });
+
+    var key = keys[keys.length - 1];
+    return key in o;
+}
+
+function isNumber (x) {
+    if (typeof x === 'number') return true;
+    if (/^0x[0-9a-f]+$/i.test(x)) return true;
+    return /^[-+]?(?:\d+(?:\.\d*)?|\.\d+)(e[-+]?\d+)?$/.test(x);
+}
+
+
 
 /***/ })
 /******/ ]);

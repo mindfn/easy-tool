@@ -48,7 +48,8 @@ export const startServer = () : GraphQLServer => {
     resave: true,
     saveUninitialized: true,
     cookie: {
-      secure: process.env.NODE_ENV === 'production',
+      // http有效，设置为true仅用于https的站点
+      secure: false,
       maxAge: 1000 * 60 * 60 * 12
     }
   }))
