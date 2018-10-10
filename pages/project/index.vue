@@ -63,19 +63,26 @@
               </mu-card-media>
               <mu-card-text>
                 <mu-row>
-                  <mu-col :span="8">
+                  <mu-col :span="item.projectCreatorId === user.userId ? 8 : 12">
                     <div class="page-card-avatar">
+                      <mu-tooltip 
+                        :content="item.projectCreator">
+                        <mu-avatar color="pink300">
+                          {{ spell(item.projectCreator) }}
+                        </mu-avatar>
+                      </mu-tooltip>
                       <mu-tooltip 
                         :content="member.username"
                         v-for="(member, index) in item.projectMember" :key="index">
-                        <mu-avatar color="teal">
+                        <mu-avatar color="teal300">
                           {{ spell(member.username) }}
                         </mu-avatar>
                       </mu-tooltip>
                     </div>
                   </mu-col>
-                  <mu-col :span="4">
-                    <mu-button small fab color="red" @click.stop="openDeleteDialog(index)">
+                  <mu-col :span="4" v-if="item.projectCreatorId === user.userId">
+                    <mu-button 
+                      small fab color="red" @click.stop="openDeleteDialog(index)">
                       <i class="fa fa-trash"></i>
                     </mu-button>
                     <mu-button small fab color="blue" @click.stop="openEditDialog(index)">
@@ -95,6 +102,7 @@
       :type="type" 
       :show.sync="edit" 
       :data="currentProject"
+      :user="user"
       @refresh="refreshProjects">
     </p-project-edit>
 
@@ -171,10 +179,15 @@ export default class extends mixins(head, layout) {
    * @Desc:   渲染项目列表 
    * @Parm:    
    */  
-  asyncData ({ params }, cb) {
-    graphql('project-getList', async (res: Res) => {
+  async asyncData ({ params, store }, cb) {
+    let { state: { user } } = store
+    // 注意： asyncData发起的请求和客户端发起的请求是不同的session
+    // 这里需要将客户端发起请求的session当做参数传递处理
+    // 这个session从vuex中获取(vuex中是在nuxtServerInit中获取服务端的session为客户端所用)
+    graphql('project-getList', { userId: user && user.userId }, async (res: Res) => {
       cb(null, {
-        projects: <Project[]>res.data
+        projects: <Project[]>res.data,
+        user
       })
     })
   }

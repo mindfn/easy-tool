@@ -263,7 +263,6 @@ export default class extends mixins(head, layout) {
       this.currentI18n = JSON.parse(JSON.stringify(row))
     } catch(err) {
       console.error(err.message)
-      // this.$toast.error(err.message)
     }
   }
 

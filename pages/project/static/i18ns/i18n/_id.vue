@@ -92,7 +92,6 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import { mixins } from 'vue-class-component'
-// import { EDIT_TYPE } from '~/constant/project'
 import head from '~/mixins/head'
 import layout from '~/mixins/layout'
 import graphql from '~/graphql'
@@ -100,10 +99,6 @@ import { Res, I18n } from '~/common/types'
 import pI18nSubUpload from '~/components/pI18nSubUpload.vue'
 import pI18nSubDownload from '~/components/pI18nSubDownload.vue'
 import { STATIC_I18N_TABLE_COLUMNS, STATIC_I18N_TABLE_TITLES } from '~/common/constants/type'
-// import pI18nTranslateUpload from '~/components/pI18nTranslateUpload.vue'
-// import pI18nExport from '~/components/pI18nExport.vue'
-// import pI18nEdit from '~/components/pI18nEdit.vue'
-// import { STATIC } from '~/common/constants'
 
 /** 
  * @Author: zhuxiankang 
@@ -118,7 +113,6 @@ function dynamicComputeI18nColumns(i18nData): any[] {
     for(let data of i18nData) {
       if(!data[key] || columns.some(column => column.name === key)) continue
       columns.push({
-        // 注意STATIC_I18N_TABLE_TITLES和STATIC_I18N_TABLE_COLUMNS索引的值一一对应
         title: STATIC_I18N_TABLE_TITLES[i],
         name: key
       })

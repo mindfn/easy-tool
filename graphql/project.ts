@@ -16,10 +16,10 @@ export default {
    * @Desc:   获取项目列表
    * @Parm:   
    */  
-  getList(): Lokka {
+  getList(params: object): Lokka {
     return client.query(
-      `{
-        data: projects {
+      `query projects($userId:String!){
+        data: projects(userId:$userId) {
           code,
           msg,
           data {
@@ -27,13 +27,16 @@ export default {
             projectName,
             projectDesc,
             projectUrl,
+            projectCreator,
+            projectCreatorId,
             projectMember {
               username,
               userId
             }
           }
         }
-      }`
+      }`,
+      params
     )
   },
 
@@ -54,6 +57,8 @@ export default {
             projectName,
             projectUrl,
             projectDesc,
+            projectCreator,
+            projectCreatorId,
             projectMember {
               username,
               userId

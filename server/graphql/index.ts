@@ -24,19 +24,11 @@ export const startServer = () : GraphQLServer => {
 
   const port =  <string>process.env[`DEV_PORT_${process.env.DEV_TYPE}`] || process.env.PRO_PORT
 
-  // 跨域请求设置
-  const cors = process.env.NODE_ENV === 'production' 
-    ? {
-      origin: false
-    }
-    : {
-      credentials: true,
-      methods: "*",
-      origin: /^http(s?):\/\/10\.\w*/
-    }
-
   const options: Options = {
-    cors,
+    cors:  {
+      credentials: true,
+      origin: [process.env[`URI_${process.env.NODE_ENV}`] + `:${port}`]
+    },
     port,
     endpoint: '/graphql',
     playground: process.env.DEV_TYPE === 'server' ?  '/playground' : false
@@ -51,6 +43,7 @@ export const startServer = () : GraphQLServer => {
 
   // 启动会话功能
   server.express.use(session({
+    name: 'qid',
     secret: `some-random-secret-here`,
     resave: true,
     saveUninitialized: true,

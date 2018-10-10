@@ -1,4 +1,5 @@
 const parseArgs = require("minimist")
+
 const argv = parseArgs(process.argv.slice(2), {
   alias: {
     H: "hostname",
@@ -8,11 +9,11 @@ const argv = parseArgs(process.argv.slice(2), {
   unknown: parameter => false
 })
 
-module.exports = {
-  
-  // Web前端请求代理地址
-  proxyHttp: 'http://10.13.64.122:5000/graphql',
 
+module.exports = {
+  // Web前端请求地址(注意开发态和生产态端口和IP参考.env文件)
+  proxyHttp: 'http://10.13.64.122:4000/graphql',
+ 
   head: {
     title: "nuxt-type-template",
     meta: [
@@ -67,5 +68,9 @@ module.exports = {
     {src: '~/plugins/jsencrypt.ts', ssr: false}
   ],
 
-  modules: ["~/modules/typescript.js"]
+  modules: ["~/modules/typescript.js"],
+
+  router: {
+    middleware: 'userAuth'
+  }
 }

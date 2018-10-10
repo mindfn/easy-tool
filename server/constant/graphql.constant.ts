@@ -10,6 +10,7 @@ export const GRAPHQL = {
     UPDATE_SUCCESS: '更新成功！',
     PROJECT_URL_REPEAT: '项目URL已经存在与其他项目，请确认URL是否正确！',
     DEL_FAIL: '删除失败！',
+    DEL_NO_AUTH: '只有项目创建者才可以删除项目！',
     DEL_SUCCESS: '删除成功！',
     PROJECT_NOT_FOUND: '项目不存在！',
     STATIC_NOT_FOUND: '静态资源不存在！',

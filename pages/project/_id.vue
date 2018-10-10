@@ -33,10 +33,6 @@
             <mu-icon left value=" " class="fa fa-plus"></mu-icon>
             添加资源
           </mu-button>
-          <!-- <mu-button flat textColor="grey600">
-            <mu-icon left value=" " class="fa fa-trash"></mu-icon>
-            删除资源
-          </mu-button> -->
         </div>
         <!-- 列表 -->
         <div class="page-body-table">

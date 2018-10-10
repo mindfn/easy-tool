@@ -5,6 +5,7 @@
   "dependencies": {
     "apollo-upload-client": "^8.1.0",
     "archiver": "^3.0.0",
+    "axios": "^0.18.0",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
@@ -38,7 +39,7 @@
   "scripts": {
     "build": "nuxt build && backpack build",
     "pro": "cross-env NODE_ENV=production node build/main.js",
-    "dev:client": "cross-env NODE_ENV=development DEV_TYPE=nuxt ts-node --compiler ntypescript --project tsconfig_node.json ./server",
+    "dev:client": "cross-env NODE_ENV=development DEV_TYPE=nuxt ts-node-dev --compiler ntypescript --project tsconfig_node.json ./server",
     "dev:server": "cross-env NODE_ENV=development DEV_TYPE=server ts-node-dev --compiler ntypescript --project tsconfig_node.json ./server",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "commitmsg": "validate-commit-msg"

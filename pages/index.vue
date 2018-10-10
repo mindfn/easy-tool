@@ -1,9 +1,9 @@
 <template>
   <section class="page-login">
     <div class="page-login-head">
-      <mu-tooltip content="帮助">
+      <mu-tooltip content="文档">
         <mu-button icon color="indigo">
-          <i class="fa fa-question-circle-o"></i>
+          <i class="fa fa-file-text-o"></i>
         </mu-button>
       </mu-tooltip>
       <mu-tooltip content="插件">
@@ -120,7 +120,10 @@ export default class extends mixins(head) {
       ...form,
       password: Vue.prototype.$encrypt(data.data, form.password)
     }, (res: Res) => {
-      this.$router.push('/project')
+      // 事实上这两者有区别，最优的处理方法是登录以后获取用户信息设置到vuex处理
+      // 这里走href等于刷新了页面，从而触发了vuex中的nuxtServerInit
+      // this.$router.push('/project')
+      window.location.href = '/project'
     })
   }
 

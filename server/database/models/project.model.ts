@@ -73,15 +73,15 @@ const ProjectSchema = new Schema({
     trim: true,
     index: true
   },
-  // 项目创建者ID
-  // projectUserId: {
-  //   type: String,
-  //   required: true,
-  //   trim: true
-  // },
+
   // 项目成员
   projectMember: [MemberSchema],
   projectDesc: String,
+
+  // 项目创建者
+  projectCreator: String,
+  // 项目创建者Id
+  projectCreatorId: String,
 
   // 项目静态资源
   projectStatic: [StaticSchema]

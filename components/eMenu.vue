@@ -10,9 +10,18 @@
       </mu-button>
     </mu-menu>
     <mu-menu slot="right">
-      <mu-button flat>帮助</mu-button>
-      <mu-button flat @click="logout">
-        退出登录
+      <mu-button flat>
+        <mu-icon left value=" " class="fa fa-file-text-o"></mu-icon>
+        文档
+      </mu-button>
+      <mu-button 
+        flat 
+        @click="logout"
+        @mousemove="showLogout" 
+        @mouseout="showUserName"
+        class="e-menu-user">
+        <mu-icon left value=" " class="fa fa-user-o"></mu-icon>
+        {{ user || $store.state.user.username }}
       </mu-button>
     </mu-menu>
   </mu-appbar>
@@ -26,6 +35,8 @@ import { Res } from '~/common/types'
 
 @Component
 export default class EMenu extends Vue {
+
+  user:string = ''
 
   @Mutation('menu/toggle') stateToggle
   @State(state => state.menu.show) show
@@ -48,8 +59,30 @@ export default class EMenu extends Vue {
    */  
   logout(): void {
     graphql('user-logout', (res: Res) => {
-      this.$router.push('/')
+      // 事实上这两者有区别，最优的处理方法是登录以后获取用户信息设置到vuex处理
+      // 这里走href等于刷新了页面，从而触发了vuex中的nuxtServerInit
+      window.location.href = '/'
     })
+  }
+
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-10-10 15:40:08  
+   * @Desc:   显示注销 
+   * @Parm:    
+   */  
+  showLogout() {
+    this.user = '退出登录'
+  }
+
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-10-10 15:40:24  
+   * @Desc:   显示登录用户 
+   * @Parm:    
+   */  
+  showUserName() {
+    this.user = this.$store.state.user.username
   }
 }
 </script>
@@ -74,6 +107,10 @@ export default class EMenu extends Vue {
     display: inline-block;
     margin-right: 16px;
   }
+}
+
+.e-menu-user {
+  width: 200px;
 }
 </style>
 

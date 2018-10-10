@@ -4,6 +4,8 @@ import  { COMMON_CODE }  from '../../../common/constants'
 import { resolveArgs, resolveCtx, resolveRes, UserModel } from '../../types'
 const { RES } = GRAPHQL
 const { ERROR, TRUE } = COMMON_CODE
+import * as dotenv from 'dotenv'
+dotenv.config()
 
 // RSA加密处理
 const key = new (require('node-rsa'))({b: 512})
@@ -31,9 +33,10 @@ const mutation = {
             username
           })
         }
+
         if(req.session) {
-          req.session.username = user.username
           req.session.userId = user.userId
+          req.session.username = user.username
         }
         return resolveResponse(
           TRUE,
@@ -72,7 +75,8 @@ const mutation = {
    */  
   async logout(parent: any, args: resolveArgs, { req }: resolveCtx): Promise<resolveRes>   {
     if(req.session) {
-      req.session.user = null
+      req.session.username = null
+      req.session.userId = null
     } 
     return resolveResponse(
       TRUE, 
@@ -116,29 +120,18 @@ const query = {
   async users(parent: any, args: resolveArgs, { models, req }: resolveCtx): Promise<resolveRes> {
     try {
       let users: UserModel[] = await models.User.find()
-      // const { session } = req
-
+      const { session } = req
+      if(session) {
+        return resolveResponse(
+          TRUE,
+          RES.QUERY_SUCCESS,
+          users
+        )
+      }
       return resolveResponse(
-        TRUE,
-        RES.QUERY_SUCCESS,
-        // users.filter(user => user.userId !== _userId)
-        users
+        ERROR,
+        RES.QUERY_FAIL
       )
-
-      // if(session && session.user) {
-      //   // const _userId = session.user.userId
-
-      //   return resolveResponse(
-      //     TRUE,
-      //     RES.QUERY_SUCCESS,
-      //     // users.filter(user => user.userId !== _userId)
-      //     users
-      //   )
-      // }
-      // return resolveResponse(
-      //   ERROR,
-      //   RES.QUERY_FAIL
-      // )
     } catch(err) {
       console.error(err.message)
       return resolveResponse(

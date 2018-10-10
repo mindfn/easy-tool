@@ -3,13 +3,13 @@
     <e-menu></e-menu>
     <mu-flex class="e-flex">
       <mu-slide-left-transition>
-        <mu-flex 
+        <!-- <mu-flex 
           v-if="show"
           justify-content="start" 
           align-items="start"
           class="e-flex-row">
           <e-side></e-side>
-        </mu-flex>
+        </mu-flex> -->
       </mu-slide-left-transition>  
         <mu-flex
           justify-content="start" 

@@ -1,10 +1,16 @@
 export const state = () => ({
-  people: []
+  user: null
 })
 
 export const mutations = {
-  setPeople(state, people) {
-    state.people = people
+  /** 
+   * @Author: zhuxiankang 
+   * @Date:   2018-10-09 10:13:24  
+   * @Desc:   设置服务端用户登录信息 
+   * @Parm:    
+   */  
+  setUser(state, user) {
+    state.user = user
   }
 }
 
@@ -12,12 +18,14 @@ export const actions = {
   /** 
    * @Author: zhuxiankang 
    * @Date:   2018-09-11 14:35:59  
-   * @Desc:   获取服务端用户session 
+   * @Desc:   获取服务端用户登录信息
    * @Parm:    
    */  
   nuxtServerInit ({ commit }, { req }) {
-    if (req.session.user) {
-      commit('user', req.session.user)
-    }
+    if(!req.session.username) return
+    commit('setUser', {
+      username: req.session.username,
+      userId: req.session.userId
+    })
   }
 }

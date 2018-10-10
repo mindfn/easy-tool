@@ -8,14 +8,6 @@
     <mu-form 
       ref="form" 
       :model="projectData">
-      <!-- <mu-form-item
-        v-show="editType === EDIT_TYPE.EDIT" 
-        label="项目ID">
-        <mu-text-field 
-          disabled
-          v-model="projectData.projectId">
-        </mu-text-field>
-      </mu-form-item> -->
       <mu-form-item 
         label="项目名称(必填)" 
         prop="projectName"
@@ -37,17 +29,28 @@
           placeholder="项目的托管地址">
         </mu-text-field>
       </mu-form-item>
+      <mu-form-item 
+        label="项目创建者" 
+        v-show="editType === EDIT_TYPE.EDIT">
+        <mu-text-field disabled>
+          <template slot="prepend">
+            <mu-chip color="pink300" class="page-text-chip">
+              {{ projectData.projectCreator }}
+            </mu-chip>
+          </template>
+        </mu-text-field>
+      </mu-form-item>
       <mu-form-item label="项目成员">
         <mu-select
-          :max-height="200"
           filterable 
           multiple 
           chips 
+          :disabled="user.userId !== projectData.projectCreatorId && editType === EDIT_TYPE.EDIT"
           v-model="projectData.projectMember" 
           @click.native="searchUsers"
           full-width>
           <template slot="selection" slot-scope="scope">
-            <mu-chip color="teal">
+            <mu-chip color="teal300">
               {{ scope.label }}
             </mu-chip>
           </template>
@@ -59,7 +62,7 @@
             :label="user.username" 
             :value="user">
             <mu-list-item-action avatar>
-              <mu-avatar :size="36" color="teal">
+              <mu-avatar :size="36" color="teal300">
                 {{ spell(user.username) }}
               </mu-avatar>
             </mu-list-item-action>
@@ -135,6 +138,9 @@ export default class PProjectEdit extends Vue {
   @Prop()
   data!: Project
 
+  @Prop()
+  user!: any
+
   @Watch('show')
   onShowChanged(val: boolean) : void {
     this.visible = val
@@ -153,8 +159,9 @@ export default class PProjectEdit extends Vue {
       this.users = []
       this.searchUsers(() => {
         let { projectData } = this
-        this.projectData = this.data
-        let projectMember = this.data.projectMember
+        let { data } = this
+        this.projectData = data
+        let { projectMember } = data
         if(!projectMember || !projectMember.length) return
         let users: User[] = []
         // 获取当前项目成员
@@ -178,7 +185,14 @@ export default class PProjectEdit extends Vue {
   searchUsers(cb: Function) : void {
     if(this.users.length) return
     graphql('user-query', (res: Res) => {
-      this.users = <User[]>res.data
+      // 过滤创建者
+      this.users = <User[]>res.data.filter(user => user.userId !== (
+        this.editType === EDIT_TYPE.ADD
+        // 添加时候项目成员过滤自己
+        ? this.user.userId
+        // 修改时项目成员过滤创建者
+        : this.data.projectCreatorId
+      ))
       cb && cb()
     })
   }
@@ -190,24 +204,28 @@ export default class PProjectEdit extends Vue {
    * @Parm:    
    */  
   updateProject() : void {
-    this.projectUrlErrText = ''
-    this.$refs.form['validate']().then((valid: boolean) => {
-      if(!valid) return
-      const { projectData } = this
+    try {
+      this.projectUrlErrText = ''
+      this.$refs.form['validate']().then((valid: boolean) => {
+        if(!valid) return
+        const { projectData } = this
 
-      graphql(this.editType === EDIT_TYPE.ADD ? 'project-add' : 'project-update', {
-        ...projectData,
-        projectMember: JSON.stringify(projectData.projectMember)
-      }, (res: Res) => {
-        // 项目url重复
-        if(res.code === COMMON_CODE.PROJECT_URL_REPEAT) {
-          this.projectUrlErrText = res.msg
-          return
-        }
-        this.$emit('refresh')
-        this.$toast.success(res.msg)
+        graphql(this.editType === EDIT_TYPE.ADD ? 'project-add' : 'project-update', {
+          ...projectData,
+          projectMember: JSON.stringify(projectData.projectMember)
+        }, (res: Res) => {
+          // 项目url重复
+          if(res.code === COMMON_CODE.PROJECT_URL_REPEAT) {
+            this.projectUrlErrText = res.msg
+            return
+          }
+          this.$emit('refresh')
+          this.$toast.success(res.msg)
+        })
       })
-    })
+    } catch(err) {
+      console.error(err.message)
+    }
   }
 
   /** 
@@ -222,4 +240,10 @@ export default class PProjectEdit extends Vue {
   }
 }
 </script>
+
+<style lang="less" scoped> 
+.page-text-chip {
+  margin: 4px 4px 4px 0;
+}
+</style>
 

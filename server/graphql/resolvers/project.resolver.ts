@@ -6,6 +6,8 @@ import  { COMMON_CODE }  from '../../../common/constants'
 import { resolveArgs, resolveCtx, resolveRes, ProjectModel } from '../../types'
 const { RES } = GRAPHQL
 const { ERROR, TRUE, PROJECT_URL_REPEAT } = COMMON_CODE
+import * as dotenv from 'dotenv'
+dotenv.config()
 
 const mutation = {
   /** 
@@ -18,6 +20,7 @@ const mutation = {
     try {
       let { projectMember } = args
       const { Project } = models
+      let { session } = req
       if(projectMember && projectMember.length) {
         projectMember = JSON.parse(projectMember)
       } 
@@ -32,7 +35,9 @@ const mutation = {
       } else {
         await Project.create({
           ...args,
-          projectMember
+          projectMember,
+          projectCreator: session && session.username,
+          projectCreatorId: session && session.userId
         })
         return resolveResponse(
           TRUE,
@@ -56,11 +61,29 @@ const mutation = {
    */  
   async deleteProject(parent: any, args: resolveArgs, { models, req }: resolveCtx): Promise<resolveRes>  {
     try {
-      await models.Project.remove({_id: args.projectId})
-      return resolveResponse(
-        TRUE,
-        RES.DEL_SUCCESS
-      ) 
+      let project: ProjectModel | null = await models.Project.findById(args.projectId)
+      let { session } = req
+
+      if(!project) {
+        return resolveResponse(
+          ERROR,
+          RES.PROJECT_NOT_FOUND
+        ) 
+      }
+
+      // 只有创建者可以删除被创建的项目
+      if(project.projectCreatorId === (session && session.userId)) {
+        project.remove()
+        return resolveResponse(
+          TRUE,
+          RES.DEL_SUCCESS
+        ) 
+      } else {
+        return resolveResponse(
+          ERROR,
+          RES.DEL_NO_AUTH
+        ) 
+      }
     } catch(err) {
       console.error(err.message)
       return resolveResponse(
@@ -114,10 +137,27 @@ const query = {
   async projects(parent: any, args: resolveArgs, { models, req }: resolveCtx): Promise<resolveRes> {
     try {
       let projects: ProjectModel[] = await models.Project.find()
+      let showProjects: ProjectModel[] = []
+      
+      // 只显示当前用户创建的或参与的项目列表
+      for(let project of projects) {
+        if(project.projectCreatorId === args.userId) {
+          showProjects.push(project)
+          continue
+        }
+
+        let { projectMember } = project
+
+        if(!projectMember 
+        || !projectMember.length
+        || !projectMember.find(member => member.userId === args.userId)) continue
+        showProjects.push(project)
+      }
+
       return resolveResponse(
         TRUE,
         RES.QUERY_SUCCESS,
-        projects
+        showProjects
       )
     } catch(err) {
       return resolveResponse(
@@ -135,13 +175,34 @@ const query = {
    */  
   async projectByName(parent: any, args: resolveArgs, { models, req }: resolveCtx): Promise<resolveRes>   {
     try {
-      let projects: ProjectModel[] = await models.Project.find({
+      let projects: ProjectModel[] = args.projectName 
+      ? await models.Project.find({
         $or: [ {projectName: { $regex: new RegExp(args.projectName, 'i') } }]
       })
+      : await models.Project.find()
+
+      let showProjects: ProjectModel[] = []
+      
+      // 只显示当前用户创建的或参与的项目列表
+      for(let project of projects) {
+    
+        if(project.projectCreatorId === (req.session && req.session.userId)) {
+          showProjects.push(project)
+          continue
+        }
+
+        let { projectMember } = project
+
+        if(!projectMember 
+        || !projectMember.length
+        || !projectMember.find(member => member.userId === (req.session && req.session.userId))) continue
+        showProjects.push(project)
+      }
+
       return resolveResponse(
         TRUE,
         RES.QUERY_SUCCESS,
-        projects
+        showProjects
       )
     } catch(err) {
       console.error(err.message)

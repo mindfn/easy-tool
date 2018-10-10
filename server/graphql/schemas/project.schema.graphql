@@ -25,7 +25,9 @@ type Project {
   projectUrl: String,
   projectMember: [Member],
   projectDesc: String,
-  projectStatic: [Static]
+  projectStatic: [Static],
+  projectCreator: String,
+  projectCreatorId: String,
   createTime: String,
   updateTime: String
 }
@@ -70,7 +72,9 @@ type Mutation {
 
 type Query {
   # 获取项目列表
-  projects: ProjectsResponse
+  projects(
+    userId: String!
+  ): ProjectsResponse
 
   # 通过项目名称查询项目
   projectByName(

@@ -35,7 +35,9 @@ export interface Project {
   projectId?: string,
   projectDesc?: string,
   projectMember?: User[],
-  projectStatic?: Static[]
+  projectStatic?: Static[],
+  projectCreator?: string,
+  projectCreatorId?: string
 }
 
 // 多语言接口
