@@ -23,6 +23,7 @@ npm run pro
  asyncData中使用lokka发请求拿不到session值, 是因为从服务端发请求是拿不到session值的，具体查看nuxt issue: 
  https://github.com/nuxt/nuxt.js/issues/1824, 解决方法是不能再asynData发的请求里使用session，这里我猜想应该在asyncData的请求里采用已经在vuex里存好的session值。
 For everyone having this issue, look into nuxtServerInit for store hydration. Don't mistake the server middleware's context with Nuxt's context. The best approach here is to have nuxtServerInit pick up any data from the server's context (you can access res for instance) and save it in the Vuex store. This way it'll be properly hydrated on the client.
+- session的cookie的secure属性需要设置为false，否则session只有在https下才生效。
 
 ## 依赖
 
