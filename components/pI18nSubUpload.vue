@@ -12,8 +12,6 @@
           导入支持xlsx、json和properties文件格式，需要注意xlsx格式的文件请参考导入模板文件！
           <br/><br/>
           不允许导入非中文的其他语言信息。
-          <br/><br/>
-          导入会完全覆盖当前的多语言信息，如果当前多语言中存在非中文的其他语言，则在中文和关键信息完全一致的情况下，保留其他语言。
         </mu-alert>
       </mu-form-item>
       <mu-form-item prop="radio" label="导入文件">
@@ -49,7 +47,6 @@
 import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
 import { Res } from '~/common/types'
 import graphql from '~/graphql'
-import config from '~/nuxt.config'
 import { COMMON_CODE }  from '~/common/constants'
 
 
@@ -59,7 +56,7 @@ interface Form {
 
 @Component
 export default class PI18nSubUpload extends Vue {
-  readonly proxyHttp: string = config.proxyHttp
+  readonly proxyHttp: string = <string>process.env.PROXY_HTTP
 
   visible: boolean = false
 
@@ -133,7 +130,14 @@ export default class PI18nSubUpload extends Vue {
       this.fileErrText = '请选择需要上传的文件！'
       return
     }
-    this.$refs.upload['submit']()
+
+    this.$confirm('导入会完全覆盖当前的多语言信息，如果当前多语言中存在非中文的其他语言，则在中文和关键信息完全一致的情况下，保留其他语言。确定要导入？', '提示', {
+      type: 'warning',
+      icon: ''
+    }).then(({ result }) => {
+      if(!result) return
+      this.$refs.upload['submit']()
+    })
   }
 }
 </script>

@@ -29,7 +29,7 @@
             :disabled="disabled"
             flat 
             textColor="grey600" 
-            @click="openImportDialog">
+            @click="upload = true">
             <mu-icon left value=" " class="fa fa-upload"></mu-icon>
             导入多语言
           </mu-button>
@@ -37,7 +37,7 @@
             :disabled="disabled"
             flat 
             textColor="grey600"
-            @click="openDownloadDialog">
+            @click="download = true">
             <mu-icon left value=" " class="fa fa-download"></mu-icon>
             导出多语言
           </mu-button>
@@ -301,16 +301,6 @@ export default class extends mixins(head, layout) {
 
   /** 
    * @Author: zhuxiankang 
-   * @Date:   2018-09-21 16:39:36  
-   * @Desc:   导入翻译多语言 
-   * @Parm:    
-   */  
-  openImportDialog() {
-    this.upload = true
-  }
-
-  /** 
-   * @Author: zhuxiankang 
    * @Date:   2018-09-19 09:46:14  
    * @Desc:   刷新多语言列表 
    * @Parm:    
@@ -335,23 +325,12 @@ export default class extends mixins(head, layout) {
 
   /** 
    * @Author: zhuxiankang 
-   * @Date:   2018-10-08 09:42:07  
-   * @Desc:   打开导出多语言对话框 
-   * @Parm:    
-   */  
-  openDownloadDialog() {
-    this.download = true
-  } 
-
-
-  /** 
-   * @Author: zhuxiankang 
    * @Date:   2018-09-30 17:39:18  
    * @Desc:   下载模板文件 
    * @Parm:    
    */  
   downloadTemplate() {
-    window.location.href = `${config.proxyHttp}/i18n/download/template`
+    window.location.href = `${process.env.PROXY_HTTP}/i18n/download/template`
   }
 }
 </script>

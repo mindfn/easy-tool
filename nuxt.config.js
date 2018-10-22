@@ -9,10 +9,15 @@ const argv = parseArgs(process.argv.slice(2), {
   unknown: parameter => false
 })
 
+let env = process.env
 
 module.exports = {
-  // Web前端请求地址(注意开发态和生产态端口和IP参考.env文件)
-  proxyHttp: 'http://10.13.64.122:4000/graphql',
+  // 前后端共用环境变量
+  env: {
+    NODE_ENV: env.NODE_ENV,
+    // Web前端请求地址
+    PROXY_HTTP: env[`URI_${env.NODE_ENV}`] + `:${env.DEV_TYPE ? env.DEV_PORT_server : env.PRO_PORT}/graphql`
+  },
  
   head: {
     title: "nuxt-type-template",

@@ -24,7 +24,7 @@
           <mu-button 
             flat 
             textColor="grey600"
-            @click="openUploadDialog">
+            @click="upload = true">
             <mu-icon left value=" " class="fa fa-upload"></mu-icon>
             导入多语言
           </mu-button>
@@ -32,7 +32,7 @@
             :disabled="!i18n.i18nData || !i18n.i18nData.length"
             flat 
             textColor="grey600"
-            @click="openDownloadDialog">
+            @click="download = true">
             <mu-icon left value=" " class="fa fa-download"></mu-icon>
             导出多语言
           </mu-button>
@@ -186,26 +186,6 @@ export default class extends mixins(head, layout) {
     // 0对应项目id, 1对应多语言类型id
     this.$router.push(`/project/static/i18ns/${ids[0]}-${ids[1]}`)
   }
-
-  /** 
-   * @Author: zhuxiankang 
-   * @Date:   2018-09-27 17:38:46  
-   * @Desc:   打开导入多语言对话框 
-   * @Parm:    
-   */  
-  openUploadDialog() {
-    this.upload = true
-  }
-
-  /** 
-   * @Author: zhuxiankang 
-   * @Date:   2018-10-08 09:42:07  
-   * @Desc:   打开导出多语言对话框 
-   * @Parm:    
-   */  
-  openDownloadDialog() {
-    this.download = true
-  } 
 
   /** 
    * @Author: zhuxiankang 

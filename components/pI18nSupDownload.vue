@@ -46,7 +46,6 @@
 import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
 import { Res } from '~/common/types'
 import graphql from '~/graphql'
-import config from '~/nuxt.config'
 import { COMMON_CODE }  from '~/common/constants'
 import { STATIC_I18N_DOWNLOAD_TYPE } from '~/common/constants'
 
@@ -104,7 +103,7 @@ export default class PI18nExport extends Vue {
      this.$refs.form['validate']().then((valid: boolean) => {
       if(!valid) return
       let { download: { type, file } } = this
-      window.location.href = `${config.proxyHttp}/i18n/download/sup/${type}/${file}/${this.staticId}`
+      window.location.href = `${process.env.PROXY_HTTP}/i18n/download/sup/${type}/${file}/${this.staticId}`
       this.closeDialog()
      })
   }

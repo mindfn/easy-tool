@@ -24,11 +24,21 @@ export const startServer = () : GraphQLServer => {
 
   const port =  <string>process.env[`DEV_PORT_${process.env.DEV_TYPE}`] || process.env.PRO_PORT
 
+  let cors = process.env.NODE_ENV === 'production' 
+  // 生产态不支持跨域
+  ? {
+    credentials: true,
+    origin: [process.env[`URI_${process.env.NODE_ENV}`] + `:${port}`]
+  }
+  // 开发态支持跨域
+  : {
+    credentials: true,
+    methods: "*",
+    origin: /^http(s?):\/\/10\.\w*/
+  }
+
   const options: Options = {
-    cors:  {
-      credentials: true,
-      origin: [process.env[`URI_${process.env.NODE_ENV}`] + `:${port}`]
-    },
+    cors,
     port,
     endpoint: '/graphql',
     playground: process.env.DEV_TYPE === 'server' ?  '/playground' : false

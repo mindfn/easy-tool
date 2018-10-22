@@ -52,7 +52,7 @@
             sm="12" 
             md="12" 
             lg="12" 
-            xl="3"
+            xl="2"
             v-for="(item, index) in projects" 
             :key="index">
             <mu-card class="page-card" @click="enterProject(item)">
@@ -63,7 +63,7 @@
               </mu-card-media>
               <mu-card-text>
                 <mu-row>
-                  <mu-col :span="item.projectCreatorId === user.userId ? 8 : 12">
+                  <mu-col :span="item.projectCreatorId === user.userId ? 6 : 12">
                     <div class="page-card-avatar">
                       <mu-tooltip 
                         :content="item.projectCreator">
@@ -80,7 +80,7 @@
                       </mu-tooltip>
                     </div>
                   </mu-col>
-                  <mu-col :span="4" v-if="item.projectCreatorId === user.userId">
+                  <mu-col :span="6" v-if="item.projectCreatorId === user.userId">
                     <mu-button 
                       small fab color="red" @click.stop="openDeleteDialog(index)">
                       <i class="fa fa-trash"></i>
@@ -184,7 +184,7 @@ export default class extends mixins(head, layout) {
     // 注意： asyncData发起的请求和客户端发起的请求是不同的session
     // 这里需要将客户端发起请求的session当做参数传递处理
     // 这个session从vuex中获取(vuex中是在nuxtServerInit中获取服务端的session为客户端所用)
-    graphql('project-getList', { userId: user && user.userId }, async (res: Res) => {
+    graphql('project-getList', { userId: user.userId }, async (res: Res) => {
       cb(null, {
         projects: <Project[]>res.data,
         user
@@ -321,7 +321,7 @@ export default class extends mixins(head, layout) {
     &:hover {
       transition: all .3s cubic-bezier(.4,0,.2,1);
       cursor: pointer;
-      background: rgb(33, 150, 243);
+      background-color: rgb(33, 150, 243);
     }
   }
   .mu-card-header-title {
@@ -337,17 +337,17 @@ export default class extends mixins(head, layout) {
   border: 1px solid rgba(0, 0, 0, .12);
   cursor: pointer;
   &:hover {
-    background-color: rgba(240, 240, 240, .4);
-    .mu-card-media {
-      transition: all .5s ease;
-      background-size: 100% 100%;
-    }
+    background-color: rgba(200, 200, 200, 1);
+    // .mu-card-media {
+    //   transition: all .5s ease;
+    //   background-size: 100% 100%;
+    // }
   }
   .mu-card-media {
     padding: 1px;
     height: 73%;
     opacity: .5;
-    background-size: 60% 80%;
+   background-size: 100% 100%;
     transition: all .15s cubic-bezier(.4,0,.2,1);
     .mu-card-media-title {
       height: 90px;

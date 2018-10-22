@@ -24,6 +24,7 @@
     "mongoose": "^5.2.12",
     "muse-ui": "^3.0.0",
     "muse-ui-loading": "^0.2.0",
+    "muse-ui-message": "^0.2.1",
     "muse-ui-toast": "^0.3.0",
     "node-rsa": "^1.0.1",
     "node-xlsx": "^0.12.1",
@@ -39,7 +40,7 @@
   "scripts": {
     "build": "nuxt build && backpack build",
     "pro": "cross-env NODE_ENV=production node build/main.js",
-    "dev:client": "cross-env NODE_ENV=development DEV_TYPE=nuxt ts-node-dev --compiler ntypescript --project tsconfig_node.json ./server",
+    "dev:client": "cross-env NODE_ENV=development DEV_TYPE=nuxt ts-node --compiler ntypescript --project tsconfig_node.json ./server",
     "dev:server": "cross-env NODE_ENV=development DEV_TYPE=server ts-node-dev --compiler ntypescript --project tsconfig_node.json ./server",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "commitmsg": "validate-commit-msg"

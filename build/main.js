@@ -1055,7 +1055,6 @@ var startServer = function () {
         req: req.request
     }); };
     var port = process.env["DEV_PORT_" + process.env.DEV_TYPE] || process.env.PRO_PORT;
-    console.log('graphql: ', process.env["URI_" + "production"] + (":" + port));
     var options = {
         cors: {
             credentials: true,
@@ -1428,11 +1427,9 @@ var mutation = {
                         user = _b.sent();
                         _b.label = 4;
                     case 4:
-                        console.log('login: ', req.sessionID);
                         if (req.session) {
                             req.session.userId = user.userId;
                             req.session.username = user.username;
-                            console.log('login session: ', req.session);
                         }
                         return [2, Object(__WEBPACK_IMPORTED_MODULE_0__utils__["d" /* resolveResponse */])(TRUE, RES.LOGIN_SUCCESS)];
                     case 5: return [2, Object(__WEBPACK_IMPORTED_MODULE_0__utils__["d" /* resolveResponse */])(ERROR, RES.USER_ERR)];
@@ -3729,6 +3726,7 @@ const argv = parseArgs(process.argv.slice(2), {
 
 module.exports = {
   // Web前端请求地址(注意开发态和生产态端口和IP参考.env文件)
+  // proxyHttp: 'http://10.40.239.201:5000/graphql',
   proxyHttp: 'http://10.13.64.122:5000/graphql',
 
   head: {

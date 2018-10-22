@@ -47,12 +47,11 @@
 import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
 import { Res } from '~/common/types'
 import graphql from '~/graphql'
-import config from '~/nuxt.config'
 import { COMMON_CODE }  from '~/common/constants'
 
 @Component
 export default class PI18nSupUpload extends Vue {
-  readonly proxyHttp: string = config.proxyHttp
+  readonly proxyHttp: string = <string>process.env.PROXY_HTTP
 
   visible: boolean = false
 

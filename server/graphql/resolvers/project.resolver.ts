@@ -2,7 +2,7 @@
 
 import { resolveResponse } from '../../utils'
 import { GRAPHQL } from '../../constant'
-import  { COMMON_CODE }  from '../../../common/constants'
+import  { COMMON_CODE, DEVELOPER }  from '../../../common/constants'
 import { resolveArgs, resolveCtx, resolveRes, ProjectModel } from '../../types'
 const { RES } = GRAPHQL
 const { ERROR, TRUE, PROJECT_URL_REPEAT } = COMMON_CODE
@@ -33,12 +33,24 @@ const mutation = {
           RES.PROJECT_URL_REPEAT
         ) 
       } else {
+
+        let projectCreator, projectCreatorId
+
+        if(process.env.NODE_ENV === 'production') {
+          projectCreator = session && session.username,
+          projectCreatorId = session && session.userId  
+        } else {
+          projectCreator = DEVELOPER.NAME
+          projectCreatorId = DEVELOPER.ID
+        }
+
         await Project.create({
           ...args,
           projectMember,
-          projectCreator: session && session.username,
-          projectCreatorId: session && session.userId
+          projectCreator,
+          projectCreatorId
         })
+
         return resolveResponse(
           TRUE,
           RES.ADD_SUCCESS
@@ -72,7 +84,11 @@ const mutation = {
       }
 
       // 只有创建者可以删除被创建的项目
-      if(project.projectCreatorId === (session && session.userId)) {
+      let projectCreatorId =  process.env.NODE_ENV === 'production'
+      ? session && session.userId
+      : DEVELOPER.ID
+
+      if(project.projectCreatorId === projectCreatorId) {
         project.remove()
         return resolveResponse(
           TRUE,
@@ -182,23 +198,28 @@ const query = {
       : await models.Project.find()
 
       let showProjects: ProjectModel[] = []
+
+      if(process.env.NODE_ENV === 'production' ) {
+        // 只显示当前用户创建的或参与的项目列表
+        for(let project of projects) {
       
-      // 只显示当前用户创建的或参与的项目列表
-      for(let project of projects) {
-    
-        if(project.projectCreatorId === (req.session && req.session.userId)) {
+          if(project.projectCreatorId === (req.session && req.session.userId)) {
+            showProjects.push(project)
+            continue
+          }
+
+          let { projectMember } = project
+
+          if(!projectMember 
+          || !projectMember.length
+          || !projectMember.find(member => member.userId === (req.session && req.session.userId))) continue
           showProjects.push(project)
-          continue
         }
-
-        let { projectMember } = project
-
-        if(!projectMember 
-        || !projectMember.length
-        || !projectMember.find(member => member.userId === (req.session && req.session.userId))) continue
-        showProjects.push(project)
+      } else {
+        // 开发态显示全部创建的项目
+        showProjects = projects
       }
-
+      
       return resolveResponse(
         TRUE,
         RES.QUERY_SUCCESS,

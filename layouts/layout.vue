@@ -119,7 +119,7 @@ body {
 }
 
 .page-body {
-  padding: 40px 120px;
+  padding: 40px;
   height: calc(~"100% - 102px");
   overflow: auto;
 }

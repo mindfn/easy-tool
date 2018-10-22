@@ -21,7 +21,7 @@
         @mouseout="showUserName"
         class="e-menu-user">
         <mu-icon left value=" " class="fa fa-user-o"></mu-icon>
-        {{ user || $store.state.user.username }}
+        {{ user || $store.state.user && $store.state.user.username }}
       </mu-button>
     </mu-menu>
   </mu-appbar>

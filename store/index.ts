@@ -1,6 +1,12 @@
+import { DEVELOPER } from '../common/constants'
+
 export const state = () => ({
-  user: null
+  user: {
+    username: DEVELOPER.NAME,
+    userId: DEVELOPER.ID
+  }
 })
+
 
 export const mutations = {
   /** 
