@@ -4,8 +4,10 @@
 ``` bash
 // 前端开发
 npm run dev:client
+
 // 后端开发
 npm run dev:server
+
 // 部署
 npm run build
 npm run pro
